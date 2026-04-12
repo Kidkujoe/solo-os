@@ -181,6 +181,9 @@ Display results directly in the terminal:
   Quick confidence: [score]/10
 
   Want a deeper test? Type /test
+  Fixes are handled by a team of specialist
+  agents working in parallel. Available in
+  /test and /test-deep modes.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 - Write findings to test-session.md

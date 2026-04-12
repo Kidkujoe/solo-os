@@ -561,41 +561,199 @@ Classify each issue found:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 14 - FIX DECISION FLOW
-For each issue found:
+STEP 14 - ISSUE TRIAGE AND FIX APPROVAL
+Display all issues found grouped by severity.
 
-If Critical:
-  Display:
-  CRITICAL ISSUE FOUND:
-  [description in plain English]
+For Critical and High issues ask the user:
 
-  This should be fixed now because:
-  [why it matters]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ISSUES FOUND - [count] total
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Critical: [count] — security or data loss risk
+  High: [count] — bugs or significant UX problems
+  Medium: [count] — code quality (report only)
+  Low: [count] — suggestions (report only)
 
-  I will fix this by:
-  [what will change]
+  I can spin up a team of specialist agents
+  to fix the Critical and High issues in
+  parallel instead of one by one.
 
-  SIDE EFFECT WARNING:
-  [what might look or work differently after]
+  1. Fix all Critical and High issues (recommended)
+  2. Fix Critical only
+  3. Let me choose which to fix
+  4. Skip fixes — just report everything
 
-  Fix this now? (yes/no/skip)
+  Type 1, 2, 3 or 4.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Wait for permission before fixing.
+Wait for response. If 4, skip to STEP 15.
 
-If High:
-  Display the issue and recommendation.
-  Ask permission before fixing.
+STEP 14B - MULTI-AGENT FIX SYSTEM
+When the user approves fixes, spawn specialist agents
+to work on them in parallel using the Agent tool.
 
-If Medium or Low:
-  List them in the report.
-  Do not fix automatically.
-  Let the user decide later.
+Display:
 
-After each fix:
-- Verify the fix worked by checking the page
-- Screenshot after the fix
-- Write the fix to test-session.md
-- Note any side effects observed
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SPINNING UP YOUR FIX TEAM
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Assigning [X] issues across specialist
+  agents. They will work in parallel and
+  coordinate before committing changes.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Only spawn agents that have actual work to do.
+
+AGENT ROSTER:
+
+SECURITY AGENT
+Spawned when: any security issues found
+Fixes: auth issues, input validation, XSS, SQL injection,
+exposed data, insecure endpoints, token security, sessions
+Must notify: UI Agent and Logic Agent before touching
+shared auth components. Check with Logic Agent before
+changing validation logic that affects business rules.
+
+LOGIC AGENT
+Spawned when: any bugs or logic errors found
+Fixes: broken flows, wrong data processing, missing error
+handling, race conditions, state issues, API responses
+Must notify: UI Agent before changing what users see.
+Security Agent before changing auth logic. Data Agent
+before changing anything that touches the database.
+
+UI AGENT
+Spawned when: any visual or UX issues found
+Fixes: broken layouts, responsive issues, missing hover
+and focus states, accessibility, loading states, animations
+Must notify: Logic Agent before changing component behaviour.
+All agents if changing shared CSS variables or global styles.
+
+DATA AGENT
+Spawned when: any data or database issues found
+Fixes: wrong data saved, missing validation, query issues,
+data transformation, API mapping, form data, file uploads
+Must notify: Logic Agent of schema or query changes.
+Security Agent of changes to sensitive data handling.
+
+PERFORMANCE AGENT
+Spawned when: any performance issues found
+Fixes: slow requests, unnecessary re-renders, bundle size,
+missing loading states, inefficient queries, memory leaks
+Must notify: Logic Agent before refactoring shared utilities.
+UI Agent before changing rendering behaviour.
+
+TEST AGENT
+Always spawned when other agents are active.
+Verifies every fix worked. Retests in the browser.
+Takes before and after screenshots. Checks console.
+Has final say on whether a fix is confirmed complete.
+Can send a fix back to the responsible agent for retry.
+Maximum three attempts per fix before escalating to user.
+
+AGENT COORDINATION:
+Before any agent edits a file it must check that no other
+agent is currently working on the same file. If two agents
+need the same file and changes conflict, pause both and
+apply a merged fix. Show the user what happened.
+
+Agents communicate by including context in their prompts
+about what other agents are doing and what files are
+being touched. Each agent receives a brief of all issues
+and which agent owns which fix.
+
+SPAWN PATTERN:
+Use the Agent tool to spawn each agent in parallel.
+Each agent prompt must include:
+- The specific issues assigned to them
+- The file paths involved
+- What other agents are working on
+- Instructions to not touch files assigned to other agents
+- Instructions to report what they changed
+
+LIVE STATUS DISPLAY:
+After spawning, show progress as each agent completes:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FIX TEAM STATUS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [agent emoji] [agent name]  [status]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Fixes completed: [X] of [total]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When agents communicate show:
+
+  AGENT MESSAGE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [Agent A] -> [Agent B]:
+  [plain English description of change]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CONFLICT RESOLUTION:
+If two agents need the same file and changes conflict:
+- Pause both agents
+- Show the user what each agent wants to change
+- Apply a merged fix or let user decide
+- Notify both agents when resolved
+
+ESCALATION:
+If an agent fails three times on a fix:
+
+  AGENT NEEDS YOUR HELP
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Agent: [name]
+  Fix: [description]
+  What was tried: [three attempts described]
+  Options:
+  1. Skip this fix and note in report
+  2. Give me more context
+  3. Handle manually then /resume
+  4. Try a different approach
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Other agents continue while waiting.
+
+TEST AGENT VERIFICATION:
+After each agent completes, Test Agent runs:
+- Navigate to the affected area in Chrome
+- Retest the exact scenario that was broken
+- Take a screenshot of the result
+- Check console for new errors
+- Check the fix did not break adjacent features
+
+Display:
+  TEST AGENT RESULT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Fix: [description]
+  Agent: [which agent]
+  Result: VERIFIED / PARTIALLY FIXED / DID NOT WORK
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TEAM SUMMARY:
+When all agents are done:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FIX TEAM COMPLETE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Total fixes attempted: [count]
+  Verified by Test Agent: [count]
+  Sent back and corrected: [count]
+  Could not fix automatically: [count]
+
+  BY AGENT:
+  [emoji] [agent name]  [X] fixes applied
+  [for each active agent]
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HTML REPORT SECTION - HOW WE FIXED YOUR APP:
+Add to the report in plain English:
+- Which agents were active and what they specialised in
+- How many fixes each agent applied
+- Any coordination that happened between agents
+- Each fix grouped by agent with plain English description
+- Whether Test Agent verified each fix
 
 STEP 15 - WRITE SESSION DATA
 - Write all findings to test-session.md

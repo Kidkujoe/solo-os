@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.3.0
+
+- Added multi-agent fix system
+- Specialist agents now work in parallel on Security, Logic, UI, Data and Performance fixes simultaneously
+- Agents coordinate with each other before touching shared files
+- Test Agent verifies every fix and sends failed fixes back for retry
+- Live agent dashboard shows progress in real time
+- Conflict detection when agents need the same file
+- Plain English agent communication log in HTML report
+- Escalation to user after three failed attempts per fix
+- Time saved vs sequential fixing shown in summary
+- Available in /test and /test-deep modes
+
 ## v1.2.0
 
 - Added intelligent edge case discovery

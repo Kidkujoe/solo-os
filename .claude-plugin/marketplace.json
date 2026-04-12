@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",

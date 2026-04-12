@@ -1,0 +1,24 @@
+# User data - never commit these
+context/test-session.md
+context/test-accounts.md
+context/test-data.json
+context/test-report.html
+context/screenshots/
+
+# Environment files
+.env
+.env.local
+.env.test
+.env.production
+
+# Dependencies
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE files
+.vscode/settings.json
+.idea/

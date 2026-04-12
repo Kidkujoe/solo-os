@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.0
+
+- Added intelligent edge case discovery
+- Claude now analyses the codebase and independently generates edge cases specific to each app
+- Edge cases categorised by risk level: high, medium, interesting
+- New /edgecases command for analysis without running a full test
+- Edge cases saved to memory for future sessions
+- HTML report now includes edge case findings in plain English
+- Edge case discovery runs in /test and /test-deep before the options menu
+- Users choose how to handle edge cases: test all, high risk only, skip, or save for later
+
 ## v1.1.0
 
 - Added real time visible cursor during visual testing

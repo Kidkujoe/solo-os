@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -58,6 +58,11 @@
       "name": "status",
       "description": "Get a snapshot of the current test session including progress, issues found, fixes applied and token usage",
       "file": "commands/status.md"
+    },
+    {
+      "name": "edgecases",
+      "description": "Analyse the app and discover edge cases without running a full test. Saves findings for future sessions.",
+      "file": "commands/edgecases.md"
     },
     {
       "name": "addaccount",

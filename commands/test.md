@@ -31,7 +31,239 @@ Display a summary:
   Pages found: [count]
   Has restricted areas: [yes/no]
 
-STEP 3 - TOKEN OPTIONS MENU
+STEP 3 - INTELLIGENT EDGE CASE DISCOVERY
+Run this silently after the project scan and before
+showing the options menu. Think like an experienced QA
+engineer who has seen many apps fail in unexpected ways.
+Do not follow a generic checklist. Reason specifically
+about THIS app based on what was found in the scan.
+
+PHASE 1 - DEEP APP ANALYSIS
+
+Silently read and analyse the codebase. Look for:
+
+TECH STACK PATTERNS
+- What framework is being used
+- What database or data layer exists
+- What auth system is in place
+- What third party services are connected
+- What payment systems if any
+- What file upload systems if any
+- What real time features if any
+- What API integrations exist
+- What caching layer if any
+- What background jobs if any
+
+USER FLOW MAPPING
+- Map every possible user journey from entry to completion
+- Find where journeys branch
+- Find where journeys can dead end
+- Find where data is passed between steps
+- Find where state is stored (localStorage, sessions, cookies)
+- Find where tokens are passed
+
+DATA BOUNDARIES
+- What is the minimum valid input for every field
+- What is the maximum valid input
+- What characters could cause issues
+- What happens at zero values
+- What happens at negative values
+- What happens with empty states
+- What happens with very long strings
+- What happens with special characters
+- What happens with unicode and emoji
+- What happens with SQL-like input
+- What happens with HTML in inputs
+
+ASYNC AND TIMING
+- What operations take time to complete
+- What shows loading states
+- What could time out
+- What happens if a user acts before loading completes
+- What happens if network drops mid flow
+- What race conditions could exist
+
+PERMISSION BOUNDARIES
+- What can a logged out user access
+- What can a basic user access
+- What can a premium user access
+- What can an admin access
+- Where do these boundaries overlap
+- Where could they be bypassed
+
+PHASE 2 - GENERATE EDGE CASES
+
+Based purely on what was found in the analysis,
+independently generate a list of edge cases to test.
+Do not use a generic checklist. Think specifically about
+this app and what could go wrong given its specific
+features, tech stack and user flows.
+
+Organise edge cases into these categories:
+
+HAPPY PATH VARIATIONS
+Things that should work but in slightly different ways
+than the most obvious path. Examples: sign up with plus
+addressing in email, very long valid name, sign up on
+mobile then continue on desktop.
+
+BOUNDARY CONDITIONS
+The edges of what the system accepts. Examples: exactly
+one character, exactly at maximum length, one over max,
+just whitespace, newlines and tabs.
+
+UNHAPPY PATH SCENARIOS
+Things users do that they should not. Examples: submit
+before fields complete, go back and forward between steps,
+refresh mid submission, double click submit rapidly.
+
+BROKEN ENVIRONMENT SCENARIOS
+Things that break the environment around the user action.
+Examples: network drops during payment, session expires
+mid flow, browser back button after completing a step.
+
+INTEGRATION FAILURE SCENARIOS
+What happens when connected services fail. Examples:
+email service down, verification link expired, link
+used twice, second link requested before using first.
+
+PERMISSION EDGE CASES
+Unusual combinations of access. Examples: role changed
+mid session, shared link to restricted page, bookmarked
+page after permission removed.
+
+STATE CORRUPTION SCENARIOS
+What could leave the app in a bad state. Examples:
+completing step 3 before step 2, starting flow in two
+tabs simultaneously, abandoning flow halfway and returning,
+clearing cookies mid flow.
+
+PHASE 3 - PRIORITISE AND DISPLAY
+
+Display the discovered edge cases:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  EDGE CASE ANALYSIS COMPLETE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  I have analysed your app and found
+  [X] edge cases worth testing that
+  go beyond the standard test flow.
+
+  These are specific to your app based
+  on what I found in the codebase.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  HIGH RISK - TEST THESE FIRST
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  For each high risk edge case show:
+  What: [plain English description]
+  Why risky: [what could go wrong]
+  How I will test it: [plain English]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  MEDIUM RISK - TEST IF TIME ALLOWS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [List each medium risk edge case]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  INTERESTING - WORTH KNOWING ABOUT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [List lower priority but interesting
+  edge cases worth noting]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Would you like me to:
+
+  1. Include all edge cases in this test
+  2. Test edge cases only
+  3. Test high risk edge cases only
+  4. Skip edge cases for now
+  5. Save edge cases and come back later
+
+  Type 1, 2, 3, 4 or 5.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Wait for response before continuing.
+
+PHASE 4 - SAVE DISCOVERED EDGE CASES
+
+Regardless of what option the user chooses, always save
+the discovered edge cases to ~/.claude/context/edge-cases.md
+
+Format:
+Project: [name]
+Date analysed: [date]
+Total edge cases found: [count]
+
+HIGH RISK:
+[list each with description and test approach]
+
+MEDIUM RISK:
+[list each]
+
+INTERESTING:
+[list each]
+
+TESTED THIS SESSION:
+[filled in as testing progresses]
+
+NOT YET TESTED:
+[remaining ones for future sessions]
+
+PHASE 5 - EXECUTE EDGE CASE TESTS (if selected)
+
+When testing each edge case display:
+
+  TESTING EDGE CASE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  What: [plain English description]
+  Why: [what we are looking for]
+  How: [what steps will be taken]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move the cursor naturally to each element being tested.
+Show the cursor label with what is being attempted.
+Take a screenshot of the result.
+
+After each edge case test display:
+  Result: PASSED / FAILED / INTERESTING
+
+  PASSED: App handled it correctly
+  FAILED: Something went wrong - describe it
+  INTERESTING: Did not break but behaved unexpectedly
+
+If FAILED: Show the fix decision flow as normal.
+Warn about side effects before fixing.
+Ask user what to do.
+
+PHASE 6 - EDGE CASE SECTION IN HTML REPORT
+
+Add a new section to the HTML report called
+WHAT ELSE WE LOOKED FOR
+
+Write in plain English:
+
+  Based on analysing how your app is built we also
+  tested some less obvious scenarios that real users
+  might encounter. Here is what we found:
+
+For each edge case tested write:
+  What we tested: [plain English scenario]
+  Why we tested it: [plain English reason]
+  What happened: [plain English result]
+  Status: Handled correctly / Behaved unexpectedly / Needs fixing
+
+For untested edge cases add:
+  WHAT WE DID NOT GET TO TEST
+  [Plain English list of remaining edge cases]
+
+If user picked option 4 or 5, skip edge case testing
+but still proceed to the standard test flow below.
+
+If user picked option 2, skip the standard visual test
+and go directly to edge case execution, then to report.
+
+STEP 4 - TOKEN OPTIONS MENU
 Display the testing options:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -71,7 +303,7 @@ If user picks 4: Ask what to include and build a custom plan
 
 If user picks 2 (Standard) continue below:
 
-STEP 4 - CONFIRMATION
+STEP 5 - CONFIRMATION
 Display what will happen:
 
   I will now:
@@ -86,7 +318,7 @@ Display what will happen:
 
 Wait for confirmation.
 
-STEP 5 - PRE-TEST CHECKS
+STEP 6 - PRE-TEST CHECKS
 - Check Chrome is connected via MCP
   If not connected display:
   Chrome is not connected. Please:
@@ -103,7 +335,7 @@ STEP 5 - PRE-TEST CHECKS
 - Note the current page title and URL
 - Write session start to test-session.md
 
-STEP 6 - AUTHENTICATION
+STEP 7 - AUTHENTICATION
 If restricted areas were detected:
 - Check test-accounts.md for existing credentials
 - If account exists try logging in with saved details
@@ -136,7 +368,7 @@ If login fails after all attempts:
   C. Grant access another way
 - Wait for response
 
-STEP 7 - INJECT VISIBLE CURSOR SYSTEM
+STEP 8 - INJECT VISIBLE CURSOR SYSTEM
 Before starting visual testing, inject the cursor overlay
 into the browser using evaluate_script. This makes testing
 visible and watchable in real time.
@@ -278,7 +510,7 @@ CURSOR USAGE RULES:
 - After the screenshot, re-inject the cursor script
   to continue testing
 
-STEP 8 - VISUAL TESTING
+STEP 9 - VISUAL TESTING
 For each page found in the project:
 - Navigate to the page
 - Re-inject the cursor system after navigation
@@ -294,26 +526,26 @@ For each page found in the project:
 - Note any visual issues or broken layouts
 - Write findings to test-session.md after each page
 
-STEP 9 - RESPONSIVE CHECKS
+STEP 10 - RESPONSIVE CHECKS
 - Test at desktop width 1440px and screenshot
 - Test at tablet width 768px and screenshot
 - Test at mobile width 375px and screenshot
 - Note any layout breaks or overflow issues
 
-STEP 10 - CONSOLE MONITORING
+STEP 11 - CONSOLE MONITORING
 - Capture all console errors during the test
 - Capture all console warnings
 - Capture any failed network requests
 - Flag any requests taking longer than 2 seconds
 
-STEP 11 - ACCESSIBILITY BASICS
+STEP 12 - ACCESSIBILITY BASICS
 - Check all images have alt text
 - Check all buttons have visible labels or aria-labels
 - Check text contrast looks reasonable visually
 - Check form inputs have labels
 - Check keyboard navigation on key interactive elements
 
-STEP 12 - CODE REVIEW
+STEP 13 - CODE REVIEW
 - Review authentication and authorization code
 - Review API routes for security issues
 - Review form handling and input validation
@@ -329,7 +561,7 @@ Classify each issue found:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 13 - FIX DECISION FLOW
+STEP 14 - FIX DECISION FLOW
 For each issue found:
 
 If Critical:
@@ -365,12 +597,12 @@ After each fix:
 - Write the fix to test-session.md
 - Note any side effects observed
 
-STEP 14 - WRITE SESSION DATA
+STEP 15 - WRITE SESSION DATA
 - Write all findings to test-session.md
 - Save structured data to test-data.json
 - Ensure all screenshots are in the screenshots folder
 
-STEP 15 - GENERATE HTML REPORT
+STEP 16 - GENERATE HTML REPORT
 - Read the report template from ~/.claude/context/report-template.html
 - Fill in all sections with findings from this session
 - Write plain English summaries anyone can understand
@@ -380,7 +612,7 @@ STEP 15 - GENERATE HTML REPORT
 - Save report to ~/.claude/context/test-report.html
 - Open the report in Chrome
 
-STEP 16 - FINAL SUMMARY
+STEP 17 - FINAL SUMMARY
 Display in the terminal:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

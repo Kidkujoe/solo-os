@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.1.0
+version: 1.2.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -69,6 +69,13 @@ commands:
       session including progress, issues
       found, fixes applied and token usage
     file: commands/status.md
+
+  - name: edgecases
+    description: >
+      Analyse the app and discover edge
+      cases without running a full test.
+      Saves findings for future sessions.
+    file: commands/edgecases.md
 
   - name: addaccount
     description: >

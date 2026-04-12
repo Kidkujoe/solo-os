@@ -37,7 +37,223 @@ Display a detailed summary:
   Restricted areas: [list]
   Environment: [dev/staging/prod]
 
-STEP 3 - CONFIRMATION
+STEP 3 - INTELLIGENT EDGE CASE DISCOVERY
+Run this silently after the project scan. Think like an
+experienced QA engineer who has seen many apps fail in
+unexpected ways. Do not follow a generic checklist. Reason
+specifically about THIS app based on what was found.
+
+PHASE 1 - DEEP APP ANALYSIS
+
+Silently read and analyse the entire codebase. Look for:
+
+TECH STACK PATTERNS
+- What framework is being used
+- What database or data layer exists
+- What auth system is in place
+- What third party services are connected
+- What payment systems if any
+- What file upload systems if any
+- What real time features if any
+- What API integrations exist
+- What caching layer if any
+- What background jobs if any
+
+USER FLOW MAPPING
+- Map every possible user journey from entry to completion
+- Find where journeys branch
+- Find where journeys can dead end
+- Find where data is passed between steps
+- Find where state is stored (localStorage, sessions, cookies)
+- Find where tokens are passed
+
+DATA BOUNDARIES
+- What is the minimum valid input for every field
+- What is the maximum valid input
+- What characters could cause issues
+- What happens at zero values
+- What happens at negative values
+- What happens with empty states
+- What happens with very long strings
+- What happens with special characters
+- What happens with unicode and emoji
+- What happens with SQL-like input
+- What happens with HTML in inputs
+
+ASYNC AND TIMING
+- What operations take time to complete
+- What shows loading states
+- What could time out
+- What happens if a user acts before loading completes
+- What happens if network drops mid flow
+- What race conditions could exist
+
+PERMISSION BOUNDARIES
+- What can a logged out user access
+- What can a basic user access
+- What can a premium user access
+- What can an admin access
+- Where do these boundaries overlap
+- Where could they be bypassed
+
+PHASE 2 - GENERATE EDGE CASES
+
+Based purely on what was found in the analysis,
+independently generate a list of edge cases to test.
+Do not use a generic checklist. Think specifically about
+this app and what could go wrong given its specific
+features, tech stack and user flows.
+
+Organise edge cases into these categories:
+
+HAPPY PATH VARIATIONS
+Things that should work but in slightly different ways
+than the most obvious path.
+
+BOUNDARY CONDITIONS
+The edges of what the system accepts.
+
+UNHAPPY PATH SCENARIOS
+Things users do that they should not.
+
+BROKEN ENVIRONMENT SCENARIOS
+Things that break the environment around the user action.
+
+INTEGRATION FAILURE SCENARIOS
+What happens when connected services fail.
+
+PERMISSION EDGE CASES
+Unusual combinations of access.
+
+STATE CORRUPTION SCENARIOS
+What could leave the app in a bad state.
+
+PHASE 3 - PRIORITISE AND DISPLAY
+
+Display the discovered edge cases:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  EDGE CASE ANALYSIS COMPLETE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  I have analysed your app and found
+  [X] edge cases worth testing that
+  go beyond the standard test flow.
+
+  These are specific to your app based
+  on what I found in the codebase.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  HIGH RISK - TEST THESE FIRST
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  For each high risk edge case show:
+  What: [plain English description]
+  Why risky: [what could go wrong]
+  How I will test it: [plain English]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  MEDIUM RISK - TEST IF TIME ALLOWS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [List each medium risk edge case]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  INTERESTING - WORTH KNOWING ABOUT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [List lower priority but interesting
+  edge cases worth noting]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Would you like me to:
+
+  1. Include all edge cases in this test
+  2. Test edge cases only
+  3. Test high risk edge cases only
+  4. Skip edge cases for now
+  5. Save edge cases and come back later
+
+  Type 1, 2, 3, 4 or 5.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Wait for response before continuing.
+
+PHASE 4 - SAVE DISCOVERED EDGE CASES
+
+Regardless of what option the user chooses, always save
+the discovered edge cases to ~/.claude/context/edge-cases.md
+
+Format:
+Project: [name]
+Date analysed: [date]
+Total edge cases found: [count]
+
+HIGH RISK:
+[list each with description and test approach]
+
+MEDIUM RISK:
+[list each]
+
+INTERESTING:
+[list each]
+
+TESTED THIS SESSION:
+[filled in as testing progresses]
+
+NOT YET TESTED:
+[remaining ones for future sessions]
+
+PHASE 5 - EXECUTE EDGE CASE TESTS (if selected)
+
+When testing each edge case display:
+
+  TESTING EDGE CASE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  What: [plain English description]
+  Why: [what we are looking for]
+  How: [what steps will be taken]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move the cursor naturally to each element being tested.
+Show the cursor label with what is being attempted.
+Take a screenshot of the result.
+
+After each edge case test display:
+  Result: PASSED / FAILED / INTERESTING
+
+  PASSED: App handled it correctly
+  FAILED: Something went wrong - describe it
+  INTERESTING: Did not break but behaved unexpectedly
+
+If FAILED: Show the fix decision flow as normal.
+Warn about side effects before fixing.
+Ask user what to do.
+
+PHASE 6 - EDGE CASE SECTION IN HTML REPORT
+
+Add a new section to the HTML report called
+WHAT ELSE WE LOOKED FOR
+
+Write in plain English:
+
+  Based on analysing how your app is built we also
+  tested some less obvious scenarios that real users
+  might encounter. Here is what we found:
+
+For each edge case tested write:
+  What we tested: [plain English scenario]
+  Why we tested it: [plain English reason]
+  What happened: [plain English result]
+  Status: Handled correctly / Behaved unexpectedly / Needs fixing
+
+For untested edge cases add:
+  WHAT WE DID NOT GET TO TEST
+  [Plain English list of remaining edge cases]
+
+If user picked option 4 or 5, skip edge case testing
+but still save and proceed to the deep test flow below.
+
+If user picked option 2, skip the standard visual test
+and go directly to edge case execution, then to report.
+
+STEP 4 - CONFIRMATION
 Display:
 
   DEEP TEST MODE
@@ -58,7 +274,7 @@ Display:
 
 Wait for confirmation.
 
-STEP 4 - PRE-TEST CHECKS
+STEP 5 - PRE-TEST CHECKS
 - Check Chrome is connected via MCP
 - Check the dev server is running
 - Check if CodeRabbit CLI is installed
@@ -70,7 +286,7 @@ STEP 4 - PRE-TEST CHECKS
 - Capture baseline console state
 - Write session start to test-session.md
 
-STEP 5 - AUTHENTICATION (FULL)
+STEP 6 - AUTHENTICATION (FULL)
 Follow the complete authentication flow:
 - Check test-accounts.md for existing credentials
 - If account exists try logging in
@@ -93,7 +309,7 @@ After login:
 - Verify access to all restricted areas
 - Note which areas are accessible and which are not
 
-STEP 6 - VISUAL TESTING (COMPREHENSIVE)
+STEP 7 - VISUAL TESTING (COMPREHENSIVE)
 For EVERY page in the application:
 - Navigate to the page
 - Wait for full load including lazy loaded content
@@ -114,7 +330,7 @@ For EVERY page in the application:
 - Check all external links work
 - Write findings to test-session.md after each page
 
-STEP 7 - RESPONSIVE TESTING (FULL)
+STEP 8 - RESPONSIVE TESTING (FULL)
 Test every page at:
 - Desktop 1440px
 - Laptop 1024px
@@ -130,7 +346,7 @@ For each breakpoint:
 - Check images scale correctly
 - Check no horizontal overflow
 
-STEP 8 - CONSOLE AND NETWORK MONITORING
+STEP 9 - CONSOLE AND NETWORK MONITORING
 - Capture ALL console errors, warnings and info
 - Capture ALL failed network requests
 - Flag slow requests over 2 seconds
@@ -139,7 +355,7 @@ STEP 8 - CONSOLE AND NETWORK MONITORING
 - Check for deprecation warnings
 - Check for memory leaks (long running pages)
 
-STEP 9 - ACCESSIBILITY AUDIT
+STEP 10 - ACCESSIBILITY AUDIT
 - Check all images have meaningful alt text
 - Check all buttons have labels
 - Check all form inputs have associated labels
@@ -151,7 +367,7 @@ STEP 9 - ACCESSIBILITY AUDIT
 - Check ARIA attributes are used correctly
 - Check screen reader announcements for dynamic content
 
-STEP 10 - CODE REVIEW (COMPREHENSIVE)
+STEP 11 - CODE REVIEW (COMPREHENSIVE)
 Review ALL key files:
 
 Security:
@@ -181,7 +397,7 @@ Classify each issue:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 11 - CODERABBIT SWEEP
+STEP 12 - CODERABBIT SWEEP
 If CodeRabbit CLI is installed:
 - Run a full sweep on the project
 - Capture all findings
@@ -191,7 +407,7 @@ If CodeRabbit CLI is installed:
 
 If not installed, skip this step.
 
-STEP 12 - FIX DECISION FLOW
+STEP 13 - FIX DECISION FLOW
 For each issue found, follow the same fix decision
 flow as the standard test:
 
@@ -208,7 +424,7 @@ After each fix:
 - Write to test-session.md
 - Note side effects
 
-STEP 13 - MAGIC LINK SECURITY AUDIT
+STEP 14 - MAGIC LINK SECURITY AUDIT
 If the project uses magic links:
 - Check token randomness and length
 - Check token expiry time
@@ -218,13 +434,13 @@ If the project uses magic links:
 - Check for enumeration vulnerabilities
 - Write security findings to test-session.md
 
-STEP 14 - WRITE ALL SESSION DATA
+STEP 15 - WRITE ALL SESSION DATA
 - Write complete findings to test-session.md
 - Save all structured data to test-data.json
 - Ensure all screenshots are organised in screenshots folder
 - Create a screenshots index
 
-STEP 15 - GENERATE COMPREHENSIVE HTML REPORT
+STEP 16 - GENERATE COMPREHENSIVE HTML REPORT
 - Read the report template
 - Fill in ALL sections with full detail
 - Write plain English summaries
@@ -236,7 +452,7 @@ STEP 15 - GENERATE COMPREHENSIVE HTML REPORT
 - Save to ~/.claude/context/test-report.html
 - Open in Chrome
 
-STEP 16 - FINAL SUMMARY
+STEP 17 - FINAL SUMMARY
 Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

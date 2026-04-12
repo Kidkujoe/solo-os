@@ -136,11 +136,157 @@ If login fails after all attempts:
   C. Grant access another way
 - Wait for response
 
-STEP 7 - VISUAL TESTING
+STEP 7 - INJECT VISIBLE CURSOR SYSTEM
+Before starting visual testing, inject the cursor overlay
+into the browser using evaluate_script. This makes testing
+visible and watchable in real time.
+
+Inject this JavaScript on the page:
+
+```javascript
+(() => {
+  // Remove existing cursor if re-injected
+  if (document.getElementById('vtp-cursor')) return;
+
+  // Cursor dot
+  const dot = document.createElement('div');
+  dot.id = 'vtp-cursor';
+  dot.style.cssText = `
+    position: fixed; z-index: 999999; pointer-events: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(139, 92, 246, 0.85);
+    box-shadow: 0 0 12px 4px rgba(139, 92, 246, 0.4);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    transform: translate(-50%, -50%);
+    top: -100px; left: -100px;
+  `;
+
+  // Click ring (expands on click)
+  const ring = document.createElement('div');
+  ring.id = 'vtp-ring';
+  ring.style.cssText = `
+    position: fixed; z-index: 999998; pointer-events: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid rgba(139, 92, 246, 0.6);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0; top: -100px; left: -100px;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+  `;
+
+  // Label next to cursor
+  const label = document.createElement('div');
+  label.id = 'vtp-label';
+  label.style.cssText = `
+    position: fixed; z-index: 999999; pointer-events: none;
+    background: rgba(139, 92, 246, 0.9); color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px; font-weight: 500; padding: 4px 10px;
+    border-radius: 6px; white-space: nowrap;
+    transform: translate(16px, -50%);
+    top: -100px; left: -100px;
+    transition: opacity 0.2s ease;
+  `;
+
+  // Status bar at bottom
+  const bar = document.createElement('div');
+  bar.id = 'vtp-status';
+  bar.style.cssText = `
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 999999; pointer-events: none;
+    background: rgba(139, 92, 246, 0.92); color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px; font-weight: 500;
+    padding: 8px 20px; text-align: center;
+    backdrop-filter: blur(8px);
+  `;
+  bar.textContent = 'visual-test-pro — Starting visual test...';
+
+  document.body.append(dot, ring, label, bar);
+
+  // Move cursor to coordinates
+  window.__vtpMoveTo = (x, y) => {
+    dot.style.top = y + 'px'; dot.style.left = x + 'px';
+    ring.style.top = y + 'px'; ring.style.left = x + 'px';
+    label.style.top = y + 'px'; label.style.left = x + 'px';
+  };
+
+  // Animate click
+  window.__vtpClick = (x, y) => {
+    dot.style.top = y + 'px'; dot.style.left = x + 'px';
+    ring.style.top = y + 'px'; ring.style.left = x + 'px';
+    dot.style.transform = 'translate(-50%, -50%) scale(0.6)';
+    ring.style.opacity = '1';
+    ring.style.transform = 'translate(-50%, -50%) scale(2.5)';
+    setTimeout(() => {
+      dot.style.transform = 'translate(-50%, -50%) scale(1)';
+      ring.style.opacity = '0';
+      ring.style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 350);
+  };
+
+  // Hover state
+  window.__vtpHover = (hovering) => {
+    if (hovering) {
+      dot.style.background = 'rgba(168, 85, 247, 0.95)';
+      dot.style.boxShadow = '0 0 18px 6px rgba(168, 85, 247, 0.5)';
+      dot.style.transform = 'translate(-50%, -50%) scale(1.3)';
+    } else {
+      dot.style.background = 'rgba(139, 92, 246, 0.85)';
+      dot.style.boxShadow = '0 0 12px 4px rgba(139, 92, 246, 0.4)';
+      dot.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+  };
+
+  // Update label text
+  window.__vtpLabel = (text) => {
+    label.textContent = text;
+    label.style.opacity = text ? '1' : '0';
+  };
+
+  // Update status bar text
+  window.__vtpStatus = (text) => {
+    bar.textContent = 'visual-test-pro — ' + text;
+  };
+
+  // Remove all cursor elements (call before screenshots)
+  window.__vtpCleanup = () => {
+    ['vtp-cursor','vtp-ring','vtp-label','vtp-status'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+  };
+})();
+```
+
+CURSOR USAGE RULES:
+- After EVERY page navigation, re-inject the cursor script
+- Before clicking any element, move the cursor to it first
+  using evaluate_script: __vtpMoveTo(x, y)
+- Set the label to describe what you are about to do:
+  __vtpLabel("Clicking the Save button")
+  __vtpLabel("Filling in the email field")
+  __vtpLabel("Scrolling to check the footer")
+  __vtpLabel("Checking this button works")
+- Update the status bar for each major action:
+  __vtpStatus("Testing profile page — checking form fields")
+  __vtpStatus("Testing billing page — verifying plan details")
+- When hovering over an element call __vtpHover(true)
+  and __vtpHover(false) when moving away
+- When clicking call __vtpClick(x, y) for the animation
+- Before EVERY screenshot call __vtpCleanup() to remove
+  the cursor so reports and screenshots stay clean
+- After the screenshot, re-inject the cursor script
+  to continue testing
+
+STEP 8 - VISUAL TESTING
 For each page found in the project:
 - Navigate to the page
+- Re-inject the cursor system after navigation
+- Update status bar: "Testing [page name]"
 - Wait for full load
-- Screenshot the page
+- Move cursor to each element before interacting
+- Label each action in plain English
+- Screenshot the page (cleanup cursor first, reinject after)
 - Click every button, link and interactive element
 - Fill all forms with realistic test data
 - Test form validation with empty and invalid data
@@ -148,26 +294,26 @@ For each page found in the project:
 - Note any visual issues or broken layouts
 - Write findings to test-session.md after each page
 
-STEP 8 - RESPONSIVE CHECKS
+STEP 9 - RESPONSIVE CHECKS
 - Test at desktop width 1440px and screenshot
 - Test at tablet width 768px and screenshot
 - Test at mobile width 375px and screenshot
 - Note any layout breaks or overflow issues
 
-STEP 9 - CONSOLE MONITORING
+STEP 10 - CONSOLE MONITORING
 - Capture all console errors during the test
 - Capture all console warnings
 - Capture any failed network requests
 - Flag any requests taking longer than 2 seconds
 
-STEP 10 - ACCESSIBILITY BASICS
+STEP 11 - ACCESSIBILITY BASICS
 - Check all images have alt text
 - Check all buttons have visible labels or aria-labels
 - Check text contrast looks reasonable visually
 - Check form inputs have labels
 - Check keyboard navigation on key interactive elements
 
-STEP 11 - CODE REVIEW
+STEP 12 - CODE REVIEW
 - Review authentication and authorization code
 - Review API routes for security issues
 - Review form handling and input validation
@@ -183,7 +329,7 @@ Classify each issue found:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 12 - FIX DECISION FLOW
+STEP 13 - FIX DECISION FLOW
 For each issue found:
 
 If Critical:
@@ -219,12 +365,12 @@ After each fix:
 - Write the fix to test-session.md
 - Note any side effects observed
 
-STEP 13 - WRITE SESSION DATA
+STEP 14 - WRITE SESSION DATA
 - Write all findings to test-session.md
 - Save structured data to test-data.json
 - Ensure all screenshots are in the screenshots folder
 
-STEP 14 - GENERATE HTML REPORT
+STEP 15 - GENERATE HTML REPORT
 - Read the report template from ~/.claude/context/report-template.html
 - Fill in all sections with findings from this session
 - Write plain English summaries anyone can understand
@@ -234,7 +380,7 @@ STEP 14 - GENERATE HTML REPORT
 - Save report to ~/.claude/context/test-report.html
 - Open the report in Chrome
 
-STEP 15 - FINAL SUMMARY
+STEP 16 - FINAL SUMMARY
 Display in the terminal:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

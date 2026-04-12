@@ -1,0 +1,92 @@
+{
+  "name": "visual-test-pro",
+  "version": "1.0.0",
+  "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
+  "author": "Kidkujoe",
+  "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
+  "license": "MIT",
+  "categories": ["testing", "developer-tools", "browser-testing"],
+  "keywords": [
+    "visual-testing",
+    "browser-testing",
+    "code-review",
+    "accessibility",
+    "responsive",
+    "security",
+    "html-report",
+    "magic-link",
+    "authentication",
+    "qa"
+  ],
+  "requires": {
+    "claude_code": ">=2.0.0",
+    "node": ">=18.0.0"
+  },
+  "optional_dependencies": {
+    "chrome": "Needed for visual browser testing",
+    "coderabbit_cli": "Needed for CodeRabbit sweep in deep test mode",
+    "mailhog": "For magic link email catching",
+    "mailpit": "Alternative email catcher"
+  },
+  "commands": [
+    {
+      "name": "test",
+      "description": "Smart visual browser test with project scan, token options menu, fix decision flow and plain English reporting",
+      "file": "commands/test.md"
+    },
+    {
+      "name": "test-quick",
+      "description": "Fast lightweight visual check with terminal summary only. Low token cost. Good for daily development checks.",
+      "file": "commands/test-quick.md"
+    },
+    {
+      "name": "test-deep",
+      "description": "Full comprehensive pre-launch test including CodeRabbit sweep and all restricted area testing. High token cost.",
+      "file": "commands/test-deep.md"
+    },
+    {
+      "name": "report",
+      "description": "Generate or regenerate the plain English HTML report from the last test session",
+      "file": "commands/report.md"
+    },
+    {
+      "name": "resume",
+      "description": "Resume a paused test session or continue after granting restricted area access",
+      "file": "commands/resume.md"
+    },
+    {
+      "name": "status",
+      "description": "Get a snapshot of the current test session including progress, issues found, fixes applied and token usage",
+      "file": "commands/status.md"
+    },
+    {
+      "name": "addaccount",
+      "description": "Manually save test account details including password and magic link settings for any project",
+      "file": "commands/addaccount.md"
+    }
+  ],
+  "context_files": [
+    {
+      "path": "context/report-template.html",
+      "description": "HTML report template",
+      "install_to": "~/.claude/context/"
+    },
+    {
+      "path": "context/test-session.md",
+      "description": "Session memory file",
+      "install_to": "~/.claude/context/"
+    },
+    {
+      "path": "context/test-accounts.md",
+      "description": "Test account storage",
+      "install_to": "~/.claude/context/"
+    },
+    {
+      "path": "context/test-data.json",
+      "description": "Test findings data store",
+      "install_to": "~/.claude/context/"
+    }
+  ],
+  "install": "sh install.sh",
+  "uninstall": "sh uninstall.sh"
+}

@@ -351,7 +351,15 @@ Display the testing options:
      Best for: pre-launch review
      Uses up to 90% of session window
 
-  4. Custom
+  4. Standard + Pillars Audit (Medium-High)
+     Everything in Standard plus the
+     Four Pillars production readiness
+     audit. Reliability, Security,
+     Scalability, Observability, Design
+     and Performance.
+     Uses roughly 75% of session window
+
+  5. Custom
      Choose exactly what to include.
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -360,7 +368,8 @@ Wait for the user to choose before continuing.
 
 If user picks 1: Follow the test-quick workflow
 If user picks 3: Follow the test-deep workflow
-If user picks 4: Ask what to include and build a custom plan
+If user picks 4: Run Standard test + Four Pillars audit after code review
+If user picks 5: Ask what to include and build a custom plan
 
 If user picks 2 (Standard) continue below:
 
@@ -848,7 +857,148 @@ Add to the report in plain English:
 - Each fix grouped by agent with plain English description
 - Whether Test Agent verified each fix
 
-STEP 15 - WRITE SESSION DATA AND ARCHIVE AGENT STATE
+STEP 15 - FOUR PILLARS PRODUCTION READINESS AUDIT
+Run this step if user chose option 4 (Standard + Pillars)
+or if running in deep test mode. Skip otherwise.
+
+Read the actual code and make a real judgement on each pillar.
+Be specific — name files and line numbers. Do not give generic advice.
+
+PILLAR 1 - RELIABILITY (Logic Agent)
+Check and rate each: Strong / Adequate / Weak / Missing
+- Error Boundaries: exist at meaningful levels, not just top-level.
+  Flag data-fetching components without them. Check fallback UI is helpful.
+- Loading States: every async operation has a visible loading state.
+  Buttons disabled during submission. States clear on success and failure.
+- Try/Catch Coverage: all API routes, server functions, DB operations,
+  external API calls wrapped. Errors handled specifically not silently.
+  Error responses use meaningful status codes.
+- Transaction Safety: multi-step DB operations use transactions.
+  Rollback logic exists. Flag multi-table writes without transactions.
+- Timeout/Retry: external API calls have timeouts. Retry logic for
+  transient failures. Graceful degradation when services are down.
+
+PILLAR 2 - SECURITY (Security Agent)
+Check and rate each:
+- Hardcoded Secrets: scan every file for sk-, pk-, JWT patterns,
+  32+ char random strings, DB connection strings, private keys,
+  OAuth secrets, webhook secrets. Check .env in .gitignore.
+  Rate: Clean / Minor Issues / Critical Issues
+- Session Leakage: every endpoint returning user data has ownership
+  check. No queries by ID without user ID filter. Admin endpoints
+  verify admin role. Rate: Strong / Adequate / Weak / Vulnerable
+- Middleware: auth middleware runs before all protected routes.
+  No backdoor patterns (dev-only skips, debug endpoints, test routes).
+  CORS not set to allow all origins. Rate: Strong / Adequate / Weak / Backdoor Found
+- Input Validation: server-side validation on all user input.
+  File upload validation (type, size, filename). SQL injection check
+  especially on raw queries. Rate: Strong / Adequate / Weak / Vulnerable
+- Auth Security: password requirements, login rate limiting, JWT expiry,
+  refresh token rotation, password reset expiry, magic link single use,
+  HTTPS enforced. Rate: Strong / Adequate / Weak / Vulnerable
+
+PILLAR 3 - SCALABILITY (Performance Agent)
+Check and rate each:
+- State Storage: in-memory state that should be in DB (sessions,
+  counters, rate limits, carts). Single instance design vs multi-instance ready.
+  Rate: Database-backed / Memory-bound / Risk Identified
+- Heavy Queries: no LIMIT on growing tables, SELECT * on large tables,
+  queries inside loops (N+1), missing indexes, loading entire tables
+  to filter in app code. Rate: Efficient / Acceptable / Needs Optimisation / Dangerous
+- Connection Pooling: pooled or fresh per request, pool size configured,
+  connections properly closed. Rate: Properly Pooled / Needs Review / Risk Identified
+- Caching: expensive operations cached, external API responses cached,
+  invalidation logic exists, works across instances.
+  Rate: Well Cached / Partially Cached / No Caching Found
+- File Handling: object storage vs local, large file processing async vs blocking,
+  image processing timing. Rate: Cloud-ready / Local-bound / Risk Identified
+
+PILLAR 4 - OBSERVABILITY (Logic Agent)
+Check and rate each:
+- Logging: logging library vs console.log, errors logged with context
+  (operation, data, error, user ID), severity levels used, sensitive data
+  not logged. Rate: Production Ready / Partial / Console Only / Missing
+- Error Monitoring: Sentry/Datadog/LogRocket/Bugsnag integrated, errors
+  captured with user context, source maps configured.
+  Rate: Integrated / Partial / Missing
+- Health Checks: endpoint exists, actually tests dependencies not just 200.
+  Rate: Meaningful / Superficial / Missing
+- Alerting: configured for downtime and error rates, uptime monitoring.
+  Rate: Configured / Partial / Missing
+- Audit Trail: important user actions logged, admin actions logged,
+  data changes traceable. Rate: Full / Partial / Missing
+
+PILLAR 5 - DESIGN (UI Agent — use browser)
+Navigate to every page and check:
+- Visual Consistency: spacing, margins, typography, colour usage consistent.
+  Measure actual values in browser. Rate: Polished / Minor Issues / Inconsistent
+- Mobile Responsiveness: at 375px — no overflow, text readable, touch targets
+  44px+, navigation accessible, forms usable, tables handled gracefully.
+  Rate: Mobile First / Acceptable / Broken Elements / Not Responsive
+- Visual Glitches: overlapping elements, wrong truncation, aspect ratios,
+  broken icons, misaligned elements, z-index issues, unexpected scrollbars.
+  Rate: Glitch Free / Minor Glitches / Significant Issues
+
+PILLAR 6 - PERFORMANCE (Performance Agent — use browser)
+- Image Audit: images not oversized, modern formats, width/height set,
+  lazy loading, hero images not blocking render. Report largest images
+  with actual vs ideal sizes. Rate: Optimised / Acceptable / Needs Optimisation
+- Bundle Size: large dependencies imported fully when only parts needed,
+  duplicate dependencies. Rate: Lean / Acceptable / Heavy / Critically Heavy
+- Response Times: time to first content, time to interactive, API calls
+  over 500ms, pages over 2s to load. Rate: Fast / Acceptable / Slow / Critically Slow
+
+DISPLAY RESULTS:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FOUR PILLARS AUDIT RESULTS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  PILLAR 1 - RELIABILITY
+  [sub-check]: [rating] [icon]
+  Reliability Score: [X]/10
+
+  PILLAR 2 - SECURITY
+  [sub-check]: [rating] [icon]
+  Security Score: [X]/10
+
+  PILLAR 3 - SCALABILITY
+  [sub-check]: [rating] [icon]
+  Scalability Score: [X]/10
+
+  PILLAR 4 - OBSERVABILITY
+  [sub-check]: [rating] [icon]
+  Observability Score: [X]/10
+
+  PILLAR 5 - DESIGN
+  [sub-check]: [rating] [icon]
+  Design Score: [X]/10
+
+  PILLAR 6 - PERFORMANCE
+  [sub-check]: [rating] [icon]
+  Performance Score: [X]/10
+
+  OVERALL PRODUCTION READINESS: [X]/10
+
+  9-10: PRODUCTION READY
+  7-8: NEARLY THERE
+  5-6: NOT QUITE READY
+  Below 5: NEEDS WORK
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Icons: Strong/Clean/Fast = checkmark, Adequate/Partial = warning, Weak/Missing/Vulnerable = cross
+
+Save findings to ~/.claude/context/pillars-audit.json
+
+For the HTML report add a PRODUCTION READINESS AUDIT section with:
+- Overall score and verdict prominently displayed
+- Six pillar cards with score bars and rating badges
+- Each finding in plain English with file references, why it matters,
+  how to fix it, and urgency level
+- Specific examples like: "Your Stripe API key is on line 34 of
+  payments.js" not "Check for hardcoded secrets"
+
+STEP 16 - WRITE SESSION DATA AND ARCHIVE AGENT STATE
 - Write all findings to test-session.md
 - Save structured data to test-data.json
 - Ensure all screenshots are in the screenshots folder
@@ -858,7 +1008,7 @@ STEP 15 - WRITE SESSION DATA AND ARCHIVE AGENT STATE
 - Clear the active agent-state.json
 - Keep the last 5 archived states, delete older ones
 
-STEP 16 - GENERATE HTML REPORT
+STEP 17 - GENERATE HTML REPORT
 - Read the report template from ~/.claude/context/report-template.html
 - Fill in all sections with findings from this session
 - Write plain English summaries anyone can understand
@@ -873,7 +1023,7 @@ STEP 16 - GENERATE HTML REPORT
 - Save report to ~/.claude/context/test-report.html
 - Open the report in Chrome
 
-STEP 17 - FINAL SUMMARY
+STEP 18 - FINAL SUMMARY
 Display in the terminal:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -583,13 +583,93 @@ If the project uses magic links:
 - Check for enumeration vulnerabilities
 - Write security findings to test-session.md
 
-STEP 15 - WRITE ALL SESSION DATA
+STEP 15 - FOUR PILLARS PRODUCTION READINESS AUDIT
+This runs automatically in deep test mode.
+Read the actual code and make a real judgement on each pillar.
+Be specific — name files and line numbers. No generic advice.
+
+PILLAR 1 - RELIABILITY (Logic Agent)
+Rate each: Strong / Adequate / Weak / Missing
+- Error Boundaries: meaningful levels, not just top-level. Flag data-fetching
+  components without them. Check fallback UI is helpful.
+- Loading States: every async operation has visible loading state. Buttons
+  disabled during submission. States clear on success and failure.
+- Try/Catch Coverage: all API routes, server functions, DB operations,
+  external API calls wrapped. Errors handled specifically. Meaningful status codes.
+- Transaction Safety: multi-step DB writes use transactions with rollback.
+  Flag multi-table writes without transactions.
+- Timeout/Retry: external calls have timeouts. Retry logic for transient
+  failures. Graceful degradation when services down.
+
+PILLAR 2 - SECURITY (Security Agent)
+- Hardcoded Secrets: scan for sk-, pk-, JWT, 32+ char strings, DB connection
+  strings, private keys, OAuth secrets, webhook secrets. Check .env in .gitignore.
+  Rate: Clean / Minor Issues / Critical Issues
+- Session Leakage: every data endpoint has ownership check. No ID-only queries
+  without user ID. Admin endpoints verify role. Rate: Strong / Adequate / Weak / Vulnerable
+- Middleware: auth before all protected routes. No backdoors (dev skips, debug
+  endpoints, test routes in prod). CORS not allow-all. Rate: Strong / Adequate / Weak / Backdoor Found
+- Input Validation: server-side on all input. File upload validation (type, size,
+  filename). Raw query SQL injection check. Rate: Strong / Adequate / Weak / Vulnerable
+- Auth Security: password requirements, login rate limiting, JWT expiry, refresh
+  rotation, reset token expiry, magic link single use, HTTPS. Rate: Strong / Adequate / Weak / Vulnerable
+
+PILLAR 3 - SCALABILITY (Performance Agent)
+- State Storage: in-memory that should be DB (sessions, counters, carts).
+  Single vs multi-instance. Rate: Database-backed / Memory-bound / Risk Identified
+- Heavy Queries: no LIMIT on growing tables, SELECT *, N+1 patterns, missing
+  indexes, full table loads. Rate: Efficient / Acceptable / Needs Optimisation / Dangerous
+- Connection Pooling: pooled vs fresh, size configured, properly closed.
+  Rate: Properly Pooled / Needs Review / Risk Identified
+- Caching: expensive ops cached, API responses cached, invalidation exists,
+  works across instances. Rate: Well Cached / Partially Cached / No Caching Found
+- File Handling: object storage vs local, async processing, image timing.
+  Rate: Cloud-ready / Local-bound / Risk Identified
+
+PILLAR 4 - OBSERVABILITY (Observability Agent — spawned for deep mode)
+- Logging: library vs console.log, errors with context, severity levels,
+  no sensitive data logged. Rate: Production Ready / Partial / Console Only / Missing
+- Error Monitoring: Sentry/Datadog/etc integrated, user context, source maps.
+  Rate: Integrated / Partial / Missing
+- Health Checks: endpoint exists, tests dependencies not just returns 200.
+  Rate: Meaningful / Superficial / Missing
+- Alerting: downtime and error rate alerts, uptime monitoring.
+  Rate: Configured / Partial / Missing
+- Audit Trail: user actions, admin actions, data changes logged.
+  Rate: Full / Partial / Missing
+
+PILLAR 5 - DESIGN (UI Agent — use browser)
+- Visual Consistency: spacing, margins, typography, colours consistent.
+  Measure actual values. Rate: Polished / Minor Issues / Inconsistent
+- Mobile Responsiveness: at 375px — no overflow, readable text, 44px+
+  touch targets, accessible nav, usable forms. Rate: Mobile First / Acceptable / Broken / Not Responsive
+- Visual Glitches: overlapping, truncation, aspect ratios, broken icons,
+  misalignment, z-index, unexpected scrollbars. Rate: Glitch Free / Minor / Significant
+
+PILLAR 6 - PERFORMANCE (Performance Agent — use browser)
+- Images: not oversized, modern formats, dimensions set, lazy loaded.
+  Report largest with actual vs ideal. Rate: Optimised / Acceptable / Needs Optimisation
+- Bundle Size: large full imports, duplicates. Rate: Lean / Acceptable / Heavy / Critical
+- Response Times: first content, interactive, API >500ms, pages >2s.
+  Rate: Fast / Acceptable / Slow / Critically Slow
+
+Display full results with scores and ratings for each pillar.
+Overall Production Readiness score out of 10 with verdict:
+9-10: PRODUCTION READY / 7-8: NEARLY THERE / 5-6: NOT QUITE READY / Below 5: NEEDS WORK
+
+Save to ~/.claude/context/pillars-audit.json
+
+For the HTML report: add PRODUCTION READINESS AUDIT section with pillar cards,
+score bars, rating badges, and every finding in plain English with specific
+file references, why it matters, how to fix, and urgency.
+
+STEP 16 - WRITE ALL SESSION DATA
 - Write complete findings to test-session.md
 - Save all structured data to test-data.json
 - Ensure all screenshots are organised in screenshots folder
 - Create a screenshots index
 
-STEP 16 - GENERATE COMPREHENSIVE HTML REPORT
+STEP 17 - GENERATE COMPREHENSIVE HTML REPORT
 - Read the report template
 - Fill in ALL sections with full detail
 - Write plain English summaries
@@ -601,7 +681,7 @@ STEP 16 - GENERATE COMPREHENSIVE HTML REPORT
 - Save to ~/.claude/context/test-report.html
 - Open in Chrome
 
-STEP 17 - FINAL SUMMARY
+STEP 18 - FINAL SUMMARY
 Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

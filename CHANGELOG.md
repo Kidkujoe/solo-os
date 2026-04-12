@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.4.0
+
+- Added Four Pillars of Production Readiness audit
+- Pillar 1 Reliability: Error Boundaries, loading states, try/catch, transactions, timeout/retry
+- Pillar 2 Security: hardcoded secrets scan, session leakage, middleware audit, input validation, auth security
+- Pillar 3 Scalability: state storage, heavy query detection, connection pooling, caching, file handling
+- Pillar 4 Observability: logging audit, error monitoring, health checks, alerting, audit trail
+- Pillar 5 Design: visual consistency, mobile responsiveness, visual glitch detection (browser-based)
+- Pillar 6 Performance: image audit, bundle size, server response times (browser-based)
+- New /pillars command for standalone production readiness audit
+- Pillars run automatically in /test-deep mode
+- Available as option 4 (Standard + Pillars) in /test mode
+- Production readiness score and verdict in HTML report
+- All findings written in plain English with specific file references and urgency levels
+
 ## v1.3.1
 
 - Added full agent state persistence to ~/.claude/context/agent-state.json

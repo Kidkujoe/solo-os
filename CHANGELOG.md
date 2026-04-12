@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.1
+
+- Removed duplicate Pillar 5 (Design) and Pillar 6 (Performance) — these are already covered by the visual testing, responsive checks, and accessibility steps
+- Folded unique performance checks (bundle size, image optimisation, time to interactive) into Pillar 3 Scalability
+- Four clean pillars with zero overlap: Reliability, Security, Scalability, Observability
+- Added explicit note in command files explaining what is covered where
+
 ## v1.4.0
 
 - Added Four Pillars of Production Readiness audit

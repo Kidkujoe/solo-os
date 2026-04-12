@@ -912,6 +912,15 @@ Check and rate each:
   Rate: Well Cached / Partially Cached / No Caching Found
 - File Handling: object storage vs local, large file processing async vs blocking,
   image processing timing. Rate: Cloud-ready / Local-bound / Risk Identified
+- Bundle Size: large dependencies imported fully when only parts needed,
+  duplicate dependencies. Rate: Lean / Acceptable / Heavy / Critically Heavy
+- Image Optimisation: images not oversized for display, modern formats used,
+  width/height set to prevent layout shift, lazy loading on below-fold images,
+  hero images not blocking render. Report largest with actual vs ideal sizes.
+  Rate: Optimised / Acceptable / Needs Optimisation
+- Time to Interactive: time to first meaningful content, time to interactive,
+  flag any page taking over 2s to load fully.
+  Rate: Fast / Acceptable / Slow / Critically Slow
 
 PILLAR 4 - OBSERVABILITY (Logic Agent)
 Check and rate each:
@@ -928,25 +937,17 @@ Check and rate each:
 - Audit Trail: important user actions logged, admin actions logged,
   data changes traceable. Rate: Full / Partial / Missing
 
-PILLAR 5 - DESIGN (UI Agent — use browser)
-Navigate to every page and check:
-- Visual Consistency: spacing, margins, typography, colour usage consistent.
-  Measure actual values in browser. Rate: Polished / Minor Issues / Inconsistent
-- Mobile Responsiveness: at 375px — no overflow, text readable, touch targets
-  44px+, navigation accessible, forms usable, tables handled gracefully.
-  Rate: Mobile First / Acceptable / Broken Elements / Not Responsive
-- Visual Glitches: overlapping elements, wrong truncation, aspect ratios,
-  broken icons, misaligned elements, z-index issues, unexpected scrollbars.
-  Rate: Glitch Free / Minor Glitches / Significant Issues
-
-PILLAR 6 - PERFORMANCE (Performance Agent — use browser)
-- Image Audit: images not oversized, modern formats, width/height set,
-  lazy loading, hero images not blocking render. Report largest images
-  with actual vs ideal sizes. Rate: Optimised / Acceptable / Needs Optimisation
-- Bundle Size: large dependencies imported fully when only parts needed,
-  duplicate dependencies. Rate: Lean / Acceptable / Heavy / Critically Heavy
-- Response Times: time to first content, time to interactive, API calls
-  over 500ms, pages over 2s to load. Rate: Fast / Acceptable / Slow / Critically Slow
+NOTE ON DESIGN AND PERFORMANCE:
+Visual consistency, mobile responsiveness, visual glitches, responsive
+layouts, and accessibility are already covered by the visual testing,
+responsive checks, and accessibility steps earlier in this test.
+The pillars focus on what those steps do not cover: code-level
+reliability, security, scalability, and observability.
+The unique checks from those areas (bundle size, image optimisation,
+time to interactive) are folded into Pillar 3 Scalability above.
+Touch target sizing (44px+) and visual consistency (spacing, typography,
+colour usage) are captured during the visual testing and accessibility
+steps and included in the overall production readiness score.
 
 DISPLAY RESULTS:
 
@@ -970,14 +971,6 @@ DISPLAY RESULTS:
   [sub-check]: [rating] [icon]
   Observability Score: [X]/10
 
-  PILLAR 5 - DESIGN
-  [sub-check]: [rating] [icon]
-  Design Score: [X]/10
-
-  PILLAR 6 - PERFORMANCE
-  [sub-check]: [rating] [icon]
-  Performance Score: [X]/10
-
   OVERALL PRODUCTION READINESS: [X]/10
 
   9-10: PRODUCTION READY
@@ -992,7 +985,7 @@ Save findings to ~/.claude/context/pillars-audit.json
 
 For the HTML report add a PRODUCTION READINESS AUDIT section with:
 - Overall score and verdict prominently displayed
-- Six pillar cards with score bars and rating badges
+- Four pillar cards with score bars and rating badges
 - Each finding in plain English with file references, why it matters,
   how to fix it, and urgency level
 - Specific examples like: "Your Stripe API key is on line 34 of

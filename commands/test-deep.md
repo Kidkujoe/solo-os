@@ -625,6 +625,14 @@ PILLAR 3 - SCALABILITY (Performance Agent)
   works across instances. Rate: Well Cached / Partially Cached / No Caching Found
 - File Handling: object storage vs local, async processing, image timing.
   Rate: Cloud-ready / Local-bound / Risk Identified
+- Bundle Size: large dependencies imported fully when only parts needed,
+  duplicate dependencies. Rate: Lean / Acceptable / Heavy / Critically Heavy
+- Image Optimisation: images not oversized for display, modern formats,
+  width/height set, lazy loading, hero images not blocking render.
+  Report largest with actual vs ideal sizes.
+  Rate: Optimised / Acceptable / Needs Optimisation
+- Time to Interactive: first meaningful content, time to interactive,
+  pages over 2s to load. Rate: Fast / Acceptable / Slow / Critically Slow
 
 PILLAR 4 - OBSERVABILITY (Observability Agent — spawned for deep mode)
 - Logging: library vs console.log, errors with context, severity levels,
@@ -638,20 +646,12 @@ PILLAR 4 - OBSERVABILITY (Observability Agent — spawned for deep mode)
 - Audit Trail: user actions, admin actions, data changes logged.
   Rate: Full / Partial / Missing
 
-PILLAR 5 - DESIGN (UI Agent — use browser)
-- Visual Consistency: spacing, margins, typography, colours consistent.
-  Measure actual values. Rate: Polished / Minor Issues / Inconsistent
-- Mobile Responsiveness: at 375px — no overflow, readable text, 44px+
-  touch targets, accessible nav, usable forms. Rate: Mobile First / Acceptable / Broken / Not Responsive
-- Visual Glitches: overlapping, truncation, aspect ratios, broken icons,
-  misalignment, z-index, unexpected scrollbars. Rate: Glitch Free / Minor / Significant
-
-PILLAR 6 - PERFORMANCE (Performance Agent — use browser)
-- Images: not oversized, modern formats, dimensions set, lazy loaded.
-  Report largest with actual vs ideal. Rate: Optimised / Acceptable / Needs Optimisation
-- Bundle Size: large full imports, duplicates. Rate: Lean / Acceptable / Heavy / Critical
-- Response Times: first content, interactive, API >500ms, pages >2s.
-  Rate: Fast / Acceptable / Slow / Critically Slow
+NOTE: Design, responsive, and accessibility checks are already covered
+by the visual testing, responsive testing, and accessibility audit steps
+earlier in this test. The pillars focus on code-level concerns that
+those browser-based steps do not cover. Unique performance checks
+(bundle size, image optimisation, time to interactive) are folded
+into Pillar 3 Scalability above.
 
 Display full results with scores and ratings for each pillar.
 Overall Production Readiness score out of 10 with verdict:
@@ -659,9 +659,10 @@ Overall Production Readiness score out of 10 with verdict:
 
 Save to ~/.claude/context/pillars-audit.json
 
-For the HTML report: add PRODUCTION READINESS AUDIT section with pillar cards,
-score bars, rating badges, and every finding in plain English with specific
-file references, why it matters, how to fix, and urgency.
+For the HTML report: add PRODUCTION READINESS AUDIT section with four
+pillar cards, score bars, rating badges, and every finding in plain
+English with specific file references, why it matters, how to fix,
+and urgency.
 
 STEP 16 - WRITE ALL SESSION DATA
 - Write complete findings to test-session.md

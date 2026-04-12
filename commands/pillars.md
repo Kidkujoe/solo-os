@@ -95,6 +95,19 @@ File Handling:
 - Object storage vs local server
 - Large file processing async vs blocking
 
+Bundle Size:
+- Large dependencies imported fully when only parts needed
+- Duplicate dependencies
+
+Image Optimisation:
+- Images not oversized for display, modern formats
+- Width/height set, lazy loading, hero images not blocking render
+- Report largest with actual vs ideal sizes
+
+Time to Interactive:
+- First meaningful content, time to interactive
+- Pages over 2s to load
+
 STEP 5 - PILLAR 4: OBSERVABILITY
 Rate each appropriately per sub-check.
 
@@ -114,38 +127,11 @@ Alerting:
 Audit Trail:
 - User actions, admin actions, data changes logged
 
-STEP 6 - PILLAR 5: DESIGN (use browser)
-Check Chrome is connected. If not, skip this pillar
-and note it was skipped.
+NOTE: Design, responsive, and accessibility checks are best done
+with /test or /test-deep which use the browser. This standalone
+audit focuses on code-level concerns. Run /test for visual checks.
 
-Visual Consistency:
-- Spacing, margins, typography, colours consistent
-- Measure actual values in browser
-
-Mobile Responsiveness:
-- At 375px: no overflow, readable text, 44px+ touch targets
-- Navigation accessible, forms usable, tables handled
-
-Visual Glitches:
-- Overlapping, truncation, aspect ratios, broken icons
-- Misalignment, z-index, unexpected scrollbars
-
-STEP 7 - PILLAR 6: PERFORMANCE (use browser)
-Skip if Chrome not connected.
-
-Images:
-- Not oversized for display, modern formats, dimensions set
-- Lazy loaded, hero images not blocking render
-- Report largest images with actual vs ideal sizes
-
-Bundle Size:
-- Large full imports when only parts needed, duplicates
-
-Response Times:
-- First content, time to interactive
-- API calls over 500ms, pages over 2s to load
-
-STEP 8 - DISPLAY RESULTS
+STEP 6 - DISPLAY RESULTS
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   FOUR PILLARS AUDIT RESULTS
@@ -167,14 +153,6 @@ STEP 8 - DISPLAY RESULTS
   [sub-check]: [rating] [icon]
   Score: [X]/10
 
-  PILLAR 5 - DESIGN
-  [sub-check]: [rating] [icon]
-  Score: [X]/10
-
-  PILLAR 6 - PERFORMANCE
-  [sub-check]: [rating] [icon]
-  Score: [X]/10
-
   OVERALL PRODUCTION READINESS: [X]/10
 
   9-10: PRODUCTION READY
@@ -186,7 +164,7 @@ STEP 8 - DISPLAY RESULTS
 Icons: Strong/Clean/Fast = checkmark, Adequate/Partial = warning,
 Weak/Missing/Vulnerable = cross
 
-STEP 9 - SAVE AND OFFER NEXT STEPS
+STEP 7 - SAVE AND OFFER NEXT STEPS
 
 Save findings to ~/.claude/context/pillars-audit.json
 

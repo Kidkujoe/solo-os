@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.3.1
+
+- Added full agent state persistence to ~/.claude/context/agent-state.json
+- Session automatically saves after every agent action: spawns, claims, fixes, messages, verifications, conflicts
+- Interrupted sessions detected on startup with clear resume options (resume exactly, restart interrupted, start fresh, discard)
+- Agents restore to exact state when resumed including unread messages and claimed files
+- Partial file edits detected and handled safely on resume
+- /resume now shows full agent team status, blocked fixes, unread messages, and pending conflicts
+- /status now shows live agent team status, claimed files, and blocked fixes
+- Session archive keeps last 5 completed sessions for reference
+- HTML report includes session continuity note (fresh vs resumed)
+
 ## v1.3.0
 
 - Added multi-agent fix system

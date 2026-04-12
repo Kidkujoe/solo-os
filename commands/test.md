@@ -6,12 +6,73 @@ allowed-tools: Bash, mcp__chrome-devtools__*
 
 Run a smart visual browser test for: $ARGUMENTS
 
-STEP 1 - LOAD CONTEXT
+STEP 1 - LOAD CONTEXT AND CHECK AGENT STATE
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
+- Read ~/.claude/context/agent-state.json if it exists
 - Check if a test account exists for this project
 - Check if a previous session exists
-- If a session exists ask if the user wants to continue it or start fresh
+
+If agent-state.json contains an incomplete session for
+this project (paused_at is not null, or last_updated
+within 24 hours and status is not complete, and project
+path matches):
+
+Display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  UNFINISHED SESSION FOUND
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Project: [name]
+  Started: [when]
+  Last active: [how long ago]
+
+  WHAT WAS HAPPENING:
+  Testing: [what was being tested]
+  Mode: [which mode]
+
+  AGENT TEAM STATUS WHEN INTERRUPTED:
+  [emoji] [agent name]  [status] - [task]
+  [for each agent that was active]
+
+  PROGRESS SO FAR:
+  Issues found: [count]
+  Fixes completed and verified: [count]
+  Fixes in progress when interrupted: [count]
+  Fixes still to do: [count]
+
+  FILES BEING EDITED WHEN INTERRUPTED:
+  [list any files with in_progress claims]
+
+  WHAT WOULD YOU LIKE TO DO?
+
+  1. Resume exactly where we left off
+  2. Resume but restart interrupted fixes
+  3. Start fresh (keep issues, redo fixes)
+  4. Discard and start completely new test
+
+  Type 1, 2, 3 or 4.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Wait for response before doing anything.
+
+If 1: Restore agents to saved state, re-spawn only
+active agents with their context, continue from where
+interrupted. Do not redo verified fixes.
+
+If 2: Keep verified fixes, mark in_progress fixes as
+pending, release claimed files, re-spawn agents fresh.
+
+If 3: Keep issue list, clear fix progress, release
+files, re-spawn all agents, start fix process over.
+
+If 4: Archive old state to
+~/.claude/context/agent-state-archive/[timestamp]-agent-state.json
+Clear agent-state.json and run completely new test.
+
+If no incomplete session found, continue normally.
+If a completed previous session exists, ask user if
+they want to continue it or start fresh.
 
 STEP 2 - PROJECT SCAN
 - Detect the project type and tech stack
@@ -662,6 +723,38 @@ about what other agents are doing and what files are
 being touched. Each agent receives a brief of all issues
 and which agent owns which fix.
 
+AGENT STATE PERSISTENCE:
+Write the full agent state to ~/.claude/context/agent-state.json
+after EVERY one of these events:
+- An agent is spawned
+- An agent claims a file
+- An agent completes a fix
+- An agent sends a message to another agent
+- A fix is verified by Test Agent
+- A fix is sent back for retry
+- A conflict is detected
+- A user responds to a blocked fix
+- Any agent is paused or stopped
+
+The state file must contain:
+- session_id, project, project_path, timestamps
+- overall_progress (issues found, fixes attempted/verified/failed/skipped,
+  sections completed/remaining, current section)
+- Each agent's status, current file, current fix, completed fixes,
+  failed fixes, remaining fixes, messages sent/received, retry count
+- claimed_files with agent, reason, timestamp, status
+- agent_messages array with from, to, message, timestamp, acknowledged
+- conflicts array with file, agents, description, resolution, status
+- All issues grouped by severity with id, description, file, assigned_to,
+  status, fix_attempts, verified flag
+- screenshots taken with filename, label, timestamp, page, reason
+- blocked fixes with issue_id, reason, waiting_for, attempts
+- paused_at, pause_reason, resume_instructions
+
+When pausing for any reason (user request, waiting for input,
+session ending), write the pause reason explicitly so resume
+knows exactly what to do.
+
 SPAWN PATTERN:
 Use the Agent tool to spawn each agent in parallel.
 Each agent prompt must include:
@@ -755,10 +848,15 @@ Add to the report in plain English:
 - Each fix grouped by agent with plain English description
 - Whether Test Agent verified each fix
 
-STEP 15 - WRITE SESSION DATA
+STEP 15 - WRITE SESSION DATA AND ARCHIVE AGENT STATE
 - Write all findings to test-session.md
 - Save structured data to test-data.json
 - Ensure all screenshots are in the screenshots folder
+- Mark agent-state.json as complete
+- Archive it to ~/.claude/context/agent-state-archive/
+  [timestamp]-[project]-agent-state.json
+- Clear the active agent-state.json
+- Keep the last 5 archived states, delete older ones
 
 STEP 16 - GENERATE HTML REPORT
 - Read the report template from ~/.claude/context/report-template.html
@@ -767,6 +865,11 @@ STEP 16 - GENERATE HTML REPORT
 - Include all screenshots taken
 - Include the health scorecard
 - Include recommended next steps as simple actions
+- Include SESSION CONTINUITY note:
+  If fresh session: "All fixes completed in one session."
+  If resumed: "Started [date], completed [date] after
+  being resumed [X] times. Fixes before resume: [count].
+  Fixes after resume: [count]."
 - Save report to ~/.claude/context/test-report.html
 - Open the report in Chrome
 

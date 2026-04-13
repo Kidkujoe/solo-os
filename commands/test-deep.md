@@ -599,7 +599,35 @@ If the project uses magic links:
 - Check for enumeration vulnerabilities
 - Write security findings to test-session.md
 
-STEP 15 - FOUR PILLARS PRODUCTION READINESS AUDIT
+STEP 15 - BASIC COPY AND SEO CHECK
+Lightweight version — runs automatically in deep test mode.
+For the full audit run /copy and /seo separately.
+
+Read VOICE.md if it exists.
+
+COPY CHECKS:
+- Scan for missing page titles and meta descriptions
+- Check for TODO, lorem ipsum, or placeholder copy in browser
+- Flag obvious terminology inconsistencies against VOICE.md
+- Check error messages visible during testing for quality
+
+SEO CHECKS:
+- Check every indexable page has title and meta description
+- Check images have alt text (already done in accessibility step — just reference)
+- Check sitemap.xml and robots.txt exist
+- Flag any indexable page missing H1
+
+Display findings briefly:
+  COPY + SEO QUICK CHECK
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Missing page titles: [count]
+  Missing meta descriptions: [count]
+  Placeholder copy found: [count]
+  Terminology issues: [count]
+  Run /copy and /seo for the full audit.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 16 - FOUR PILLARS PRODUCTION READINESS AUDIT
 This runs automatically in deep test mode.
 Read the actual code and make a real judgement on each pillar.
 Be specific — name files and line numbers. No generic advice.

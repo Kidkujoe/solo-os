@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.5.0
+version: 1.6.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -115,6 +115,21 @@ commands:
       Post-feature checklist for a specific
       feature with go or no-go verdict.
     file: commands/atlas-feature.md
+
+  - name: copy
+    description: >
+      Full copy and brand voice audit.
+      Terminology consistency, tone, error
+      messages, empty states, marketing vs
+      product alignment.
+    file: commands/copy.md
+
+  - name: seo
+    description: >
+      Full SEO audit covering on-page basics,
+      semantic HTML, technical SEO, structured
+      data and Core Web Vitals.
+    file: commands/seo.md
 
   - name: screenshots
     description: >

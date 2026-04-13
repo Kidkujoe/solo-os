@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -93,6 +93,16 @@
       "name": "atlas-feature",
       "description": "Post-feature checklist for a specific feature with go or no-go verdict.",
       "file": "commands/atlas-feature.md"
+    },
+    {
+      "name": "copy",
+      "description": "Full copy and brand voice audit. Terminology consistency, tone, error messages, empty states, marketing vs product alignment.",
+      "file": "commands/copy.md"
+    },
+    {
+      "name": "seo",
+      "description": "Full SEO audit covering on-page basics, semantic HTML, technical SEO, structured data and Core Web Vitals.",
+      "file": "commands/seo.md"
     },
     {
       "name": "screenshots",

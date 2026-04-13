@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.6.0
+
+- Added /copy command for full brand voice and copy consistency audit
+- Added /seo command for full SEO audit with page inventory, on-page basics, semantic HTML, technical SEO, structured data opportunities, and keyword consistency
+- Atlas now reads VOICE.md and SEO.md as part of startup context
+- VOICE.md drafted automatically from codebase on first /copy run — user confirms before it is used
+- Terminology map tracks what words are used for each feature across the product
+- Error message quality audit flags poor messages with suggested rewrites
+- Empty state quality audit checks all zero-state UI
+- Marketing vs product alignment check catches promise vs reality mismatches
+- SEO page inventory classifies every page as should-index or should-not-index
+- Structured data opportunities identified with JSON-LD generation offered
+- Atlas post-feature checklist now includes terminology and basic SEO checks (steps 8 and 9)
+- /test-deep now includes lightweight copy and SEO check automatically
+- Atlas health score now includes copy consistency and SEO health
+- HTML report includes WHAT YOUR APP IS SAYING section with copy and SEO findings
+
 ## v1.5.0
 
 - Added /atlas command as master orchestrator and product brain

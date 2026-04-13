@@ -21,6 +21,8 @@ Read all context files silently:
 - ~/.claude/context/atlas/DEPENDENCIES.md
 - ~/.claude/context/atlas/REGRESSIONS.md
 - ~/.claude/context/atlas/HEALTH.md
+- ~/.claude/context/atlas/VOICE.md
+- ~/.claude/context/atlas/SEO.md
 - ~/.claude/context/test-session.md
 - ~/.claude/context/agent-state.json if exists
 - ~/.claude/context/test-accounts.md
@@ -357,6 +359,8 @@ After any feature is built or updated run automatically:
   Step 5: Design consistency check
   Step 6: CodeRabbit review (if installed)
   Step 7: Update product brain with changes
+  Step 8: Terminology check against VOICE.md
+  Step 9: Basic SEO check (title, meta, H1, indexing)
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   VERDICT:
@@ -402,6 +406,17 @@ Priority order:
 5. Most recently changed code
 6. Closest to complete features
 7. Compounding consistency issues
+
+COPY AND SEO AWARENESS:
+If VOICE.md does not exist yet: recommend running /copy first
+If copy score in HEALTH.md is below 7: flag copy consistency
+If SEO score in HEALTH.md is below 6: flag SEO as priority before launch
+If SEO.md has pages with missing titles or meta descriptions: flag as high priority
+
+Include in health score:
+Copy consistency: [X]/10
+SEO health: [X]/10
+These contribute to the overall Atlas health score.
 
 ===========================================
 PHASE 8 - CONTEXT MANAGEMENT

@@ -405,6 +405,32 @@ STEP 6 - PRE-TEST CHECKS
 - Note the current page title and URL
 - Write session start to test-session.md
 
+SCREENSHOT SETUP:
+- Create a session screenshot folder:
+  ~/.claude/context/screenshots/[project-name]/[YYYY-MM-DD]-[short-id]/
+- Create subfolders: before-fixes/ after-fixes/ edge-cases/ pillars/
+- Store the folder path in agent-state.json as "screenshot_folder"
+- All screenshots for this session go into this folder only
+
+OLD SESSION CLEANUP:
+Check for screenshot sessions older than 7 days.
+If found display:
+
+  OLD SCREENSHOTS FOUND
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Found [count] old test sessions:
+  - [project] tested [X] days ago - [size]
+  Total space used: [size]
+
+  Clean up old sessions?
+  Type yes to delete sessions older than 7 days
+  Type no to keep everything
+  Type skip to never ask again
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If skip: note in CLAUDE.md to never ask again.
+If no old sessions exist, skip this silently.
+
 STEP 7 - AUTHENTICATION
 If restricted areas were detected:
 - Check test-accounts.md for existing credentials
@@ -595,6 +621,17 @@ For each page found in the project:
 - Check error handling and success states
 - Note any visual issues or broken layouts
 - Write findings to test-session.md after each page
+
+SCREENSHOT RULES:
+- Save to the session folder: [NN]-[page]-[breakpoint].png
+- Before saving, check if same page at same breakpoint already exists
+  this session. Skip duplicates unless something changed.
+- If screenshot is over 2MB, compress to under 500KB before saving.
+- For fixes: take before screenshot first (save to before-fixes/),
+  then after screenshot (save to after-fixes/) as a pair.
+  Reuse an existing screenshot of that element if already taken.
+- Edge case screenshots go in edge-cases/ subfolder.
+- Pillars audit screenshots go in pillars/ subfolder.
 
 STEP 10 - RESPONSIVE CHECKS
 - Test at desktop width 1440px and screenshot
@@ -1005,7 +1042,19 @@ STEP 17 - GENERATE HTML REPORT
 - Read the report template from ~/.claude/context/report-template.html
 - Fill in all sections with findings from this session
 - Write plain English summaries anyone can understand
-- Include all screenshots taken
+- Reference screenshots by relative file path not base64 embedding.
+  This keeps the report file small. Screenshots load from the
+  session folder when opened on the same machine.
+- If a screenshot was deleted, show a placeholder:
+  [Screenshot removed] with plain English description of what was shown.
+- Group screenshots in the report:
+  Before and after fix pairs (side by side comparison cards)
+  Page by page visual record
+  Issues found
+  Edge cases tested
+  Pillars audit findings
+- Add note at top of screenshots section:
+  "Screenshots stored at: [folder path]"
 - Include the health scorecard
 - Include recommended next steps as simple actions
 - Include SESSION CONTINUITY note:
@@ -1031,6 +1080,32 @@ Display in the terminal:
   Your HTML report is ready at:
   ~/.claude/context/test-report.html
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 19 - SCREENSHOT CLEANUP PROMPT
+After the final summary, ask the user:
+
+  SESSION COMPLETE - SCREENSHOTS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  This session took [count] screenshots.
+  Total size: [size]
+  Saved at: [folder path]
+
+  What would you like to do with them?
+
+  1. Keep all screenshots
+  2. Keep important ones only (delete duplicates)
+  3. Archive this session (compress to zip)
+  4. Delete all screenshots (report keeps text)
+  5. Ask me next time
+
+  Type 1, 2, 3, 4 or 5.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Wait for response.
+If 2: Delete duplicates, keep one per page, all fix pairs, all issue shots.
+If 3: Compress folder to [session-folder].zip, delete originals.
+If 4: Delete all screenshots. Report shows placeholders.
+If 5: Keep everything, remind next session.
 
 IMPORTANT RULES:
 - Write findings to test-session.md after EACH section

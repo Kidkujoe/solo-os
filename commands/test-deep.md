@@ -286,6 +286,12 @@ STEP 5 - PRE-TEST CHECKS
 - Capture baseline console state
 - Write session start to test-session.md
 
+SCREENSHOT SETUP:
+- Create session folder: ~/.claude/context/screenshots/[project]/[YYYY-MM-DD]-[id]/
+- Create subfolders: before-fixes/ after-fixes/ edge-cases/ pillars/
+- Store path in agent-state.json as "screenshot_folder"
+- Check for old sessions >7 days, offer cleanup if found
+
 STEP 6 - AUTHENTICATION (FULL)
 Follow the complete authentication flow:
 - Check test-accounts.md for existing credentials
@@ -327,6 +333,15 @@ For EVERY page in the application:
 - Test loading states and error states
 - Test empty states where applicable
 - Check all images load correctly
+
+SCREENSHOT RULES:
+- Save to session folder: [NN]-[page]-[breakpoint].png
+- Skip duplicates unless something changed since last shot of same page.
+- Compress screenshots over 2MB to under 500KB.
+- Before fixes: save to before-fixes/[issue-id]-before.png
+- After fixes: save to after-fixes/[issue-id]-after.png
+- Edge cases: save to edge-cases/ subfolder.
+- Pillars: save to pillars/ subfolder.
 - Check all external links work
 - Write findings to test-session.md after each page
 
@@ -674,7 +689,10 @@ STEP 17 - GENERATE COMPREHENSIVE HTML REPORT
 - Read the report template
 - Fill in ALL sections with full detail
 - Write plain English summaries
-- Include every screenshot taken
+- Reference screenshots by relative file path not base64.
+  Show placeholders if screenshots were deleted.
+- Group screenshots: fix pairs (side by side), pages, issues, edge cases, pillars
+- Add note: "Screenshots stored at: [folder path]"
 - Include the full health scorecard
 - Include CodeRabbit findings if available
 - Include magic link security audit if applicable
@@ -704,6 +722,12 @@ Display:
   Your comprehensive report is ready at:
   ~/.claude/context/test-report.html
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 19 - SCREENSHOT CLEANUP PROMPT
+After the final summary ask:
+  This session took [count] screenshots. Total size: [size].
+  1. Keep all  2. Keep important only  3. Archive to zip  4. Delete all  5. Ask next time
+Wait for response before acting.
 
 IMPORTANT RULES:
 - Write findings to test-session.md after EACH section

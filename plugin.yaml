@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.4.1
+version: 1.4.2
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -84,6 +84,13 @@ commands:
       Scalability, Observability, Design
       and Performance.
     file: commands/pillars.md
+
+  - name: screenshots
+    description: >
+      Manage screenshots from all test
+      sessions. Delete, archive, or browse
+      screenshots by project and session.
+    file: commands/screenshots.md
 
   - name: addaccount
     description: >

@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.4.2
+
+- Screenshots now organised by project and session in dated folders with subfolders for before-fixes, after-fixes, edge-cases, and pillars
+- Before and after fix pairs saved and shown as side by side comparisons in the HTML report
+- Cleanup prompt after every completed session with five options (keep, keep important, archive, delete, ask later)
+- Auto detection of old sessions older than 7 days with cleanup offer at session start
+- Screenshot deduplication prevents saving near identical images of same page at same breakpoint
+- Screenshots over 2MB compressed to under 500KB automatically
+- HTML report references screenshots by file path not embedded base64, making report files much smaller
+- Placeholder shown in report if screenshot was deleted after session
+- New /screenshots command to manage all session screenshots in one place
+- Applied to both /test and /test-deep commands
+
 ## v1.4.1
 
 - Removed duplicate Pillar 5 (Design) and Pillar 6 (Performance) — these are already covered by the visual testing, responsive checks, and accessibility steps

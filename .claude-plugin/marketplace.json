@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -68,6 +68,11 @@
       "name": "pillars",
       "description": "Run the Four Pillars of Production Readiness audit covering Reliability, Security, Scalability, Observability, Design and Performance.",
       "file": "commands/pillars.md"
+    },
+    {
+      "name": "screenshots",
+      "description": "Manage screenshots from all test sessions. Delete, archive, or browse by project and session.",
+      "file": "commands/screenshots.md"
     },
     {
       "name": "addaccount",

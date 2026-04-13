@@ -10,6 +10,7 @@ This is the low token cost mode. No code review.
 No HTML report. Terminal summary only.
 
 STEP 1 - LOAD CONTEXT
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
 - Check if a previous session exists

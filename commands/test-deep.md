@@ -10,6 +10,7 @@ This is the high token cost mode. Everything is included.
 Best run before a major release or launch.
 
 STEP 1 - LOAD CONTEXT
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
 - Check if a test account exists for this project

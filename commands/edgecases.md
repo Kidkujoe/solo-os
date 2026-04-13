@@ -10,6 +10,7 @@ list of edge cases specific to this app.
 Do not run any tests. Just analyse and think.
 
 STEP 1 - LOAD CONTEXT
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
 - Read ~/.claude/context/edge-cases.md if it exists

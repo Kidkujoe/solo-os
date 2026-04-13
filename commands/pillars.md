@@ -12,6 +12,7 @@ code and make a real judgement. Be specific — name files and line
 numbers where issues are found. Do not give generic advice.
 
 STEP 1 - LOAD CONTEXT
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
 - Detect project type and tech stack

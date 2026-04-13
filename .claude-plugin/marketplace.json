@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -68,6 +68,31 @@
       "name": "pillars",
       "description": "Run the Four Pillars of Production Readiness audit covering Reliability, Security, Scalability, Observability, Design and Performance.",
       "file": "commands/pillars.md"
+    },
+    {
+      "name": "atlas",
+      "description": "Master orchestrator and product brain. Maps your codebase, catches regressions, guards consistency, tells you what to do next.",
+      "file": "commands/atlas.md"
+    },
+    {
+      "name": "atlas-quick",
+      "description": "Quick Atlas refresh and recommendation.",
+      "file": "commands/atlas-quick.md"
+    },
+    {
+      "name": "atlas-map",
+      "description": "Full codebase scan to rebuild the product brain map.",
+      "file": "commands/atlas-map.md"
+    },
+    {
+      "name": "atlas-check",
+      "description": "Check for regressions and design consistency only.",
+      "file": "commands/atlas-check.md"
+    },
+    {
+      "name": "atlas-feature",
+      "description": "Post-feature checklist for a specific feature with go or no-go verdict.",
+      "file": "commands/atlas-feature.md"
     },
     {
       "name": "screenshots",

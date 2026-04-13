@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.5.0
+
+- Added /atlas command as master orchestrator and product brain
+- Atlas maps your entire codebase on first run and keeps the map updated
+- Living context files in ~/.claude/context/atlas/ store product knowledge permanently: PRODUCT.md, DESIGN.md, DECISIONS.md, DEPENDENCIES.md, REGRESSIONS.md, HEALTH.md
+- Regression Agent (Agent 7) added to multi-agent system with veto power over all other agents
+- Dependency snapshot taken before every fix session, broken dependencies detected immediately
+- Intentional removal declarations prevent false regression alerts
+- Smoke test runs on all features sharing code with changed files
+- Design consistency guardian with three-tier system: auto-fix pure visual issues, flag side-effect risks, never touch intentional differences
+- Post-feature checklist gives go or no-go verdict after every feature
+- Context always updated to match code — code is source of truth
+- Stale context cleaned up automatically
+- All existing commands now read Atlas context for full product awareness
+- Atlas health score tracked over time in HEALTH.md
+- Regression history tracked in REGRESSIONS.md
+- Added /atlas-quick (refresh + recommendation), /atlas-map (full rescan), /atlas-check (regression + consistency), /atlas-feature (post-feature checklist)
+- Atlas dashboard added to HTML reports with health score and trend
+
 ## v1.4.2
 
 - Screenshots now organised by project and session in dated folders with subfolders for before-fixes, after-fixes, edge-cases, and pillars

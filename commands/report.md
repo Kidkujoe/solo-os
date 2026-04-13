@@ -7,6 +7,7 @@ allowed-tools: Bash, mcp__chrome-devtools__*
 Generate an HTML test report from the current session data.
 
 STEP 1 - LOAD DATA
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-data.json
 - Check if there is session data to report on

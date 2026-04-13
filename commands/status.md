@@ -4,6 +4,7 @@ description: Get a snapshot of the current test session at any point
 allowed-tools: Bash
 ---
 
+Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 Read ~/.claude/context/test-session.md
 Read ~/.claude/context/test-accounts.md
 Read ~/.claude/context/agent-state.json if it exists

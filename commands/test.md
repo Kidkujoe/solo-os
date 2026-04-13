@@ -7,6 +7,7 @@ allowed-tools: Bash, mcp__chrome-devtools__*
 Run a smart visual browser test for: $ARGUMENTS
 
 STEP 1 - LOAD CONTEXT AND CHECK AGENT STATE
+- Read ~/.claude/context/atlas/PRODUCT.md silently if it exists (gives full product context)
 - Read ~/.claude/context/test-session.md
 - Read ~/.claude/context/test-accounts.md
 - Read ~/.claude/context/agent-state.json if it exists

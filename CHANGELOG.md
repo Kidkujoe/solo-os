@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.8.1
+
+- Added Pattern and Signal Threshold System to Copy Intelligence skill
+- Insights now require minimum 5 instances to be considered evidence (5 LOW, 10 MEDIUM, 20+ HIGH)
+- Confidence scoring: 0-5 weak (no action), 6-10 moderate (note with caution), 11-15 strong (actionable), 16+ very strong (core opportunity)
+- Cross-platform consistency required for high confidence — single-platform patterns penalised
+- Behavioural consequence tracking: cancellation, migration, workaround signals weighted +5 points
+- Recency weighting: last 12 months full weight, 12-24 half weight, older context only
+- Collection targets: minimum 15 Reddit, 20 reviews, 10 Product Hunt, 10 Twitter per topic
+- Tagging phase: every data point tagged with source, date, type, sentiment, behaviour, topic, key phrase
+- Clustering phase: groups tagged data into confirmed patterns (3+ similar across any platforms)
+- Filtering phase: discards weak signal below threshold, saves emerging signals to watch
+- Explicit "What the data does not show" section in synthesis
+- Every copy rewrite shows specific pattern evidence: instance count, platform count, behaviour signals, trend direction
+- Expected impact rated by confidence level (HIGH/MODERATE) for each change
+- HTML report updated with pattern strength bars, evidence count badges, trend arrows, and Evidence Wall section
+- COPYAI.md pattern database saves all collected quotes not just display samples
+- Emerging signals tracked for future research runs
+
 ## v1.8.0
 
 - Added /copyai command for full intelligence-driven copy strategy and rewrites

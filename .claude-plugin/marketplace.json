@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -93,6 +93,11 @@
       "name": "atlas-feature",
       "description": "Post-feature checklist for a specific feature with go or no-go verdict.",
       "file": "commands/atlas-feature.md"
+    },
+    {
+      "name": "design",
+      "description": "Full design integrity audit comparing features against the established design system.",
+      "file": "commands/design.md"
     },
     {
       "name": "copy",

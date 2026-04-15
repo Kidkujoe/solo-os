@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.7.0
+
+- Added /design command for full design integrity audit
+- DESIGN.md now captures comprehensive design inventory: full colour system with semantic meanings, complete typography scale, spacing system, component inventory with visual signatures and interactive states, border/shape system, animation/transition system, icon system, layout system with z-index scale, and overall aesthetic assessment
+- Design Integrity Check runs in six phases: identify changes, extract visual signature, compare against design system, categorise findings, display report, browser visual comparison
+- Findings categorised as Critical (clashing), High (noticeable), Medium (minor), or Intentional Variation
+- Every finding includes the specific correct value from the design system and exact code change needed
+- Browser visual comparison catches issues only visible in rendered context
+- Intentional variations logged in DECISIONS.md and never flagged again in future audits
+- Design score tracked over time in HEALTH.md
+- Integrated into Atlas post-feature checklist (step 5 now runs full 6-phase check)
+- Integrated into /test-deep automatically (new step 12)
+- /atlas-check includes lightweight design check
+- HTML report gains Design Integrity section with colour swatches, typography samples, findings grouped by category, and design health trend
+
 ## v1.6.0
 
 - Added /copy command for full brand voice and copy consistency audit

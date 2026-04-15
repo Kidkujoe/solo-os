@@ -356,7 +356,10 @@ After any feature is built or updated run automatically:
   Step 2: Quick visual test on this feature
   Step 3: Edge case scan on changed files
   Step 4: Security + reliability check on changed files
-  Step 5: Design consistency check
+  Step 5: Design Integrity Check (full 6-phase)
+  Identify changes, extract visual signature, compare
+  against DESIGN.md, categorise, display report, browser
+  visual comparison. Same system as /design command.
   Step 6: CodeRabbit review (if installed)
   Step 7: Update product brain with changes
   Step 8: Terminology check against VOICE.md

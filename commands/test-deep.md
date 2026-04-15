@@ -413,7 +413,32 @@ Classify each issue:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 12 - CODERABBIT SWEEP
+STEP 12 - DESIGN INTEGRITY CHECK
+Read DESIGN.md. If it has content, run the design integrity check
+on all changed files since last test.
+
+Compare against design inventory:
+- Colours: in palette? correct semantic use? hardcoded vs token?
+- Typography: in type scale? weight/line-height consistent?
+- Spacing: in spacing scale? follows grid? consistent with similar?
+- Components: existing component available? duplication? correct variant?
+- Borders/shape: radius, style, shadows matching system?
+- Animation: duration/easing matching established patterns?
+
+Browser visual comparison on key changed pages.
+Read DECISIONS.md to skip documented intentional variations.
+
+Display:
+  DESIGN INTEGRITY CHECK
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Design consistency: [X]/10
+  Critical: [count] High: [count] Medium: [count]
+  Run /design for the full audit with fixes.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include findings in the final report.
+
+STEP 13 - CODERABBIT SWEEP
 If CodeRabbit CLI is installed:
 - Run a full sweep on the project
 - Capture all findings
@@ -423,7 +448,7 @@ If CodeRabbit CLI is installed:
 
 If not installed, skip this step.
 
-STEP 13 - ISSUE TRIAGE AND FIX APPROVAL
+STEP 14 - ISSUE TRIAGE AND FIX APPROVAL
 Display all issues found grouped by severity.
 
 For Critical and High issues ask the user:
@@ -450,7 +475,7 @@ For Critical and High issues ask the user:
 
 Wait for response. If 4, skip to STEP 14.
 
-STEP 13B - MULTI-AGENT FIX SYSTEM
+STEP 14B - MULTI-AGENT FIX SYSTEM
 When the user approves fixes, spawn specialist agents
 to work on them in parallel using the Agent tool.
 
@@ -589,7 +614,7 @@ Add to the report in plain English:
 - Each fix grouped by agent with plain English description
 - Whether Test Agent verified each fix
 
-STEP 14 - MAGIC LINK SECURITY AUDIT
+STEP 15 - MAGIC LINK SECURITY AUDIT
 If the project uses magic links:
 - Check token randomness and length
 - Check token expiry time
@@ -599,7 +624,7 @@ If the project uses magic links:
 - Check for enumeration vulnerabilities
 - Write security findings to test-session.md
 
-STEP 15 - BASIC COPY AND SEO CHECK
+STEP 16 - BASIC COPY AND SEO CHECK
 Lightweight version — runs automatically in deep test mode.
 For the full audit run /copy and /seo separately.
 
@@ -627,7 +652,7 @@ Display findings briefly:
   Run /copy and /seo for the full audit.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 16 - FOUR PILLARS PRODUCTION READINESS AUDIT
+STEP 17 - FOUR PILLARS PRODUCTION READINESS AUDIT
 This runs automatically in deep test mode.
 Read the actual code and make a real judgement on each pillar.
 Be specific — name files and line numbers. No generic advice.
@@ -708,13 +733,13 @@ pillar cards, score bars, rating badges, and every finding in plain
 English with specific file references, why it matters, how to fix,
 and urgency.
 
-STEP 16 - WRITE ALL SESSION DATA
+STEP 18 - WRITE ALL SESSION DATA
 - Write complete findings to test-session.md
 - Save all structured data to test-data.json
 - Ensure all screenshots are organised in screenshots folder
 - Create a screenshots index
 
-STEP 17 - GENERATE COMPREHENSIVE HTML REPORT
+STEP 19 - GENERATE COMPREHENSIVE HTML REPORT
 - Read the report template
 - Fill in ALL sections with full detail
 - Write plain English summaries
@@ -729,7 +754,7 @@ STEP 17 - GENERATE COMPREHENSIVE HTML REPORT
 - Save to ~/.claude/context/test-report.html
 - Open in Chrome
 
-STEP 18 - FINAL SUMMARY
+STEP 20 - FINAL SUMMARY
 Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -752,7 +777,7 @@ Display:
   ~/.claude/context/test-report.html
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 19 - SCREENSHOT CLEANUP PROMPT
+STEP 21 - SCREENSHOT CLEANUP PROMPT
 After the final summary ask:
   This session took [count] screenshots. Total size: [size].
   1. Keep all  2. Keep important only  3. Archive to zip  4. Delete all  5. Ask next time

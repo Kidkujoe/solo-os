@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.6.0
+version: 1.7.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -115,6 +115,15 @@ commands:
       Post-feature checklist for a specific
       feature with go or no-go verdict.
     file: commands/atlas-feature.md
+
+  - name: design
+    description: >
+      Full design integrity audit comparing
+      features against the established design
+      system. Checks colours, typography,
+      spacing, components, borders, shadows,
+      animations and overall aesthetic fit.
+    file: commands/design.md
 
   - name: copy
     description: >

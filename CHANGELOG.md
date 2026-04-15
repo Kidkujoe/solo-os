@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.8.0
+
+- Added /copyai command for full intelligence-driven copy strategy and rewrites
+- Added /copyai-research command for research and strategy only (no rewrites)
+- Phase 1: Product intelligence brief derived from codebase and confirmed with user
+- Phase 2: Competitor identification via web search with user confirmation
+- Phase 3: Competitive intelligence including weakness mining from Reddit, G2, Capterra, Product Hunt, Trustpilot, Twitter/X, LinkedIn, YouTube comments, Hacker News and Indie Hackers
+- Migration trigger analysis: what specifically causes customers to leave competitors
+- Phase 4: Voice of customer research sourcing real customer language from the same platforms
+- Phase 5: Copy Intelligence synthesis with full strategy — positioning, primary message, emotional hook, transformation narrative, words to use and avoid, tone recommendation
+- Every strategy recommendation backed by specific evidence with sources
+- Phase 6: Full copy rewrites across all surfaces — landing page, onboarding, features, pricing, errors, empty states, emails and navigation
+- Every rewrite shows current copy, why it needs changing with evidence, and why the new version works
+- Phase 7: Changes applied to files, VOICE.md updated with new positioning, COPYAI.md created as permanent research memory
+- Phase 8: Copy Intelligence HTML report with executive summary, customer quotes, competitor intelligence cards, evidence cards, before/after comparison cards and full source list
+- 6 month refresh schedule with Atlas reminder when overdue
+- /copy now references COPYAI.md when available for stronger suggestions
+
 ## v1.7.0
 
 - Added /design command for full design integrity audit

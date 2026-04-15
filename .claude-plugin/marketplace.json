@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -98,6 +98,16 @@
       "name": "design",
       "description": "Full design integrity audit comparing features against the established design system.",
       "file": "commands/design.md"
+    },
+    {
+      "name": "copyai",
+      "description": "Intelligence-driven copy strategy and rewrites. Researches competitors, sources real customer language, builds data-driven strategy with evidence.",
+      "file": "commands/copyai.md"
+    },
+    {
+      "name": "copyai-research",
+      "description": "Research-only Copy Intelligence. Gathers competitor and customer intelligence, produces strategy without rewrites.",
+      "file": "commands/copyai-research.md"
     },
     {
       "name": "copy",

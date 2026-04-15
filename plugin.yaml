@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.7.0
+version: 1.8.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -124,6 +124,22 @@ commands:
       spacing, components, borders, shadows,
       animations and overall aesthetic fit.
     file: commands/design.md
+
+  - name: copyai
+    description: >
+      Intelligence-driven copy strategy and
+      rewrites. Researches competitors, sources
+      real customer language from Reddit, review
+      sites and social platforms, builds data-driven
+      copy strategy with evidence for every change.
+    file: commands/copyai.md
+
+  - name: copyai-research
+    description: >
+      Research-only Copy Intelligence. Gathers
+      competitor and customer intelligence,
+      produces strategy without rewrites.
+    file: commands/copyai-research.md
 
   - name: copy
     description: >

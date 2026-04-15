@@ -9,6 +9,29 @@ You are running a full copy and brand voice audit for: $ARGUMENTS
 Read ~/.claude/context/atlas/PRODUCT.md silently if it exists
 Read ~/.claude/context/atlas/VOICE.md
 Read ~/.claude/context/atlas/SEO.md if it exists
+Read ~/.claude/context/atlas/COPYAI.md if it exists
+
+IF COPYAI.md exists and was generated in the last 6 months:
+Use the confirmed copy strategy and customer language bank as the
+foundation for this audit. Reference it when making suggestions.
+
+IF COPYAI.md does not exist:
+Display at the start:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TIP: For stronger copy suggestions
+  run /copyai first.
+
+  /copyai researches your competitors,
+  sources real customer language from
+  Reddit, review sites and social
+  platforms, and builds a copy strategy
+  grounded in evidence before auditing.
+
+  Run /copy now for a standard audit
+  Run /copyai for intelligence-driven
+  copy strategy and rewrites
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ===========================================
 PHASE 1 - BUILD OR LOAD VOICE GUIDE

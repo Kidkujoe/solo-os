@@ -1,5 +1,28 @@
 # Changelog
 
+## v1.9.0
+
+- Added /compass command with PRISM-PV framework for full product intelligence
+- Added /compass-feature for single feature evaluation using PRISM-PV
+- Added /compass-project for new project market validation before writing code
+- Added /compass-retro for retrospective calibration of scoring accuracy
+- PRISM-PV framework: Pain signal (0-6), Revenue impact (0-4), Implementation difficulty (0-2), Strategic fit (0-3), Market demand (0-3), Painkiller vs Vitamin (0-2) — max 25 with modifiers
+- Five Painkiller classifications earned from behavioural evidence: Critical, Strong, Hybrid, Strong Vitamin, Pure Vitamin
+- Painkiller urgency: Acute (ACT NOW), Growing (SCHEDULE URGENTLY), Latent, Triggered (STAGE GATE)
+- Score modifiers: Window Opening/Closing (+3/+2), Strong Moat (+2), North Star Mover (+2), Build vs Buy Shortcut (+2), Word of Mouth (+2), High Maintenance (-2), Weak Moat + Low Signal (-3), Strategic Conflict (-5)
+- Three feature gap types: unmet demand (gold), table stakes risk, acquisition opportunity
+- Build vs buy vs integrate check on every high-score feature
+- Cannibalisation and conflict checks before finalising roadmap
+- Validation recommendations for moderate-signal features (fake door, survey, manual delivery, wait)
+- Four roadmap views: ranked, effort vs impact matrix, time horizon, Painkiller vs Vitamin
+- Anti-roadmap: Not Now, Never Build, Window Closed, Watch List with specific reasons
+- Existing feature audit: Double Down, Maintain, Question, Remove
+- STRATEGY.md created via five focused questions on first run
+- COMPASS.md persistent memory with full feature database and evidence
+- COMPASS HTML report with opportunity cards, competitive intelligence, evidence wall
+- Atlas, test-deep, design, copyai all reference COMPASS for alignment
+- Retrospective command calibrates scoring accuracy over time
+
 ## v1.8.1
 
 - Added Pattern and Signal Threshold System to Copy Intelligence skill

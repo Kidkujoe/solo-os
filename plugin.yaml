@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.8.1
+version: 1.9.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -162,6 +162,33 @@ commands:
       sessions. Delete, archive, or browse
       screenshots by project and session.
     file: commands/screenshots.md
+
+  - name: compass
+    description: >
+      Product intelligence with PRISM-PV
+      framework. Researches competitors,
+      mines reviews, scores features,
+      produces ranked roadmap with evidence
+      and anti-roadmap.
+    file: commands/compass.md
+
+  - name: compass-feature
+    description: >
+      Evaluate a specific feature using
+      PRISM-PV. Score, classify and recommend.
+    file: commands/compass-feature.md
+
+  - name: compass-project
+    description: >
+      Full market validation for a new
+      project idea before writing code.
+    file: commands/compass-project.md
+
+  - name: compass-retro
+    description: >
+      Retrospective comparing COMPASS
+      predictions against actual outcomes.
+    file: commands/compass-retro.md
 
   - name: addaccount
     description: >

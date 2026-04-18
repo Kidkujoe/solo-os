@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.9.1
+
+- HTML report now includes "Your Next Command" section that translates findings into specific commands to run
+- Smart routing: security issues → /pillars, design drift → /design, copy issues → /copy or /copyai, SEO gaps → /seo, planning → /compass, regressions → /atlas-check
+- Compact command reference card added at end of every report, grouped by purpose: Testing and Fixes, Product Intelligence, Quality and Audits, Utilities
+- Each command shown with one-line purpose and "when to run it" hint
+- Helps users discover the full plugin capability from any test report
+
 ## v1.9.0
 
 - Added /compass command with PRISM-PV framework for full product intelligence

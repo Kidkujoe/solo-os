@@ -413,7 +413,23 @@ Classify each issue:
 - Medium: Code quality issue or minor bug
 - Low: Style issue or improvement suggestion
 
-STEP 12 - DESIGN INTEGRITY CHECK
+STEP 12 - LIGHTWEIGHT EMPATHY CHECK
+Read EMPATHY.md if it exists.
+
+Run the Ghost User Test for Group 2 (New User) on any new or changed
+features. Document friction points introduced by the changes.
+
+Include findings in the test report. For full empathy audit run /empathy.
+
+Display:
+  EMPATHY CHECK
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Friction points introduced: [count]
+  Abandon risks: [count]
+  Run /empathy for full audit across all six user groups.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 13 - DESIGN INTEGRITY CHECK
 Read DESIGN.md. If it has content, run the design integrity check
 on all changed files since last test.
 
@@ -438,7 +454,7 @@ Display:
 
 Include findings in the final report.
 
-STEP 13 - CODERABBIT SWEEP
+STEP 14 - CODERABBIT SWEEP
 If CodeRabbit CLI is installed:
 - Run a full sweep on the project
 - Capture all findings
@@ -448,7 +464,7 @@ If CodeRabbit CLI is installed:
 
 If not installed, skip this step.
 
-STEP 14 - ISSUE TRIAGE AND FIX APPROVAL
+STEP 15 - ISSUE TRIAGE AND FIX APPROVAL
 Display all issues found grouped by severity.
 
 For Critical and High issues ask the user:
@@ -475,7 +491,7 @@ For Critical and High issues ask the user:
 
 Wait for response. If 4, skip to STEP 14.
 
-STEP 14B - MULTI-AGENT FIX SYSTEM
+STEP 15B - MULTI-AGENT FIX SYSTEM
 When the user approves fixes, spawn specialist agents
 to work on them in parallel using the Agent tool.
 
@@ -614,7 +630,7 @@ Add to the report in plain English:
 - Each fix grouped by agent with plain English description
 - Whether Test Agent verified each fix
 
-STEP 15 - MAGIC LINK SECURITY AUDIT
+STEP 16 - MAGIC LINK SECURITY AUDIT
 If the project uses magic links:
 - Check token randomness and length
 - Check token expiry time
@@ -624,7 +640,7 @@ If the project uses magic links:
 - Check for enumeration vulnerabilities
 - Write security findings to test-session.md
 
-STEP 16 - BASIC COPY AND SEO CHECK
+STEP 17 - BASIC COPY AND SEO CHECK
 Lightweight version — runs automatically in deep test mode.
 For the full audit run /copy and /seo separately.
 
@@ -652,7 +668,7 @@ Display findings briefly:
   Run /copy and /seo for the full audit.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 17 - FOUR PILLARS PRODUCTION READINESS AUDIT
+STEP 18 - FOUR PILLARS PRODUCTION READINESS AUDIT
 This runs automatically in deep test mode.
 Read the actual code and make a real judgement on each pillar.
 Be specific — name files and line numbers. No generic advice.
@@ -733,13 +749,13 @@ pillar cards, score bars, rating badges, and every finding in plain
 English with specific file references, why it matters, how to fix,
 and urgency.
 
-STEP 18 - WRITE ALL SESSION DATA
+STEP 19 - WRITE ALL SESSION DATA
 - Write complete findings to test-session.md
 - Save all structured data to test-data.json
 - Ensure all screenshots are organised in screenshots folder
 - Create a screenshots index
 
-STEP 19 - GENERATE COMPREHENSIVE HTML REPORT
+STEP 20 - GENERATE COMPREHENSIVE HTML REPORT
 - Read the report template
 - Fill in ALL sections with full detail
 - Write plain English summaries
@@ -754,7 +770,7 @@ STEP 19 - GENERATE COMPREHENSIVE HTML REPORT
 - Save to ~/.claude/context/test-report.html
 - Open in Chrome
 
-STEP 20 - FINAL SUMMARY
+STEP 21 - FINAL SUMMARY
 Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -777,7 +793,7 @@ Display:
   ~/.claude/context/test-report.html
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 21 - SCREENSHOT CLEANUP PROMPT
+STEP 22 - SCREENSHOT CLEANUP PROMPT
 After the final summary ask:
   This session took [count] screenshots. Total size: [size].
   1. Keep all  2. Keep important only  3. Archive to zip  4. Delete all  5. Ask next time

@@ -157,6 +157,8 @@ STRONG VITAMIN (1): No behaviour consequences but strong appreciation. RETENTION
 PURE VITAMIN (0): Nice to have. NICE TO HAVE.
 
 MODIFIERS:
++3 Addresses documented friction (feature resolves a friction point
+   in EMPATHY.md — validated UX pain)
 +3 Window Opening (regulation, competitor removed feature, new API, strong trend)
 +2 Window Closing (competitors converging, add urgency flag)
 +2 Strong Moat (defensible, unique data, deep integration)
@@ -265,6 +267,10 @@ Update HEALTH.md: last COMPASS run, features identified, top opportunity, critic
 ===========================================
 PHASE 13 - ATLAS INTEGRATION
 ===========================================
+
+Empathy check: if EMPATHY.md shows the journey this feature sits in has
+multiple friction points already, flag that fixing existing friction may
+be more valuable than adding the new feature.
 
 Atlas: include top roadmap item (score 15+) in recommendations.
 Atlas-feature: update COMPASS.md when roadmap feature is completed.

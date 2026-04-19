@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "1.9.1",
+  "version": "2.0.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -123,6 +123,11 @@
       "name": "screenshots",
       "description": "Manage screenshots from all test sessions. Delete, archive, or browse by project and session.",
       "file": "commands/screenshots.md"
+    },
+    {
+      "name": "empathy",
+      "description": "Human-centred UX audit using the JOURNEY framework. Six user groups, Ghost User narratives, emotional arc, trust progression, prioritised friction map.",
+      "file": "commands/empathy.md"
     },
     {
       "name": "compass",

@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.0.0 — Empathy System complete
+
+This version marks Visual-Test-Pro reaching its complete vision.
+Every dimension of product quality is now covered: technical, visual,
+content, market and human.
+
+- Added /empathy command with JOURNEY framework (J-O-U-R-N-E-Y: Job clarity, Orientation, Uncertainty, Recovery, Navigation, Expectation matching, Your next step)
+- Six user group system derived from STRATEGY.md: First-time Visitor, New User, Returning User, Struggling User, Power User, Evaluator
+- Ghost User Test protocol producing first-person narratives for each group
+- Mental model mapping and gap analysis
+- Emotional arc analysis with first success timing assessment
+- Three-level goal hierarchy testing (immediate, underlying, life goal)
+- Trust progression audit across six rungs: Attention, Information, Effort, Habit, Payment, Advocacy
+- Interruption recovery testing across five scenarios (onboarding, task, session, device, absence)
+- Expertise journey testing for Beginner, Intermediate, Power User
+- Social context evaluation: sharing, collaboration, reporting, recommendation
+- Failure state audit: user error, system error, empty states, blocked states, loading states
+- Progress and momentum system testing
+- Accessibility as UX: keyboard, screen reader, cognitive load, motor, colour
+- Complete friction map: abandon points, abandon risks, backtrack, pause, micro
+- Prioritised fix list with effort estimates and expected impact
+- Ghost User Story HTML report with narrative format, emotional arc visualisation, friction map grid, trust ladder
+- EMPATHY.md persistent memory in atlas context
+- Atlas updated to surface abandon points in daily recommendations before suggesting new features
+- Atlas-feature post-feature checklist adds Step 10 UX empathy check
+- Test-deep includes lightweight empathy check
+- Compass scoring adds +3 modifier when feature addresses documented friction
+- Compass flags when fixing existing friction may be more valuable than new feature
+
 ## v1.9.1
 
 - HTML report now includes "Your Next Command" section that translates findings into specific commands to run

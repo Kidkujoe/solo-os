@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 1.9.1
+version: 2.0.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -162,6 +162,15 @@ commands:
       sessions. Delete, archive, or browse
       screenshots by project and session.
     file: commands/screenshots.md
+
+  - name: empathy
+    description: >
+      Human-centred UX audit using the JOURNEY
+      framework. Six user groups, Ghost User
+      narratives, emotional arc, trust
+      progression, friction map with
+      prioritised fixes.
+    file: commands/empathy.md
 
   - name: compass
     description: >

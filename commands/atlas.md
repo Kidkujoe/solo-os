@@ -23,6 +23,8 @@ Read all context files silently:
 - ~/.claude/context/atlas/HEALTH.md
 - ~/.claude/context/atlas/VOICE.md
 - ~/.claude/context/atlas/SEO.md
+- ~/.claude/context/atlas/COMPASS.md
+- ~/.claude/context/atlas/EMPATHY.md
 - ~/.claude/context/test-session.md
 - ~/.claude/context/agent-state.json if exists
 - ~/.claude/context/test-accounts.md
@@ -364,6 +366,11 @@ After any feature is built or updated run automatically:
   Step 7: Update product brain with changes
   Step 8: Terminology check against VOICE.md
   Step 9: Basic SEO check (title, meta, H1, indexing)
+  Step 10: UX empathy check — test as Group 1 (First-time visitor)
+  and Group 2 (New user). Can they find and use the new feature without
+  being told it exists? Does it introduce friction? Does it disrupt
+  existing journeys?
+  Display: Empathy check passed / [count] friction points introduced
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   VERDICT:
@@ -409,6 +416,19 @@ Priority order:
 5. Most recently changed code
 6. Closest to complete features
 7. Compounding consistency issues
+
+EMPATHY AWARENESS:
+If EMPATHY.md shows any abandon points, surface them in the daily
+recommendation BEFORE new features are suggested.
+
+Display:
+  UX ALERT FROM EMPATHY AUDIT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [count] abandon points exist in the product that are causing
+  users to leave before completing their goal.
+  These should be fixed before new features are added.
+  Run /empathy to see the full friction map and prioritised fixes.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 COPY AND SEO AWARENESS:
 If VOICE.md does not exist yet: recommend running /copy first

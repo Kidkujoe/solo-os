@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -148,6 +148,36 @@
       "name": "compass-retro",
       "description": "Retrospective comparing COMPASS predictions against outcomes.",
       "file": "commands/compass-retro.md"
+    },
+    {
+      "name": "stack-profile",
+      "description": "Builds your permanent developer profile with experience, comfort levels, history, goals and constraints.",
+      "file": "commands/stack-profile.md"
+    },
+    {
+      "name": "stack-recommend",
+      "description": "Personalised tech stack recommendation based on your profile, history and the specific product type.",
+      "file": "commands/stack-recommend.md"
+    },
+    {
+      "name": "stack-audit",
+      "description": "Health check on current stack. Community health, version currency, technical debt score. --deep for migration planning.",
+      "file": "commands/stack-audit.md"
+    },
+    {
+      "name": "stack-compare",
+      "description": "Compare two technologies personalised to your skill level and project context.",
+      "file": "commands/stack-compare.md"
+    },
+    {
+      "name": "stack-update",
+      "description": "Update your developer profile after finishing a project or learning something new.",
+      "file": "commands/stack-update.md"
+    },
+    {
+      "name": "new-project",
+      "description": "Complete new project kickstart. Idea to ready-to-code in one session. Validate, strategy, stack, scaffold, first roadmap.",
+      "file": "commands/new-project.md"
     },
     {
       "name": "performance",

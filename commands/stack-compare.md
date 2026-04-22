@@ -1,6 +1,6 @@
 ---
-name: compass-project
-description: Full market validation for a new project idea. Research the problem space, identify the market, find competitors, validate demand, score the opportunity and produce an initial feature roadmap before writing a line of code.
+name: stack-compare
+description: Compare two technologies for your exact use case and skill level. Uses your developer profile to personalise. Not generic pros/cons.
 allowed-tools: Bash
 ---
 
@@ -105,68 +105,58 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
-Validating new project: $ARGUMENTS
+Read ~/.claude/context/DEVELOPER_PROFILE.md.
 
-This command is for projects that do not have a codebase yet.
+$ARGUMENTS format: "[tech-a] vs [tech-b]"
+Examples: "prisma vs drizzle", "vercel vs fly.io", "nextjs vs remix"
+If format unclear ask for two technologies.
 
-Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists
-Read $STRATEGY_MD if it exists
+PHASE 1 - RESEARCH BOTH:
+For each technology:
+web_search "[tech] developer experience [current year]"
+web_search "[tech] problems issues reddit [current year]"
+web_search "[tech] vs [other] hacker news"
+web_search "[tech] at scale [current year]"
 
-DEVELOPER PROFILE INTEGRATION (v2.4.0):
-When scoring Implementation difficulty in PRISM-PV, personalise the
-I score based on the developer's profile:
-- If recommended stack for this project type matches technologies in
-  developer's Adopt tier: I score is HIGHER (easier for this developer)
-- If recommended stack requires technologies developer has never used:
-  I score is LOWER (harder for this developer)
+Look for: real developer sentiment (not marketing), pain points at
+different scales, community health and trajectory, migration stories.
 
-Note this explicitly in scoring:
-"Implementation difficulty rated [X] for you specifically because
-[reason from profile — e.g. 'you have used Next.js on 3 projects'
-or 'this would require learning Prisma which you've never used']"
+PHASE 2 - PERSONALISE:
+Cross-reference against developer profile:
+- Has developer used either? If yes, rating and incidents?
+- Do constraints favour one?
+- Does preferred working style favour one?
+- Does goal priority order favour one?
+- Is one in Adopt tier already?
 
-STEP 1 - STRATEGY QUESTIONS
-Ask the five strategy questions from COMPASS Phase 1 if not answered.
+PHASE 3 - DISPLAY:
 
-STEP 2 - PROBLEM SPACE VALIDATION
-Is this a real problem enough people have?
-Search: how many people talk about this problem across platforms,
-whether solutions are actively searched for, whether existing solutions
-are inadequate based on reviews, whether the problem is growing or declining.
-
-STEP 3 - MARKET SIZE SIGNALS
-Practical signals not formal TAM:
-Competitors with meaningful traction? (PH upvotes, G2 counts, Reddit sizes)
-People paying for partial solutions?
-Search volume growing?
-
-STEP 4 - COMPETITOR RESEARCH
-Run COMPASS Phase 3 for the problem space.
-
-STEP 5 - SIGNAL PROCESSING
-Run COMPASS Phase 4. Cluster and filter.
-
-STEP 6 - INITIAL FEATURE SET
-Score each potential feature using PRISM-PV.
-Identify the Critical Painkiller — the one feature without which
-the product cannot be sold.
-
-STEP 7 - VERDICT
-
+  STACK COMPARISON
+  [Tech A] vs [Tech B]  For: [project type]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PROJECT VALIDATION VERDICT
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Project: [name]
-  Market signal: [STRONG/MODERATE/WEAK]
-  Recommended: [BUILD/VALIDATE/RECONSIDER/DO NOT BUILD]
+  WHAT EACH IS: plain English sentence per technology.
 
-  Critical Painkiller: [yes/no — what it is]
+  YOUR HISTORY WITH EACH:
+  A: [used on X projects / never / rated as X / incidents yes/no]
+  B: [same]
 
-  Minimum viable feature set:
-  [list must-haves to validate the core painkiller]
+  FOR YOUR SPECIFIC USE CASE:
+  A better because: [reasons specific to this project]
+  B better because: [reasons specific to this project]
 
-  Biggest risk: [one sentence]
-  Biggest opportunity: [one sentence]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FOR YOUR SKILLS AND GOALS:
+  A fits because: [specific reasons from profile]
+  B fits because: [specific reasons from profile]
 
-Save to COMPASS.md under Project Validations.
+  WHAT REAL DEVELOPERS SAY:
+  A: [honest summary from research]
+  B: [honest summary from research]
+
+  THE HONEST TRADE-OFFS:
+  Choose A if: [specific conditions]
+  Choose B if: [specific conditions]
+
+  MY RECOMMENDATION FOR YOU:
+  [Clear recommendation with specific reasoning from their profile]
+  Confidence: HIGH / MEDIUM / LOW
+  [If medium or low explain why not clear cut]

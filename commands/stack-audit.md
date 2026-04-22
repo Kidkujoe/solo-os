@@ -1,6 +1,6 @@
 ---
-name: compass-project
-description: Full market validation for a new project idea. Research the problem space, identify the market, find competitors, validate demand, score the opportunity and produce an initial feature roadmap before writing a line of code.
+name: stack-audit
+description: Health check on current project tech stack. Community health, known issues, version currency, technical debt score. --deep adds architecture assessment and migration planning.
 allowed-tools: Bash
 ---
 
@@ -105,68 +105,59 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
-Validating new project: $ARGUMENTS
+Read ~/.claude/context/DEVELOPER_PROFILE.md and $PRODUCT_MD.
+Detect stack from package.json or equivalent.
 
-This command is for projects that do not have a codebase yet.
+PHASE 1 - STACK INVENTORY:
+List every dependency with current version. Classify as CORE (product
+won't run without it), IMPORTANT (significant feature depends on it),
+UTILITY (helper), DEV (dev only).
 
-Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists
-Read $STRATEGY_MD if it exists
+Display framework, database, auth, deployment, core deps count, total
+deps count.
 
-DEVELOPER PROFILE INTEGRATION (v2.4.0):
-When scoring Implementation difficulty in PRISM-PV, personalise the
-I score based on the developer's profile:
-- If recommended stack for this project type matches technologies in
-  developer's Adopt tier: I score is HIGHER (easier for this developer)
-- If recommended stack requires technologies developer has never used:
-  I score is LOWER (harder for this developer)
+PHASE 2 - COMMUNITY HEALTH per CORE and IMPORTANT dependency:
+Check npm registry: current vs latest version, weekly downloads, last
+published date, repository.
+web_search "[pkg] deprecated", "[pkg] abandoned", "[pkg] alternative".
 
-Note this explicitly in scoring:
-"Implementation difficulty rated [X] for you specifically because
-[reason from profile — e.g. 'you have used Next.js on 3 projects'
-or 'this would require learning Prisma which you've never used']"
+Classify as:
+HEALTHY: actively maintained, growing/stable downloads, no deprecation
+WATCH: maintained but slowing, downloads declining, infrequent releases
+AT RISK: not updated 1+ year, declining downloads, unresolved issues,
+  community discussing alternatives
+DEPRECATED/ABANDONED: official deprecation, or no updates 2+ years
+  with no maintainer response
 
-STEP 1 - STRATEGY QUESTIONS
-Ask the five strategy questions from COMPASS Phase 1 if not answered.
+PHASE 3 - VERSION CURRENCY:
+SAFE TO UPDATE (patch/minor): low risk, provide update command
+REVIEW BEFORE UPDATING (minor with potential breaks): check changelog
+MAJOR UPDATE - PLAN REQUIRED: breaking changes, migration guide,
+  effort estimate
 
-STEP 2 - PROBLEM SPACE VALIDATION
-Is this a real problem enough people have?
-Search: how many people talk about this problem across platforms,
-whether solutions are actively searched for, whether existing solutions
-are inadequate based on reviews, whether the problem is growing or declining.
+PHASE 4 - TECHNICAL DEBT SCORE:
+Start at 100.
+-10 per AT RISK dependency
+-20 per DEPRECATED dependency
+-5 per dep more than 2 major versions behind
+-15 per dep with known CVEs
+-25 per abandoned dep with no alternative
 
-STEP 3 - MARKET SIZE SIGNALS
-Practical signals not formal TAM:
-Competitors with meaningful traction? (PH upvotes, G2 counts, Reddit sizes)
-People paying for partial solutions?
-Search volume growing?
+Score: 80-100 HEALTHY / 60-79 MANAGEABLE / 40-59 ACCUMULATING /
+Below 40 CRITICAL.
 
-STEP 4 - COMPETITOR RESEARCH
-Run COMPASS Phase 3 for the problem space.
+PHASE 5 - DISPLAY:
+Overall health score, status, HEALTHY/WATCH/AT RISK/DEPRECATED lists,
+safe to update commands, major updates requiring planning, recommended
+actions (this week / this month / this quarter).
 
-STEP 5 - SIGNAL PROCESSING
-Run COMPASS Phase 4. Cluster and filter.
+IF --deep FLAG:
+ARCHITECTURE ASSESSMENT: is current architecture appropriate for
+current scale? First scaling bottlenecks? What changes at 10x usage?
 
-STEP 6 - INITIAL FEATURE SET
-Score each potential feature using PRISM-PV.
-Identify the Critical Painkiller — the one feature without which
-the product cannot be sold.
+MIGRATION PLANNING: for each AT RISK or DEPRECATED dep provide
+specific migration plan: what to migrate to, why this alternative,
+effort in hours/days, migration risk, recommended timing.
 
-STEP 7 - VERDICT
-
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PROJECT VALIDATION VERDICT
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Project: [name]
-  Market signal: [STRONG/MODERATE/WEAK]
-  Recommended: [BUILD/VALIDATE/RECONSIDER/DO NOT BUILD]
-
-  Critical Painkiller: [yes/no — what it is]
-
-  Minimum viable feature set:
-  [list must-haves to validate the core painkiller]
-
-  Biggest risk: [one sentence]
-  Biggest opportunity: [one sentence]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Save to COMPASS.md under Project Validations.
+Update DEVELOPER_PROFILE.md with lessons from this audit.
+Write to Obsidian LessonsLearned if vault exists.

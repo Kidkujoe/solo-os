@@ -1,6 +1,6 @@
 ---
-name: compass-project
-description: Full market validation for a new project idea. Research the problem space, identify the market, find competitors, validate demand, score the opportunity and produce an initial feature roadmap before writing a line of code.
+name: stack-recommend
+description: Personalised tech stack recommendation based on your developer profile, project history and the specific product type. References your actual experience, not generic best practice.
 allowed-tools: Bash
 ---
 
@@ -105,68 +105,77 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
-Validating new project: $ARGUMENTS
+Read ~/.claude/context/DEVELOPER_PROFILE.md
+Read $PRODUCT_MD and $STRATEGY_MD if they exist
 
-This command is for projects that do not have a codebase yet.
+If DEVELOPER_PROFILE.md missing or not CONFIRMED:
+  DEVELOPER PROFILE NEEDED FIRST
+  Stack recommendations are generic without your profile.
+  Run /stack-profile first (10 minutes, once).
+  STOP.
 
-Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists
-Read $STRATEGY_MD if it exists
+$ARGUMENTS describes the project. If empty use current project context.
 
-DEVELOPER PROFILE INTEGRATION (v2.4.0):
-When scoring Implementation difficulty in PRISM-PV, personalise the
-I score based on the developer's profile:
-- If recommended stack for this project type matches technologies in
-  developer's Adopt tier: I score is HIGHER (easier for this developer)
-- If recommended stack requires technologies developer has never used:
-  I score is LOWER (harder for this developer)
+PHASE 1 - CLASSIFY PROJECT TYPE:
+SaaS web app / marketing site / API service / mobile backend /
+dev tool / CLI / e-commerce / community platform / internal tool /
+AI or data product. Each has different optimal stack.
 
-Note this explicitly in scoring:
-"Implementation difficulty rated [X] for you specifically because
-[reason from profile — e.g. 'you have used Next.js on 3 projects'
-or 'this would require learning Prisma which you've never used']"
+Also determine: primary user type, expected scale, time pressure,
+revenue needed quickly.
 
-STEP 1 - STRATEGY QUESTIONS
-Ask the five strategy questions from COMPASS Phase 1 if not answered.
+PHASE 2 - RESEARCH CURRENT STATE:
+web_search "[project type] tech stack [current year]"
+web_search "[project type] best framework reddit [current year]"
+Look for: developer sentiment trends, known scaling issues at relevant
+sizes, recent deprecations, new options. Ensures recommendations
+reflect current reality.
 
-STEP 2 - PROBLEM SPACE VALIDATION
-Is this a real problem enough people have?
-Search: how many people talk about this problem across platforms,
-whether solutions are actively searched for, whether existing solutions
-are inadequate based on reviews, whether the problem is growing or declining.
+PHASE 3 - BUILD RECOMMENDATION:
+Rules:
+1. Start with what developer already knows well
+2. Only suggest unfamiliar if compelling specific reason
+3. Reference actual project history explicitly
+4. Acknowledge stated constraints
+5. Match working preferences
+6. Reflect goal priority order
 
-STEP 3 - MARKET SIZE SIGNALS
-Practical signals not formal TAM:
-Competitors with meaningful traction? (PH upvotes, G2 counts, Reddit sizes)
-People paying for partial solutions?
-Search volume growing?
-
-STEP 4 - COMPETITOR RESEARCH
-Run COMPASS Phase 3 for the problem space.
-
-STEP 5 - SIGNAL PROCESSING
-Run COMPASS Phase 4. Cluster and filter.
-
-STEP 6 - INITIAL FEATURE SET
-Score each potential feature using PRISM-PV.
-Identify the Critical Painkiller — the one feature without which
-the product cannot be sold.
-
-STEP 7 - VERDICT
-
+Display:
+  STACK RECOMMENDATION
+  Project: [name]  Type: [classification]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PROJECT VALIDATION VERDICT
+  RECOMMENDED STACK:
+  Frontend / Backend / Database / Auth / Deployment / Key extras
+
+  WHY THIS STACK FOR YOU SPECIFICALLY:
+  For each major decision explain why in terms of developer's actual
+  history. Examples:
+  "Next.js — you have used this on 3 projects with no incidents. In
+  your Adopt tier. For this project where you want to move fast, obvious."
+  "Supabase over PlanetScale — you flagged database setup as painful on
+  previous projects. Supabase combines DB + auth in one dashboard,
+  addressing that pain directly."
+
+  WHAT I AM NOT RECOMMENDING AND WHY:
+  For any obvious alternative that was rejected, explain why given
+  developer's context. Examples:
+  "Not Remix — similar to Next.js but no experience with it. No reason
+  to learn something new when Next.js serves this use case well."
+
+  TRADE-OFFS TO BE AWARE OF:
+  Honest assessment of what this stack does not do well, and why it's
+  still the right choice given stated goals.
+
+  ESTIMATED SETUP TIME:
+  With your experience: [X hours]. Most time will be: [what].
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Project: [name]
-  Market signal: [STRONG/MODERATE/WEAK]
-  Recommended: [BUILD/VALIDATE/RECONSIDER/DO NOT BUILD]
+  Use this stack? yes / adjust / show alternatives
 
-  Critical Painkiller: [yes/no — what it is]
+If adjust: ask what to change and why, update recommendation.
+If show alternatives: show two alternatives with specific trade-offs
+for this developer vs the primary recommendation.
 
-  Minimum viable feature set:
-  [list must-haves to validate the core painkiller]
-
-  Biggest risk: [one sentence]
-  Biggest opportunity: [one sentence]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Save to COMPASS.md under Project Validations.
+After confirmation:
+- Save decision to $DECISIONS_MD in project context
+- Write TechDecision note to Obsidian if vault exists
+- Write to LessonsLearned if relevant

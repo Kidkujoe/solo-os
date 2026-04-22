@@ -1,5 +1,54 @@
 # Changelog
 
+## v2.4.0 — Stack Intelligence and New Project System
+
+Introduces a permanent developer profile that lives outside any single
+project and personalises every future technical recommendation.
+
+Six new commands:
+- `/stack-profile` — Builds your permanent DEVELOPER_PROFILE.md by
+  inferring from existing project contexts and asking 8 targeted
+  questions. One-time setup (~10 minutes). Saves globally.
+- `/stack-recommend` — Personalised tech stack for any project.
+  References your actual project history explicitly. Never recommends
+  Never Again tier technologies. Estimates setup time by your
+  familiarity.
+- `/stack-audit` — Health check on current stack. Community health,
+  version currency, technical debt score (0-100). `--deep` adds
+  architecture assessment and migration planning.
+- `/stack-compare` — Compare two technologies personalised to your
+  skill level and project context. Not generic pros/cons.
+- `/stack-update` — Update your profile after finishing a project,
+  having an incident, learning something new or changing goals.
+- `/new-project` — Complete kickstart from idea to running code in
+  one session. Seven phases covering validation, strategy, stack,
+  scaffolding, first roadmap and Obsidian setup. Target under 40 min.
+
+Global developer profile:
+- DEVELOPER_PROFILE.md at ~/.claude/context/ (not per-project)
+- Stores shipped product history with honest assessments
+- Technology comfort ratings with production and incident tracking
+- Personal Tech Radar: Adopt, Trial, Assess, Hold, Never Again
+- Hard constraints, working preferences, goal priority order
+- Every command that recommends technology reads this first
+
+Obsidian Developer folder (if vault exists):
+- `Developer/Profile.md` — summary mirror of DEVELOPER_PROFILE.md
+- `Developer/TechRadar.md` — live tech radar across all projects
+- `Developer/TechDecisions/` — per-project stack decision notes
+- `Developer/LessonsLearned/` — incident and learning notes
+
+Integration updates:
+- /compass-project personalises I (Implementation) score in PRISM-PV
+  based on developer familiarity with the required stack
+- /atlas reads DEVELOPER_PROFILE.md and never recommends Never Again
+  technologies; explicitly mentions when recommendations align with
+  Adopt tier
+
+This closes the final gap in the plugin: recommendations that
+understood the product but not the person building it. Every future
+technical decision now knows who you are.
+
 ## v2.3.1 - Fix pre-existing path isolation violations
 
 Moves five hardcoded `~/.claude/context/` paths in `pillars`, `test-deep`

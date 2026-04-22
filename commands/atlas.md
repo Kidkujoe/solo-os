@@ -545,6 +545,20 @@ Display:
   Run /empathy to see the full friction map and prioritised fixes.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+DEVELOPER PROFILE AWARENESS (v2.4.0):
+Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists.
+
+Use the profile when making technical recommendations:
+- NEVER recommend a technology in the developer's Never Again tier
+- Flag with a note when recommending a technology with known incidents
+  from developer's history
+- Explicitly mention when a recommendation aligns with their Adopt tier
+  (builds confidence in the recommendation)
+- Consider their stated constraints, preferences and goal priority order
+
+If profile doesn't exist: note that recommendations would be more
+personal with /stack-profile but proceed with generic best practice.
+
 OPERATIONAL HEALTH AWARENESS:
 Check these operational signals and surface in the daily recommendation:
 

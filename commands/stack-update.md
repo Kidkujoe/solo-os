@@ -1,6 +1,6 @@
 ---
-name: compass-project
-description: Full market validation for a new project idea. Research the problem space, identify the market, find competitors, validate demand, score the opportunity and produce an initial feature roadmap before writing a line of code.
+name: stack-update
+description: Update your developer profile after finishing a project, having a new experience, learning something new or changing goals or constraints.
 allowed-tools: Bash
 ---
 
@@ -105,68 +105,37 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
-Validating new project: $ARGUMENTS
+Read ~/.claude/context/DEVELOPER_PROFILE.md.
 
-This command is for projects that do not have a codebase yet.
+$ARGUMENTS describes what to update. If empty show current profile and
+ask what to change.
 
-Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists
-Read $STRATEGY_MD if it exists
+UPDATE TYPES:
 
-DEVELOPER PROFILE INTEGRATION (v2.4.0):
-When scoring Implementation difficulty in PRISM-PV, personalise the
-I score based on the developer's profile:
-- If recommended stack for this project type matches technologies in
-  developer's Adopt tier: I score is HIGHER (easier for this developer)
-- If recommended stack requires technologies developer has never used:
-  I score is LOWER (harder for this developer)
+FINISHED A PROJECT:
+Add to shipped products section. Add honest assessment of what worked
+and what caused pain. Update technology comfort ratings based on
+experience. Update Tech Radar accordingly.
 
-Note this explicitly in scoring:
-"Implementation difficulty rated [X] for you specifically because
-[reason from profile — e.g. 'you have used Next.js on 3 projects'
-or 'this would require learning Prisma which you've never used']"
+HAD AN INCIDENT:
+Record incident against relevant technology. This affects future
+recommendations for that technology. Consider moving to Hold or
+Never Again tier.
 
-STEP 1 - STRATEGY QUESTIONS
-Ask the five strategy questions from COMPASS Phase 1 if not answered.
+LEARNED SOMETHING NEW:
+Update comfort level for technology. Move up Tech Radar if appropriate
+(Assess → Trial → Adopt).
 
-STEP 2 - PROBLEM SPACE VALIDATION
-Is this a real problem enough people have?
-Search: how many people talk about this problem across platforms,
-whether solutions are actively searched for, whether existing solutions
-are inadequate based on reviews, whether the problem is growing or declining.
+CHANGED GOALS:
+Update goal priority order. Update constraints if any changed. Note
+what changed and why.
 
-STEP 3 - MARKET SIZE SIGNALS
-Practical signals not formal TAM:
-Competitors with meaningful traction? (PH upvotes, G2 counts, Reddit sizes)
-People paying for partial solutions?
-Search volume growing?
+TRYING SOMETHING NEW:
+Move technology into Trial tier. Record what project you're trying
+it on and what you want to learn.
 
-STEP 4 - COMPETITOR RESEARCH
-Run COMPASS Phase 3 for the problem space.
-
-STEP 5 - SIGNAL PROCESSING
-Run COMPASS Phase 4. Cluster and filter.
-
-STEP 6 - INITIAL FEATURE SET
-Score each potential feature using PRISM-PV.
-Identify the Critical Painkiller — the one feature without which
-the product cannot be sold.
-
-STEP 7 - VERDICT
-
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PROJECT VALIDATION VERDICT
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Project: [name]
-  Market signal: [STRONG/MODERATE/WEAK]
-  Recommended: [BUILD/VALIDATE/RECONSIDER/DO NOT BUILD]
-
-  Critical Painkiller: [yes/no — what it is]
-
-  Minimum viable feature set:
-  [list must-haves to validate the core painkiller]
-
-  Biggest risk: [one sentence]
-  Biggest opportunity: [one sentence]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Save to COMPASS.md under Project Validations.
+After any update:
+- Display what changed and how it will affect future recommendations
+- Update Obsidian Developer/ folder files if vault exists
+- Update LessonsLearned/ if incident was recorded
+- Update TechRadar.md if tier changed

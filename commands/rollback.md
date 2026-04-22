@@ -1,8 +1,9 @@
 ---
-name: status
-description: Get a snapshot of the current test session at any point
-allowed-tools: Bash
+name: rollback
+description: Rollback a merged feature if post-merge verification fails or issues surface after merge.
+allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+
 
 
 ===========================================
@@ -78,85 +79,54 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Read $PRODUCT_MD silently if it exists
-Read $SESSION_FILE
-Read $GLOBAL_ACCOUNTS (filter by PROJECT_ID)
-Read $AGENT_STATE if it exists
+Rolling back: $ARGUMENTS
 
-Display:
-Session started: [time]
-Project: [name]
-Testing: [what]
-Auth type: [type]
-Test account: [email or none]
+STEP 1 - READ PRE-MERGE SNAPSHOT:
+Read $PROJECT_CONTEXT/pre-merge-snapshot.txt for pre-merge commit hash.
+If missing: ask user for the commit hash to roll back to.
 
-Progress:
-[tick] Section 1 Visual Testing - [status]
-[tick] Section 2 Code Review - [status]
-[tick] Section 3 Console Monitoring - [status]
-[tick] Section 4 Responsive - [status]
-[tick] Section 5 Accessibility - [status]
-[tick] Section 6 CodeRabbit - [status]
-[tick] Section 7 Edge Cases - [status]
-[tick] Section 8 Fix Team - [status]
-[tick] Section 9 HTML Report - [status]
+STEP 2 - CONFIRM ROLLBACK:
 
-Restricted areas:
-[list each restricted area and access status]
+  ROLLBACK CONFIRMATION
+  Feature: [name]
+  Merge commit: [hash]
 
-Issues found: [count]
-Issues fixed: [count]
-Warnings remaining: [count]
-Current confidence score: [score]/10
-Currently on: [current section]
-Next up: [what comes next]
+  Rolling back will:
+  - Revert [DEFAULT_BRANCH] to [pre-merge hash]
+  - Remove the merged changes
+  - Preserve the feature branch so work is not lost
 
-If agent-state.json exists and has data for this project:
+  Has anyone pulled [DEFAULT_BRANCH] since the merge?
+  Type yes - use git revert (safer, creates new commit)
+  Type no  - use git reset (cleaner, removes merge commit)
 
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AGENT TEAM STATUS
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  [emoji] [agent name]  [status] [current task]
-  [for each agent in the state file]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Agent messages: [count] ([unread] unread)
-  Conflicts: [count pending]
-  Blocked fixes: [count waiting for user]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Files currently claimed:
-  [filename] — [agent name] ([reason])
-  [for each claimed file]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3 - EXECUTE:
 
-If there are blocked fixes show:
-  BLOCKED — NEEDS YOUR INPUT:
-  [issue description] — [agent name] waiting
-  Type /resume to address this
+If no one pulled (reset):
+  git checkout [DEFAULT_BRANCH]
+  git reset --hard [pre-merge-hash]
+  git push origin [DEFAULT_BRANCH] --force-with-lease
 
-REVIEW STATUS:
-Read $PROJECT_CONTEXT/REVIEWS.md if it exists.
-Run `git branch` to get all branches.
+If others pulled (revert):
+  git checkout [DEFAULT_BRANCH]
+  git revert -m 1 [merge-commit-hash]
+  git push origin [DEFAULT_BRANCH]
 
-Display:
+STEP 4 - VERIFY:
+Open Chrome. Navigate to the feature.
+Confirm it is no longer present. Confirm rest of app works.
 
-  REVIEW STATUS
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Open branches:        [count]
-  Ready to merge:       [count]
-  Review in progress:   [count]
-  Fixes needed:         [count]
-  Conflicts detected:   [count]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5 - DISPLAY RESULT:
 
-If any branch is ready to merge:
-  [branch-name] is ready to merge.
-  Run /merge-ready [branch] to proceed.
+  ROLLBACK COMPLETE
+  [DEFAULT_BRANCH] restored to: [pre-merge hash]
+  Feature branch preserved: [name]
 
-If any review is stale (>48h old):
-  [branch-name] review is [X] hours old.
-  Consider re-running /review-cycle.
+  Next steps:
+  1. Investigate what caused the rollback
+  2. Fix on the feature branch
+  3. Run /review-cycle again when ready
 
-If async CodeRabbit review completed while user was working:
-  CodeRabbit review of [branch] completed while you were working.
-  [count] findings. [count] critical.
-  Run /reviews to see details.
+STEP 6 - UPDATE RECORDS:
+Update REVIEWS.md with rollback record: timestamp, reason (if user provides),
+method used (reset/revert), verification result.

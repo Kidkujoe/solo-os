@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -148,6 +148,26 @@
       "name": "compass-retro",
       "description": "Retrospective comparing COMPASS predictions against outcomes.",
       "file": "commands/compass-retro.md"
+    },
+    {
+      "name": "review-cycle",
+      "description": "Full automated review pipeline with pre-review gates, CodeRabbit, fix approval and merge request.",
+      "file": "commands/review-cycle.md"
+    },
+    {
+      "name": "reviews",
+      "description": "Branch and review status board with conflict detection.",
+      "file": "commands/reviews.md"
+    },
+    {
+      "name": "merge-ready",
+      "description": "Check if a branch is ready to merge with explicit approval flow.",
+      "file": "commands/merge-ready.md"
+    },
+    {
+      "name": "rollback",
+      "description": "Safely rollback a merged feature with verification.",
+      "file": "commands/rollback.md"
     },
     {
       "name": "projects",

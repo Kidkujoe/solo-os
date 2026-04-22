@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 2.0.1
+version: 2.1.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -198,6 +198,34 @@ commands:
       Retrospective comparing COMPASS
       predictions against actual outcomes.
     file: commands/compass-retro.md
+
+  - name: review-cycle
+    description: >
+      Full automated review pipeline.
+      Pre-review gates, CodeRabbit review
+      with live progress, fix approval,
+      PR creation and merge request.
+    file: commands/review-cycle.md
+
+  - name: reviews
+    description: >
+      Branch and review status board.
+      Shows all open branches, review
+      status, merge blockers, conflicts.
+    file: commands/reviews.md
+
+  - name: merge-ready
+    description: >
+      Check if a branch is ready to merge.
+      Runs readiness checks, detects
+      conflicts, requests explicit approval.
+    file: commands/merge-ready.md
+
+  - name: rollback
+    description: >
+      Rollback a merged feature if
+      post-merge verification fails.
+    file: commands/rollback.md
 
   - name: projects
     description: >

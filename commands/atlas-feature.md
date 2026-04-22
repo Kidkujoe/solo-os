@@ -89,5 +89,33 @@ Step 4: Security + reliability check on changed files
 Step 5: Design consistency check against DESIGN.md
 Step 6: CodeRabbit review (if installed)
 Step 7: Update PRODUCT.md and DESIGN.md with changes
+Step 8: Terminology check against VOICE.md
+Step 9: Basic SEO check (title, meta, H1, indexing)
+Step 10: UX empathy check (Group 1 and Group 2 friction)
 
 Give verdict: READY / NEARLY READY / NOT READY
+
+STEP 11 - AUTOMATED REVIEW PIPELINE:
+After the post-feature checklist passes, offer to trigger the full
+review cycle automatically.
+
+Display:
+
+  POST-FEATURE CHECKLIST COMPLETE
+  Starting automated review pipeline
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  This will run:
+  1. Pre-review gates (secrets, deps, build, tests, lint, impact)
+  2. CodeRabbit code review
+  3. Visual browser test
+  4. Fix approval flow
+  5. Documentation check
+  6. Merge readiness assessment
+
+  Estimated time: 10-30 minutes depending on code size and
+  CodeRabbit speed.
+
+  Start now?  Type yes / later
+
+If yes: run /review-cycle with the feature name as argument.

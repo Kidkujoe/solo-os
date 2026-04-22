@@ -529,14 +529,20 @@ Display:
 Include findings in the final report.
 
 STEP 14 - CODERABBIT SWEEP
-If CodeRabbit CLI is installed:
-- Run a full sweep on the project
-- Capture all findings
-- Cross-reference with manual code review
-- Remove duplicates
-- Add unique CodeRabbit findings to the report
+Use the CodeRabbit Detection System from /review-cycle to detect the
+best tool (CLI / GitHub App / VS Code extension) and fire a review.
+Apply the Visual Progress System: streaming output for CLI, 30-second
+polling for GitHub App. Show live finding counts as they arrive.
 
-If not installed, skip this step.
+Run the Review Quality Check: score the review out of 100 using
+coverage, confidence language, finding distribution, completeness,
+and speed. If quality < 60, re-run before proceeding.
+
+Cross-reference findings with manual code review. Remove duplicates.
+Add unique CodeRabbit findings to the report.
+
+If no CodeRabbit detected: skip this step and note in report.
+For the full review pipeline with PR + merge flow, run /review-cycle.
 
 STEP 15 - ISSUE TRIAGE AND FIX APPROVAL
 Display all issues found grouped by severity.

@@ -1,8 +1,9 @@
 ---
-name: status
-description: Get a snapshot of the current test session at any point
+name: reviews
+description: Branch and review status board. Shows all open branches, their review status, what is blocking merge and detects conflicts across branches.
 allowed-tools: Bash
 ---
+
 
 
 ===========================================
@@ -78,85 +79,55 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Read $PRODUCT_MD silently if it exists
-Read $SESSION_FILE
-Read $GLOBAL_ACCOUNTS (filter by PROJECT_ID)
-Read $AGENT_STATE if it exists
+Display the full branch and review status board.
 
-Display:
-Session started: [time]
-Project: [name]
-Testing: [what]
-Auth type: [type]
-Test account: [email or none]
+STEP 1 - GET ALL BRANCHES:
+Run `git branch -a` and `git branch -r`.
 
-Progress:
-[tick] Section 1 Visual Testing - [status]
-[tick] Section 2 Code Review - [status]
-[tick] Section 3 Console Monitoring - [status]
-[tick] Section 4 Responsive - [status]
-[tick] Section 5 Accessibility - [status]
-[tick] Section 6 CodeRabbit - [status]
-[tick] Section 7 Edge Cases - [status]
-[tick] Section 8 Fix Team - [status]
-[tick] Section 9 HTML Report - [status]
+STEP 2 - STATUS OF EACH BRANCH:
+For each non-default branch:
+- Last commit: `git log [branch] -1 --format="%H %s %ar"`
+- Ahead/behind: `git rev-list --left-right --count [DEFAULT_BRANCH]...[branch]`
+- Changed files: `git diff [DEFAULT_BRANCH]...[branch] --name-only`
+- Check for open PR on platform (via `gh pr list --head [branch]`)
 
-Restricted areas:
-[list each restricted area and access status]
+STEP 3 - READ REVIEW HISTORY:
+Read $PROJECT_CONTEXT/REVIEWS.md and match each branch to its review record.
 
-Issues found: [count]
-Issues fixed: [count]
-Warnings remaining: [count]
-Current confidence score: [score]/10
-Currently on: [current section]
-Next up: [what comes next]
+STEP 4 - CONFLICT DETECTION:
+For every pair of non-default branches:
+Run `git diff [branch-a]...[branch-b] --name-only`.
+If any file appears in both: flag as potential conflict.
+Recommend merge order based on which branch was created earlier.
 
-If agent-state.json exists and has data for this project:
+STEP 5 - DISPLAY STATUS BOARD:
 
+  BRANCH AND REVIEW STATUS — [timestamp]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  AGENT TEAM STATUS
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  [emoji] [agent name]  [status] [current task]
-  [for each agent in the state file]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Agent messages: [count] ([unread] unread)
-  Conflicts: [count pending]
-  Blocked fixes: [count waiting for user]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Files currently claimed:
-  [filename] — [agent name] ([reason])
-  [for each claimed file]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  For each branch:
 
-If there are blocked fixes show:
-  BLOCKED — NEEDS YOUR INPUT:
-  [issue description] — [agent name] waiting
-  Type /resume to address this
+  [branch-name]
+  Last commit: [message] ([time ago])
+  Changes: [count] files, +[added] -[removed] lines
+  Status: READY TO MERGE / REVIEW IN PROGRESS / FIXES NEEDED /
+          NOT REVIEWED / PR OPEN
+  Review: [date or NEVER]
+  Quality: [score or N/A]
+  Findings: [fixed] / [total]
+  PR: [link or NONE]
+  Blocking: [what is stopping merge or NOTHING]
 
-REVIEW STATUS:
-Read $PROJECT_CONTEXT/REVIEWS.md if it exists.
-Run `git branch` to get all branches.
+  CONFLICT WARNINGS:
+  [branch-a] and [branch-b] both modified: [files]
+  Recommended merge order:
+  1. [branch] first (branched earlier)
+  2. [branch] second (re-review after first merges)
 
-Display:
+  SUMMARY
+  Total: [count]  Ready: [count]  Review needed: [count]
+  Fixes needed: [count]  Conflicts: [count]
 
-  REVIEW STATUS
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Open branches:        [count]
-  Ready to merge:       [count]
-  Review in progress:   [count]
-  Fixes needed:         [count]
-  Conflicts detected:   [count]
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-If any branch is ready to merge:
-  [branch-name] is ready to merge.
-  Run /merge-ready [branch] to proceed.
-
-If any review is stale (>48h old):
-  [branch-name] review is [X] hours old.
-  Consider re-running /review-cycle.
-
-If async CodeRabbit review completed while user was working:
-  CodeRabbit review of [branch] completed while you were working.
-  [count] findings. [count] critical.
-  Run /reviews to see details.
+  Commands:
+    /review-cycle [branch] - start review
+    /merge-ready [branch]  - check merge readiness
+    /rollback [feature]    - rollback a merge

@@ -1,5 +1,78 @@
 # Changelog
 
+## v2.1.0 — CodeRabbit Automation System
+
+New commands:
+- `/review-cycle` — Full 11-stage pipeline: detection → pre-review gates → commit → push → CodeRabbit → visual test → quality check → fix approval → docs → history → merge readiness
+- `/reviews` — Branch and review status board with cross-branch conflict detection
+- `/merge-ready` — Merge readiness scorecard with stale review detection and explicit approval flow
+- `/rollback` — Safe rollback of merged features with pre-merge snapshot
+
+CodeRabbit detection:
+- Auto-detects CLI, GitHub App, VS Code extension, and .coderabbit.yaml config
+- Version and path displayed for each installation found
+- Recommends best tool based on development stage (CLI for local, GitHub App for PR)
+- Detection cached per project in cr-detection.json
+- Offers to create default .coderabbit.yaml with balanced profile and path_instructions for auth/payment files
+
+Pre-review gate (6 mandatory gates):
+- Secrets scan (STOPS pipeline if found — no skip option)
+- Dependency audit with CVE check and suspicious package flagging (<500 weekly downloads, >2y stale)
+- Build check with streaming output and 60s timeout
+- Test suite with failure details and 120s timeout
+- Lint with auto-fix offer
+- Change impact assessment classifying files as high/medium/low risk (auth, payment, database files marked HIGH)
+
+Visual progress system:
+- Streaming output for CLI reviews
+- 30-second polling for GitHub App reviews
+- Live finding count updates as results arrive
+- Elapsed time always visible
+- Desktop notification on completion if review took >60s
+
+Review quality scoring (out of 100):
+- Coverage: -20 if any changed files not reviewed
+- Confidence: -10 if predominantly uncertain language
+- Distribution: -15 if any high-risk file has zero findings
+- Completeness: -25 if review did not finish
+- Speed: -10 if review took <30s
+- Below 60: blocks merge approval
+
+Git platform system:
+- Auto-detects GitHub, GitLab, Bitbucket from remote URL
+- Cached in git-config.json per project
+- CONFIRM PUSH panel required before any push
+- PUSH CONFIRMED panel after success showing commit hash and URL
+- Push failure diagnosis
+
+Merge flow:
+- Pre-merge snapshot saved for rollback
+- Conflict check with `git merge --no-commit --no-ff` before merge
+- Stale review detection (48 hour expiry)
+- Explicit approval required every time
+- Post-merge smoke test in browser
+- Auto PR creation via `gh pr create`
+- Branch cleanup after merge
+
+Review history (REVIEWS.md):
+- Complete sign-off record per feature with all gate results, CodeRabbit details, fixes
+- Recurring finding pattern detection (3+ occurrences triggers suggestion)
+- Review velocity tracking
+- False positive tracking
+
+Documentation review stage:
+- README currency check (feature mentioned? outdated sections?)
+- CHANGELOG.md update verification
+- Code comment quality (complex sections, comment lies)
+- API documentation accuracy for new endpoints
+
+Atlas-feature integration:
+- Review cycle triggers automatically after post-feature checklist passes
+- Async review completion surfaced in next /status run
+- Steps 8-10 added for terminology, SEO basics, empathy check
+
+27 existing commands + 4 new review commands = 31 total commands installed.
+
 ## v2.0.1 — Project Isolation Architecture
 
 **CRITICAL BUG FIX.** All previous versions wrote project-specific

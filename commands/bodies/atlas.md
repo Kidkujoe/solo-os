@@ -226,7 +226,6 @@ Framework, Language, Database, Auth, Hosting, Key services
 ## Environment variables required
 [All env vars referenced]
 
----
 
 WRITE $DESIGN_MD:
 # [Product Name] - Design System
@@ -252,7 +251,6 @@ Location, Props, Used by, Notes
 ## Animation standards
 ## Known inconsistencies
 
----
 
 WRITE $DECISIONS_MD:
 # [Product Name] - Architectural Decisions
@@ -264,7 +262,6 @@ Why: [inferred reason]
 Affects: [files/features]
 Date detected: [timestamp]
 
----
 
 WRITE $DEPENDENCIES_MD:
 # [Product Name] - Dependency Map
@@ -282,7 +279,6 @@ Used by, Risk if changed
 ### [filename or token]
 Used by, Risk if changed
 
----
 
 WRITE $HEALTH_MD:
 # [Product Name] - Health History
@@ -297,7 +293,6 @@ Last pillars audit: [timestamp and scores]
 Overall, Reliability, Security, Scalability, Observability,
 Design consistency, Test coverage — each X/10
 
----
 
 WRITE $REGRESSIONS_MD:
 # [Product Name] - Regression History

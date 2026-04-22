@@ -42,7 +42,6 @@ Ask the user these questions one at a time:
 Save all answers to $GLOBAL_ACCOUNTS (filter by PROJECT_ID)
 
 Format:
----
 Project: [name]
 Folder: [path]
 Email: [email]
@@ -54,6 +53,5 @@ Role: [role]
 Role granted via: [method]
 Date added: [date]
 Notes: [notes]
----
 
 Confirm when saved and show what was stored.

@@ -52,13 +52,28 @@ VOICE_MD          = $ATLAS/VOICE.md
 SEO_MD            = $ATLAS/SEO.md
 
 Global resources (shared across all projects):
-REPORT_TEMPLATE   = ~/.claude/context/report-template.html
-GLOBAL_ACCOUNTS   = ~/.claude/context/test-accounts-global.md
+REPORT_TEMPLATE    = ~/.claude/context/report-template.html
+GLOBAL_ACCOUNTS    = ~/.claude/context/test-accounts-global.md
+DEVELOPER_PROFILE  = ~/.claude/context/DEVELOPER_PROFILE.md
 
 STEP R4 - VERIFY ISOLATION:
 Every file path used in this command must either start with
-$PROJECT_CONTEXT or be one of the two approved global resources.
-If any other ~/.claude/context/ path is referenced, stop and report.
+$PROJECT_CONTEXT or be one of the approved global resources listed
+below.
+
+Approved globals inside ~/.claude/:
+  ~/.claude/context/report-template.html      (shared HTML template)
+  ~/.claude/context/test-accounts-global.md   (keyed test accounts)
+  ~/.claude/context/DEVELOPER_PROFILE.md      (cross-project developer profile, v2.4.0+)
+  ~/.claude/context/projects/                 (parent of all project folders)
+  ~/.claude/commands/                         (the commands themselves)
+
+Approved globals inside ~/Documents/SecondBrain/ (v2.5.0+ Obsidian vault):
+  $OBSIDIAN_VAULT and anything under it, including raw/, wiki/,
+  schema/, program/, Products/, Research/, Patterns/, Inbox/,
+  Templates/, Developer/. Resolved dynamically in STEP R8.
+
+If any path outside these is referenced, stop and report.
 
 STEP R5 - DISPLAY CONTEXT CONFIRMATION:
 Display a one-line confirmation so user can see which project:
@@ -89,6 +104,13 @@ Derive these paths:
   OBSIDIAN_PATTERNS="$OBSIDIAN_VAULT/Patterns"
   OBSIDIAN_INBOX="$OBSIDIAN_VAULT/Inbox"
   OBSIDIAN_PRODUCT_DIR="$OBSIDIAN_PRODUCTS/$PROJECT_NAME"
+
+Wiki-layer paths (v2.5.0+):
+  OBSIDIAN_RAW="$OBSIDIAN_VAULT/raw"
+  OBSIDIAN_WIKI="$OBSIDIAN_VAULT/wiki"
+  OBSIDIAN_SCHEMA="$OBSIDIAN_VAULT/schema"
+  OBSIDIAN_PROGRAM="$OBSIDIAN_VAULT/program"
+  OBSIDIAN_PROGRAM_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME.md"
 
 Check vault exists. If not found display:
   Obsidian vault not found at $OBSIDIAN_VAULT

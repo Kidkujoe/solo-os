@@ -59,13 +59,28 @@ VOICE_MD          = $ATLAS/VOICE.md
 SEO_MD            = $ATLAS/SEO.md
 
 Global resources (shared across all projects):
-REPORT_TEMPLATE   = ~/.claude/context/report-template.html
-GLOBAL_ACCOUNTS   = ~/.claude/context/test-accounts-global.md
+REPORT_TEMPLATE    = ~/.claude/context/report-template.html
+GLOBAL_ACCOUNTS    = ~/.claude/context/test-accounts-global.md
+DEVELOPER_PROFILE  = ~/.claude/context/DEVELOPER_PROFILE.md
 
 STEP R4 - VERIFY ISOLATION:
 Every file path used in this command must either start with
-$PROJECT_CONTEXT or be one of the two approved global resources.
-If any other ~/.claude/context/ path is referenced, stop and report.
+$PROJECT_CONTEXT or be one of the approved global resources listed
+below.
+
+Approved globals inside ~/.claude/:
+  ~/.claude/context/report-template.html      (shared HTML template)
+  ~/.claude/context/test-accounts-global.md   (keyed test accounts)
+  ~/.claude/context/DEVELOPER_PROFILE.md      (cross-project developer profile, v2.4.0+)
+  ~/.claude/context/projects/                 (parent of all project folders)
+  ~/.claude/commands/                         (the commands themselves)
+
+Approved globals inside ~/Documents/SecondBrain/ (v2.5.0+ Obsidian vault):
+  $OBSIDIAN_VAULT and anything under it, including raw/, wiki/,
+  schema/, program/, Products/, Research/, Patterns/, Inbox/,
+  Templates/, Developer/. Resolved dynamically in STEP R8.
+
+If any path outside these is referenced, stop and report.
 
 STEP R5 - DISPLAY CONTEXT CONFIRMATION:
 Display a one-line confirmation so user can see which project:
@@ -97,6 +112,13 @@ Derive these paths:
   OBSIDIAN_INBOX="$OBSIDIAN_VAULT/Inbox"
   OBSIDIAN_PRODUCT_DIR="$OBSIDIAN_PRODUCTS/$PROJECT_NAME"
 
+Wiki-layer paths (v2.5.0+):
+  OBSIDIAN_RAW="$OBSIDIAN_VAULT/raw"
+  OBSIDIAN_WIKI="$OBSIDIAN_VAULT/wiki"
+  OBSIDIAN_SCHEMA="$OBSIDIAN_VAULT/schema"
+  OBSIDIAN_PROGRAM="$OBSIDIAN_VAULT/program"
+  OBSIDIAN_PROGRAM_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME.md"
+
 Check vault exists. If not found display:
   Obsidian vault not found at $OBSIDIAN_VAULT
   Knowledge Bridge disabled for this run.
@@ -117,12 +139,28 @@ END OF RESOLVER — continue with command logic below
 
 Only these paths outside $PROJECT_CONTEXT are permitted:
 
-- `~/.claude/context/report-template.html` — shared template
+Inside `~/.claude/`:
+- `~/.claude/context/report-template.html` — shared HTML template
 - `~/.claude/context/test-accounts-global.md` — keyed multi-project credentials
-- `~/.claude/context/projects/` — the parent of all project folders
+- `~/.claude/context/DEVELOPER_PROFILE.md` — cross-project developer profile (v2.4.0+)
+- `~/.claude/context/projects/` — parent folder for all per-project contexts
 - `~/.claude/commands/` — the commands themselves
 
+Inside `~/Documents/SecondBrain/` (Obsidian vault, v2.5.0+):
+- `~/Documents/SecondBrain/` — the whole vault is approved
+- `~/Documents/SecondBrain/raw/` — immutable source documents
+- `~/Documents/SecondBrain/wiki/` — LLM-compiled knowledge pages
+- `~/Documents/SecondBrain/schema/` — wiki governance rules
+- `~/Documents/SecondBrain/program/` — per-project program files (autoresearch pattern)
+- `~/Documents/SecondBrain/Products/`, `Research/`, `Patterns/`, `Inbox/`, `Templates/`, `Developer/` — plugin-managed folders
+
+The Obsidian vault root can be overridden per-project via `STRATEGY.md`
+(`Obsidian vault: [path]`). Commands must resolve `$OBSIDIAN_VAULT`
+dynamically in STEP R8, not hardcode the `~/Documents/SecondBrain/`
+default.
+
 Any other `~/.claude/context/*` path is a violation.
+Any `~/Documents/` path outside the vault is a violation.
 
 ## TEST-ACCOUNTS-GLOBAL.MD STRUCTURE
 

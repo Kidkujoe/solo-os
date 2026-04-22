@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.5.1 - Path isolation fixes
+
+- `~/.claude/context/DEVELOPER_PROFILE.md` added to the approved
+  globals list in RESOLVER.md. File is intentionally cross-project
+  alongside `test-accounts-global.md`. This was a v2.4.0 oversight
+  where the file was introduced without updating the approved paths
+  list, flagged by `/vtpaudit` in six commands (`compass-project`,
+  `new-project`, `stack-audit`, `stack-compare`, `stack-recommend`,
+  `stack-update`).
+- `~/Documents/SecondBrain/` added to the approved globals. Obsidian
+  vault paths defined in `RESOLVER.md` STEP R8 with explicit variables
+  for the wiki layer: `OBSIDIAN_RAW`, `OBSIDIAN_WIKI`, `OBSIDIAN_SCHEMA`,
+  `OBSIDIAN_PROGRAM`, `OBSIDIAN_PROGRAM_FILE`.
+- STEP R4 verification rewritten to document all approved globals
+  (inside `~/.claude/` and inside the Obsidian vault) instead of the
+  stale "two approved global resources" wording.
+- `testVis` command removed — legacy, pre-v2.x artifact referencing a
+  non-existent `mcp__claude-in-chrome__*` MCP and a `/chrome` command
+  that does not exist. Not registered in `plugin.yaml`, no body file,
+  no resolver. Fully superseded by `/test`.
+- Six v2.4.0 Stack Intelligence commands (`new-project`, `stack-audit`,
+  `stack-compare`, `stack-profile`, `stack-recommend`, `stack-update`)
+  back-filled into `commands/bodies/`. They had been installed without
+  body files in v2.4.0, so `build-commands.sh` skipped them on every
+  run, pinning them on the old resolver. The build system is now the
+  single source of truth for all 46 buildable commands.
+- `/vtpaudit` passes clean after rebuild. 46 / 48 installed commands
+  on the current resolver; the two without a resolver (`projects`,
+  `vtpaudit`) are intentionally resolver-less plugin-level commands
+  that do not operate on any project context.
+
 ## v2.5.0 - Karpathy LLM Wiki and autoresearch patterns
 
 Adds a compounding knowledge base (LLM Wiki) and an autonomous

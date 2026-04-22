@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.4.1 - Knowledge Bridge fix
+
+- Fixed auto-write hooks not firing in /atlas for Features and Insights
+- Phase 3.5 added to atlas command body: automatically writes a Feature
+  note for every feature detected and an Insight note for every
+  significant finding without requiring user prompting
+- Fixed compass-project.md body missing Developer Profile integration
+  block
+- Build system is now the single source of truth for all 35 commands
+
 ## v2.4.0 — Stack Intelligence and New Project System
 
 Introduces a permanent developer profile that lives outside any single

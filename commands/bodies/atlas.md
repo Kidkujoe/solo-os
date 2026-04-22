@@ -4,7 +4,7 @@ description: Master orchestrator and product brain. Knows your entire codebase, 
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
 ===========================================
-KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+KNOWLEDGE BRIDGE HOOKS (v2.3.2)
 ===========================================
 
 If OBSIDIAN_BRIDGE=on (STEP R8):
@@ -14,12 +14,59 @@ KNOWLEDGE_BRIDGE. Surface recent notes, decisions, insights and any
 Obsidian Inbox items. Incorporate inbox content into this run and
 move each inbox note to its correct folder after the run finishes.
 
-After a recommendation — if the user confirms any strategic decision
-(change of direction, scope change, prioritisation) call
-write_decision_note with the decided direction. Do not call on every
-recommendation, only on confirmed decisions.
+AUTOMATIC WRITES — FIRE WITHOUT ASKING THE USER:
 
-If a bridge call fails do not abort the command — log and continue.
+After the codebase scan completes (end of Phase 2 / Phase 3) — for
+EVERY feature listed under "Features → Complete and stable" or "In
+progress" in the freshly written $PRODUCT_MD, call write_feature_note.
+Do this automatically without prompting. One note per feature. If there
+are 10 features, write 10 notes. If there are 25, write 25.
+  - name: the feature title
+  - status: "detected" for features extracted from the scan (use
+    "built" only when /atlas-feature confirms a completed build)
+  - what_it_does: one sentence from the scan
+  - why_built, user_groups, prism_score, pv_classification: fill from
+    scan context where available, leave blank otherwise
+Target path: $OBSIDIAN_PRODUCT_DIR/Features/[feature-name].md
+If a Feature note for that name already exists, update status and
+append new build notes per the write_feature_note merge behaviour in
+RESOLVER.md — do not silently skip.
+
+After the health assessment completes (end of Phase 3 write of
+$HEALTH_MD) — for EVERY significant finding, call write_insight_note.
+Do this automatically without prompting. A "significant finding" is any
+of:
+  - a health dimension scoring High-risk or Critical (≤5/10), OR
+  - a health dimension scoring exceptionally well (≥8/10) that
+    represents a positive pattern worth capturing, OR
+  - any item listed under "Things to investigate" in $HEALTH_MD, OR
+  - any item listed under "Known issues" in $PRODUCT_MD, OR
+  - any operational signal requiring action (vulnerabilities, pending
+    migrations, env-diff gaps, stale performance data).
+Each finding gets its OWN note. Do not combine multiple findings into
+one note.
+Target path:
+  $OBSIDIAN_PRODUCT_DIR/Insights/[YYYY-MM-DD]-[finding-slug].md
+
+Decision notes — if the user confirms any strategic decision (change
+of direction, scope change, prioritisation) during the "What to do
+next" phase, call write_decision_note with the decided direction. Do
+not call on every recommendation, only on confirmed decisions.
+
+If a bridge call fails do not abort the command — log and continue to
+the next write. Missing one feature or insight note must not block the
+rest.
+
+After all automatic writes complete, display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KNOWLEDGE BRIDGE — WROTE TO OBSIDIAN
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Features written: [count]
+  Insights written: [count]
+  Decisions written: [count]
+  Vault: $OBSIDIAN_PRODUCT_DIR
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ===========================================
 
 You are Atlas. You carry the full weight of this product on your shoulders.
@@ -262,6 +309,45 @@ What broke, What caused it, How caught, How fixed, Time to fix
 
 ## Currently open
 [Any unresolved regressions]
+
+===========================================
+PHASE 3.5 - WRITE OBSIDIAN KNOWLEDGE NOTES
+===========================================
+
+After Phase 3 finishes writing $PRODUCT_MD, $HEALTH_MD and the other
+brain files, and before Phase 4 runs, sync the knowledge bridge.
+This happens automatically. Do not ask the user for permission. Do not
+wait for confirmation.
+
+If OBSIDIAN_BRIDGE=off, skip this phase entirely.
+
+If OBSIDIAN_BRIDGE=on:
+
+1. Feature notes — for every feature listed in $PRODUCT_MD under
+   "Features → Complete and stable" AND "Features → In progress",
+   call write_feature_note (RESOLVER.md § KNOWLEDGE_BRIDGE). Iterate
+   through the full list — do not stop after one or two. Expected
+   count matches the feature list length.
+
+2. Insight notes — for every significant finding in $HEALTH_MD, call
+   write_insight_note. Significant findings include:
+   - Any health dimension scoring 5/10 or lower (High / Critical risk)
+   - Any health dimension scoring 8/10 or higher (positive pattern)
+   - Every bullet under "Things to investigate"
+   - Every bullet under "Known issues" in $PRODUCT_MD
+   - Every operational signal requiring action
+   Also write one summary insight capturing the overall health score
+   and the two weakest dimensions.
+
+3. If any write fails, log the failure and continue with the next
+   one. Do not abort the phase.
+
+4. Display the summary block shown in the KNOWLEDGE BRIDGE HOOKS
+   section above with the final counts.
+
+This phase is REQUIRED on every full Atlas run that produces a new
+scan or refresh. The "quiet" mode that only wrote decisions was a bug
+fixed in v2.3.2.
 
 ===========================================
 PHASE 4 - DEPENDENCY MAPPING AND REGRESSION DETECTION

@@ -440,7 +440,12 @@ to call and at which points. Summary:
   (per significant ghost-user friction); write_insight_note (emotional
   arc).
 - `/atlas`, `/atlas-quick` — read_product_context (start);
-  write_decision_note (if user confirms a strategic decision).
+  write_feature_note automatically after the codebase scan for every
+  detected feature (status: detected); write_insight_note
+  automatically after the health assessment for every significant
+  finding (≤5/10, ≥8/10, Things-to-investigate, Known issues,
+  operational signals); write_decision_note if user confirms a
+  strategic decision during "What to do next".
 - `/atlas-feature` — read_pattern_context (start); write_feature_note
   (status: built) after review; write_pattern_note if a new recurring
   pattern detected.

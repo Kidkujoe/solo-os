@@ -7,7 +7,21 @@ Validating new project: $ARGUMENTS
 
 This command is for projects that do not have a codebase yet.
 
+Read ~/.claude/context/DEVELOPER_PROFILE.md if it exists
 Read $STRATEGY_MD if it exists
+
+DEVELOPER PROFILE INTEGRATION (v2.4.0):
+When scoring Implementation difficulty in PRISM-PV, personalise the
+I score based on the developer's profile:
+- If recommended stack for this project type matches technologies in
+  developer's Adopt tier: I score is HIGHER (easier for this developer)
+- If recommended stack requires technologies developer has never used:
+  I score is LOWER (harder for this developer)
+
+Note this explicitly in scoring:
+"Implementation difficulty rated [X] for you specifically because
+[reason from profile — e.g. 'you have used Next.js on 3 projects'
+or 'this would require learning Prisma which you've never used']"
 
 STEP 1 - STRATEGY QUESTIONS
 Ask the five strategy questions from COMPASS Phase 1 if not answered.

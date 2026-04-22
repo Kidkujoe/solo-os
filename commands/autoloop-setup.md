@@ -1,7 +1,7 @@
 ---
-name: atlas-quick
-description: Quick Atlas refresh — update context and tell me what to do next
-allowed-tools: Bash, mcp__chrome-devtools__*
+name: autoloop-setup
+description: Creates the product program file for the current project. Defines the evaluation metric, what the agent can and cannot change, the simplicity criterion and which wiki sources apply. Based on Karpathy autoresearch program.md pattern. You iterate on this file over time. The instructions are the product.
+allowed-tools: Bash
 ---
 
 ===========================================
@@ -105,53 +105,89 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
+Run the RESOLVER first.
+
+Read:
+- `$PRODUCT_MD` — atlas product brain for context
+- `$STRATEGY_MD` — strategic goals if set
+- `$OBSIDIAN_VAULT/wiki/index.md` — list of Rules pages to reference
+
+Target path: `$OBSIDIAN_VAULT/program/$PROJECT_NAME.md`
+
+If the file already exists, read it first and offer to update rather
+than overwrite. Preserve any sections the user has already filled in.
+
+Ask these questions one at a time. Wait for each answer before the
+next.
+
 ===========================================
-WIKI INTEGRATION (v2.5.0)
+QUESTION 1 — THE METRIC
 ===========================================
 
-If OBSIDIAN_BRIDGE=on, at the start of every run:
+  What is the single metric that determines whether a change is an
+  improvement for [project name]?
 
-1. Read `$OBSIDIAN_VAULT/wiki/log.md`.
-2. Find every operation (ingest / synthesis / correction) logged
-   since the last `atlas-quick` run (compare against HEALTH.md
-   "Last Atlas run" timestamp).
+  Must be measurable in one session.
 
-If any ingests or syntheses happened since the last run, display:
+  1. Lighthouse performance score
+  2. Test pass rate
+  3. Design consistency score
+  4. Accessibility violation count
+  5. Security pillar score
+  6. All of the above as a composite
+
+  Type your choice.
+
+===========================================
+QUESTION 2 — ALLOWED SCOPE
+===========================================
+
+  What files and folders can the autoloop change without asking?
+
+  Example: CSS files, copy files, image files, meta tags.
+
+  What can it NOT touch without your explicit approval?
+
+  Example: auth, payment, database, environment variables.
+
+===========================================
+QUESTION 3 — SIMPLICITY FOR THIS PRODUCT
+===========================================
+
+  What does simpler mean for this specific product?
+
+  Example: fewer UI elements is always better for RSVPie because
+  event hosts want to complete tasks quickly not explore features.
+
+===========================================
+QUESTION 4 — WIKI SOURCES
+===========================================
+
+  Which wiki pages should the autoloop read before running?
+
+  [List available Rules-*.md and relevant Concept-*.md pages from
+  wiki/index.md]
+
+  Confirm which ones apply.
+
+===========================================
+WRITE THE PROGRAM FILE
+===========================================
+
+Compose the program file from the answers. Show the complete file
+before saving. Ask for confirmation.
+
+Write to `$OBSIDIAN_VAULT/program/$PROJECT_NAME.md`.
+
+Display when saved:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEW WIKI KNOWLEDGE SINCE YESTERDAY
+  PROGRAM FILE CREATED
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  [count] sources ingested | [count] syntheses filed
-  New knowledge affecting today:
-  [summary from wiki/log.md]
+  This file is yours to iterate on.
+  As you run autoloop sessions and learn what works, refine this file.
+  The better the program file gets, the smarter the autoloop becomes.
+
+  This is how Karpathy uses program.md.
+  The instructions are the product.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-This surfaces recent wiki activity into the daily recommendation
-loop so knowledge actually drives planning rather than accumulating
-silently.
-
-===========================================
-KNOWLEDGE BRIDGE HOOKS (v2.3.0)
-===========================================
-
-If OBSIDIAN_BRIDGE=on (STEP R8):
-
-At the start — call read_product_context from RESOLVER.md §
-KNOWLEDGE_BRIDGE. Surface recent notes and Inbox items so the
-recommendation is informed by accumulated context.
-
-After recommendation — if the user confirms a strategic decision
-call write_decision_note.
-
-If a bridge call fails do not abort — log and continue.
-===========================================
-
-Run Atlas phases 1 and 7 only.
-Refresh context from changed files and give one clear recommendation.
-No full scan. Fast.
-
-Read all Atlas context files silently.
-Check files modified since last Atlas run timestamp in HEALTH.md.
-Update any context that has drifted from the code.
-Then ask: What are you focused on today?
-Give the recommendation with health score and trend.

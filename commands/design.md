@@ -106,6 +106,29 @@ END OF RESOLVER — continue with command logic below
 ===========================================
 
 ===========================================
+WIKI INTEGRATION (v2.5.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on, at the start of every run:
+
+1. Read `$OBSIDIAN_VAULT/wiki/index.md`.
+2. Find every `Rules-*.md` page relevant to design (spacing, colour,
+   typography, components, borders, shadows, animations, iconography).
+3. Load them as the AUTHORITY for this audit — not generic best
+   practice, not guesses. If your rules and generic best practice
+   disagree, your rules win.
+
+Display:
+
+  Design rules loaded from wiki:
+  [list Rules-* pages loaded]
+  Auditing against YOUR rules.
+
+If no Rules pages exist yet, fall back to the project's DESIGN.md and
+note: "No wiki Rules pages found — drop JSON rule files in
+`raw/rules/` and run /wiki-ingest to enforce your own standards."
+
+===========================================
 KNOWLEDGE BRIDGE HOOKS (v2.3.0)
 ===========================================
 

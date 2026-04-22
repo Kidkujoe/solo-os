@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 2.4.1
+version: 2.5.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -286,6 +286,54 @@ commands:
       including password and magic link
       settings for any project
     file: commands/addaccount.md
+
+  - name: wiki-ingest
+    description: >
+      Process any source file from raw/
+      into the Obsidian wiki. Discusses
+      key takeaways, writes pages with
+      citations, detects contradictions,
+      reports knowledge gaps. One source
+      at a time.
+    file: commands/wiki-ingest.md
+
+  - name: wiki-query
+    description: >
+      Ask any question and get an answer
+      synthesised from the compiled wiki
+      with full evidence chains. Useful
+      answers are filed back as Synthesis
+      pages so explorations compound.
+    file: commands/wiki-query.md
+
+  - name: wiki-lint
+    description: >
+      Health check on the wiki. Finds
+      structural issues, contradictions,
+      stale claims and concepts without
+      pages. Actively reports what the
+      wiki does not know and what to
+      find next.
+    file: commands/wiki-lint.md
+
+  - name: autoloop
+    description: >
+      Autonomous improvement loop from
+      Karpathy autoresearch. Reads product
+      program file, finds lowest-scoring
+      metric, proposes fix, measures
+      before/after, keeps or discards.
+      Logs every experiment.
+    file: commands/autoloop.md
+
+  - name: autoloop-setup
+    description: >
+      Creates the product program file
+      for the current project: metric,
+      scope, simplicity criterion, wiki
+      sources. The instructions are
+      the product.
+    file: commands/autoloop-setup.md
 
 context_files:
   - path: context/report-template.html

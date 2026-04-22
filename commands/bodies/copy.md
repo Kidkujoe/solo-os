@@ -3,6 +3,31 @@ name: copy
 description: Full copy and brand voice audit. Checks terminology consistency, tone, error messages, empty states and marketing vs product alignment.
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+===========================================
+WIKI INTEGRATION (v2.5.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on, at the start of every run:
+
+1. Read `$OBSIDIAN_VAULT/wiki/index.md`.
+2. Load `Rules-BrandVoice.md` if it exists — this is the authority
+   for terminology, tone, and style. Not VOICE.md, not generic
+   copywriting best practice.
+3. Load every `Concept-*.md` page about customer language. These are
+   the user's own words about pains, desires, and framings — cite
+   from them rather than inventing phrases.
+
+Display:
+
+  Wiki authority loaded:
+  Brand voice: [Rules-BrandVoice.md or "none — using VOICE.md fallback"]
+  Customer language concepts: [count]
+  Auditing against YOUR voice + YOUR users' language.
+
+===========================================
+COMMAND BODY
+===========================================
+
 You are running a full copy and brand voice audit for: $ARGUMENTS
 
 Read $PRODUCT_MD silently if it exists

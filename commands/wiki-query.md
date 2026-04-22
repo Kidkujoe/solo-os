@@ -1,7 +1,7 @@
 ---
-name: atlas-quick
-description: Quick Atlas refresh — update context and tell me what to do next
-allowed-tools: Bash, mcp__chrome-devtools__*
+name: wiki-query
+description: Ask any question and get an answer synthesised from the compiled wiki with full citations. Every useful answer is automatically filed back as a Synthesis page so explorations compound in the knowledge base.
+allowed-tools: Bash
 ---
 
 ===========================================
@@ -105,53 +105,80 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
+Run the RESOLVER first.
+
+Then read:
+- `$OBSIDIAN_VAULT/schema/WIKI_SCHEMA.md` — governance rules
+- `$OBSIDIAN_VAULT/wiki/index.md` — master catalog of wiki pages
+
+$ARGUMENTS is the question.
+
 ===========================================
-WIKI INTEGRATION (v2.5.0)
+QUERY PHASE 1 - FIND RELEVANT PAGES
 ===========================================
 
-If OBSIDIAN_BRIDGE=on, at the start of every run:
+Read `wiki/index.md`. Identify every page relevant to answering the
+question. Read only those pages. Do not read `raw/` sources unless a
+specific claim needs verification.
 
-1. Read `$OBSIDIAN_VAULT/wiki/log.md`.
-2. Find every operation (ingest / synthesis / correction) logged
-   since the last `atlas-quick` run (compare against HEALTH.md
-   "Last Atlas run" timestamp).
+===========================================
+QUERY PHASE 2 - SYNTHESISE THE ANSWER
+===========================================
 
-If any ingests or syntheses happened since the last run, display:
+Build the answer from wiki pages only. For every claim, state the
+confidence level and cite the wiki page. If synthesising across
+multiple pages, show the reasoning chain explicitly.
+
+Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEW WIKI KNOWLEDGE SINCE YESTERDAY
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  [count] sources ingested | [count] syntheses filed
-  New knowledge affecting today:
-  [summary from wiki/log.md]
+  WIKI QUERY: [question]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-This surfaces recent wiki activity into the daily recommendation
-loop so knowledge actually drives planning rather than accumulating
-silently.
+  ANSWER:
+  [Plain English answer]
+
+  EVIDENCE CHAIN:
+  Claim: [specific claim]
+  Confidence: [level]
+  Wiki page: [page name]
+  Raw source behind it: [raw/ file]
+
+  [Repeat for each claim]
+
+  WHAT THE WIKI DOES NOT YET KNOW:
+  [Parts the wiki cannot fully answer]
+
+  To fill this gap add these source types to raw/:
+  [Specific suggestions]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ===========================================
-KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+QUERY PHASE 3 - FILE BACK INTO WIKI
 ===========================================
 
-If OBSIDIAN_BRIDGE=on (STEP R8):
+**CRITICAL — do not skip this step.**
 
-At the start — call read_product_context from RESOLVER.md §
-KNOWLEDGE_BRIDGE. Surface recent notes and Inbox items so the
-recommendation is informed by accumulated context.
+From the Karpathy LLM Wiki gist: good answers can be filed back into
+the wiki as new pages. A comparison you asked for, an analysis, a
+connection you discovered — these are valuable and should not
+disappear into chat history. Explorations compound in the knowledge
+base just like ingested sources do.
 
-After recommendation — if the user confirms a strategic decision
-call write_decision_note.
+If the answer synthesised across multiple wiki pages and produced a
+non-obvious connection or conclusion, ask:
 
-If a bridge call fails do not abort — log and continue.
-===========================================
+  This answer synthesised across [count] wiki pages.
 
-Run Atlas phases 1 and 7 only.
-Refresh context from changed files and give one clear recommendation.
-No full scan. Fast.
+  Worth filing as a Synthesis page?
+  Proposed title: Synthesis-[topic].md
 
-Read all Atlas context files silently.
-Check files modified since last Atlas run timestamp in HEALTH.md.
-Update any context that has drifted from the code.
-Then ask: What are you focused on today?
-Give the recommendation with health score and trend.
+  Type yes / no / rename [title]
+
+If yes:
+- Create `Synthesis-[topic].md` with: conclusion, evidence chain,
+  confidence level, contradicting evidence, "Created from query: [Q]",
+  date
+- Update `wiki/index.md`
+- Append to `wiki/log.md`:
+  `## [YYYY-MM-DD] synthesis | [topic] (from query: [question])`

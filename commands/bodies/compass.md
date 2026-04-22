@@ -4,6 +4,30 @@ description: Product intelligence system using the PRISM-PV framework. Researche
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
 ===========================================
+WIKI INTEGRATION (v2.5.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on, at the start of every run:
+
+1. Read `$OBSIDIAN_VAULT/wiki/index.md`.
+2. Find every `Competitor-*.md` page in wiki/.
+3. Load them before doing any new research.
+
+Display:
+
+  Existing wiki intelligence found for:
+  [list competitor names and last-updated dates]
+  Only researching what may have changed since then.
+
+Important separation:
+- /compass READS from `wiki/Competitor-*.md` (compiled from user's
+  raw/ sources).
+- /compass WRITES its own research output to `Research/Competitors/`
+  (plugin folder) as before.
+- These are separate layers. Both are useful. /compass does NOT
+  write back to wiki/.
+
+===========================================
 KNOWLEDGE BRIDGE HOOKS (v2.3.0)
 ===========================================
 

@@ -4,6 +4,32 @@ description: Intelligent copy strategy and rewriting skill. Analyses your produc
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
 ===========================================
+WIKI INTEGRATION (v2.5.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on, at the start of every run:
+
+1. Read `$OBSIDIAN_VAULT/wiki/index.md`.
+2. Load `Rules-BrandVoice.md` if it exists — authority for voice.
+3. Load every `Concept-*.md` page about customer language — these
+   are the user's own words and are citable evidence.
+4. Load every `Competitor-*.md` page — existing competitor intelligence
+   that should inform positioning before new research is done.
+
+Display:
+
+  Wiki authority loaded:
+  Brand voice: [Rules-BrandVoice.md or none]
+  Customer language concepts: [count]
+  Competitor pages: [count]
+
+Narrow new research to what the wiki does not already cover.
+
+Note: /copyai still writes its own output to COPYAI.md and to plugin
+folders under Products/ and Research/. It reads from wiki/ but does
+not write back to it.
+
+===========================================
 KNOWLEDGE BRIDGE HOOKS (v2.3.0)
 ===========================================
 

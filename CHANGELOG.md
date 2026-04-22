@@ -1,5 +1,72 @@
 # Changelog
 
+## v2.5.0 - Karpathy LLM Wiki and autoresearch patterns
+
+Adds a compounding knowledge base (LLM Wiki) and an autonomous
+improvement loop (autoresearch), drawn from two Karpathy sources:
+
+- LLM Wiki Gist: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f (April 4 2026)
+- autoresearch: https://github.com/karpathy/autoresearch (March 2026)
+
+The wiki gives the loop knowledge to act on. The loop writes its
+results back to the wiki.
+
+### From the LLM Wiki gist
+
+- `raw/` folder with `articles/`, `rules/`, `calls/`, `transcripts/`,
+  `papers/`, `sources/`, `assets/` subfolders. `raw/` is the immutable
+  source of truth — LLM reads, never modifies.
+- `wiki/` folder maintained by the LLM with entity, concept, rules
+  and synthesis pages.
+- `schema/WIKI_SCHEMA.md` governs every wiki operation. Co-evolves
+  with the vault over time.
+- `/wiki-ingest` with mandatory discussion step before writing, JSON
+  rules files compile each rule to a dedicated wiki page, knowledge
+  gap report after every ingest.
+- `/wiki-query` with full evidence chains. Good answers are filed
+  back as Synthesis pages so explorations compound.
+- `/wiki-lint` with active gap identification — the system reports
+  what it does not know and suggests what to find.
+- `wiki/index.md` as master catalog. `wiki/log.md` as append-only
+  record of every operation.
+- Three-layer architecture: `raw/` (input), `wiki/` (compiled
+  knowledge), `Products/`+`Research/`+`Patterns/` (plugin operational
+  notes). Clearly separated, no duplication.
+
+### From autoresearch
+
+- `program/[ProductName].md` per project defining the metric, scope,
+  and simplicity criterion.
+- `/autoloop`: reads program file, measures baseline, proposes
+  improvement, measures before and after, keep-or-discard verdict,
+  git commit on every kept experiment.
+- Experiment log per project (equivalent to autoresearch `results.tsv`).
+- Simplicity criterion: removal achieving equal result is always
+  preferred over addition.
+- Hypothesis logging for improvements requiring real user data.
+- `/autoloop-setup`: creates program file interactively. User iterates
+  over time.
+- Autoloop results filed back to the wiki as Synthesis pages.
+
+### Existing commands now read from the wiki
+
+- `/design` — loads `Rules-*.md` as the authority, not generic best practice.
+- `/copy` and `/copyai` — load `Rules-BrandVoice.md` + `Concept-*`
+  customer language pages.
+- `/compass` — reads `Competitor-*.md` before new research (still
+  writes its own output to `Research/Competitors/`).
+- `/atlas-quick` — surfaces new wiki knowledge in the daily
+  recommendation.
+
+### Naming conflicts resolved
+
+- No `raw/competitors/` folder — competitor articles go in
+  `raw/articles/` with clear filenames.
+- No `raw/notes/` folder — quick notes use existing `Inbox/`,
+  longer thinking uses `raw/sources/`.
+- `wiki/` and `Products/`+`Research/`+`Patterns/` are separate layers
+  that reference but do not duplicate each other.
+
 ## v2.4.1 - Knowledge Bridge fix
 
 - Fixed auto-write hooks not firing in /atlas for Features and Insights

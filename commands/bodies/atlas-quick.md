@@ -4,6 +4,31 @@ description: Quick Atlas refresh — update context and tell me what to do next
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
 ===========================================
+WIKI INTEGRATION (v2.5.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on, at the start of every run:
+
+1. Read `$OBSIDIAN_VAULT/wiki/log.md`.
+2. Find every operation (ingest / synthesis / correction) logged
+   since the last `atlas-quick` run (compare against HEALTH.md
+   "Last Atlas run" timestamp).
+
+If any ingests or syntheses happened since the last run, display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEW WIKI KNOWLEDGE SINCE YESTERDAY
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [count] sources ingested | [count] syntheses filed
+  New knowledge affecting today:
+  [summary from wiki/log.md]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This surfaces recent wiki activity into the daily recommendation
+loop so knowledge actually drives planning rather than accumulating
+silently.
+
+===========================================
 KNOWLEDGE BRIDGE HOOKS (v2.3.0)
 ===========================================
 

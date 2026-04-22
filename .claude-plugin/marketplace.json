@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -148,6 +148,16 @@
       "name": "compass-retro",
       "description": "Retrospective comparing COMPASS predictions against outcomes.",
       "file": "commands/compass-retro.md"
+    },
+    {
+      "name": "projects",
+      "description": "List all projects that have Visual-Test-Pro context data.",
+      "file": "commands/projects.md"
+    },
+    {
+      "name": "vtpaudit",
+      "description": "Internal audit. Checks all command files for path isolation violations.",
+      "file": "commands/vtpaudit.md"
     },
     {
       "name": "addaccount",

@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.0.1 — Project Isolation Architecture
+
+**CRITICAL BUG FIX.** All previous versions wrote project-specific
+context data to shared global paths. When multiple projects used the
+plugin they contaminated each other's data. This release fixes the
+architecture permanently.
+
+Changes:
+- Per-project context folders: every project gets its own isolated folder at `~/.claude/context/projects/[id]/`
+- Project identifier derived from absolute project path plus 6-character hash (handles duplicate folder names)
+- Resolver system: single canonical resolver in RESOLVER.md copied verbatim into every command
+- All 25 existing command files updated to use resolver and per-project paths
+- Project stamps (`# Project: [id]`) on all context files enable contamination detection
+- Contamination detection in resolver catches and reports any mismatches on every command run
+- test-accounts-global.md uses keyed structure — one file, credentials isolated per project via PROJECT_ID section
+- `/vtpaudit` command added for ongoing isolation verification
+- `/projects` command added to list and manage all projects with context data
+- install.sh updated to create global-only resources at install time (per-project files created by resolver on first command run in each project)
+- install.sh displays migration warning if old global data detected
+- RESOLVER.md added as single source of truth for path logic
+- 27 total commands (25 updated + /vtpaudit + /projects)
+
+This fix is backwards compatible. Existing data at old global paths is
+detected by install.sh and flagged for in-app migration. The resolver
+detects and reports any future violations before they cause contamination.
+
 ## v2.0.0 — Empathy System complete
 
 This version marks Visual-Test-Pro reaching its complete vision.

@@ -78,6 +78,21 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
+===========================================
+KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on (STEP R8):
+
+After audit complete — for each design decision confirmed during the
+audit (new component convention, spacing rule, colour token choice,
+animation policy) call write_decision_note from RESOLVER.md §
+KNOWLEDGE_BRIDGE. Do not call on every observation, only on decisions
+the user confirmed.
+
+If a bridge call fails do not abort — log and continue.
+===========================================
+
 Running design integrity audit for: $ARGUMENTS
 
 Read $PRODUCT_MD silently if it exists

@@ -78,6 +78,22 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
+===========================================
+KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on (STEP R8):
+
+At the start — call read_product_context from RESOLVER.md §
+KNOWLEDGE_BRIDGE. Surface recent notes and Inbox items so the
+recommendation is informed by accumulated context.
+
+After recommendation — if the user confirms a strategic decision
+call write_decision_note.
+
+If a bridge call fails do not abort — log and continue.
+===========================================
+
 Run Atlas phases 1 and 7 only.
 Refresh context from changed files and give one clear recommendation.
 No full scan. Fast.

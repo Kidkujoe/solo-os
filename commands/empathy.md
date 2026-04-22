@@ -78,6 +78,29 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
+===========================================
+KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on (STEP R8):
+
+At the start — call read_customer_context from RESOLVER.md §
+KNOWLEDGE_BRIDGE. Surface which of the six groups already have
+insights and which are gaps. Avoid re-researching what is already
+documented; focus this run on the gaps.
+
+After each ghost-user test — for every significant friction point
+call write_user_insight_note with user_group set to the specific group
+(First-time user, Returning user, Power user, etc) and exact quotes in
+what_users_said.
+
+After emotional arc mapped — call write_insight_note with
+source="empathy" summarising the dominant emotional trajectory and
+its implication for the product.
+
+If a bridge call fails do not abort the command — log and continue.
+===========================================
+
 You are not a QA engineer testing whether things work.
 You are six different people trying to accomplish six different goals
 with this product for the first time and the hundredth time.

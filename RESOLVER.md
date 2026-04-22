@@ -84,6 +84,31 @@ When creating any new context file, write as first line:
   # Path: [PROJECT_PATH]
   # Created: [timestamp]
 
+STEP R8 - KNOWLEDGE BRIDGE INITIALIZATION (v2.3.0+):
+Read $STRATEGY_MD if it exists and extract the line:
+  Obsidian vault: [path]
+If found set OBSIDIAN_VAULT to that path.
+If not found default to: OBSIDIAN_VAULT="$HOME/Documents/SecondBrain"
+
+Derive these paths:
+  OBSIDIAN_PRODUCTS="$OBSIDIAN_VAULT/Products"
+  OBSIDIAN_RESEARCH="$OBSIDIAN_VAULT/Research"
+  OBSIDIAN_PATTERNS="$OBSIDIAN_VAULT/Patterns"
+  OBSIDIAN_INBOX="$OBSIDIAN_VAULT/Inbox"
+  OBSIDIAN_PRODUCT_DIR="$OBSIDIAN_PRODUCTS/$PROJECT_NAME"
+
+Check vault exists. If not found display:
+  Obsidian vault not found at $OBSIDIAN_VAULT
+  Knowledge Bridge disabled for this run.
+  Set up Obsidian to enable. Continuing without it.
+Then set OBSIDIAN_BRIDGE=off and skip all bridge calls.
+
+If vault exists but $OBSIDIAN_PRODUCT_DIR is missing, create:
+  mkdir -p "$OBSIDIAN_PRODUCT_DIR"/{Features,Decisions,Insights,Reviews}
+
+Set OBSIDIAN_BRIDGE=on. Commands should call read/write functions
+defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
+
 END OF RESOLVER — continue with command logic below
 ===========================================
 ```
@@ -150,3 +175,279 @@ If `commands/bodies/` doesn't exist yet, commands still work the old way
 
 `/vtpaudit` checks whether installed commands have the current resolver
 and flags any that are out of date.
+
+## KNOWLEDGE_BRIDGE (v2.3.0+)
+
+The Knowledge Bridge connects Visual-Test-Pro commands to an Obsidian
+Second Brain vault so findings accumulate over time and past knowledge
+informs new runs.
+
+Every command runs STEP R8 (above) to initialize bridge variables. If
+the vault is missing the bridge is disabled for that run and the command
+continues normally. If the vault exists commands may call the read and
+write functions defined here at the hooks specified in their own files.
+
+### Vault paths
+
+Default vault location: `~/Documents/SecondBrain/`. Commands read the
+active path from `STRATEGY.md`:
+
+```
+Obsidian vault: ~/Documents/SecondBrain/
+```
+
+Override by editing the STRATEGY.md line for a project.
+
+Inside the vault:
+- `Products/[PROJECT_NAME]/` — per-product notes, auto-created on first run
+  - `Features/` — feature notes
+  - `Decisions/` — decision notes
+  - `Insights/` — insights and user insights (time-stamped)
+  - `Reviews/` — review-cycle summaries
+- `Research/Competitors/` — competitor intelligence (merged across runs)
+- `Research/Customers/` — customer insights
+- `Patterns/` — recurring findings promoted from ≥3 instances
+- `Inbox/` — user-written thoughts read on next run, then moved
+- `Templates/` — note templates used when creating new notes
+
+### Write functions
+
+#### write_decision_note
+Called when: user confirms an architectural or product decision during a
+command run.
+
+Arguments: title, context, decision, reasoning, consequences.
+
+Action: check `$OBSIDIAN_PRODUCT_DIR/Decisions/[title].md`. If it exists
+update with new information, keeping prior content. Otherwise create
+from `Templates/Decision.md` filled with the arguments.
+
+After writing display:
+```
+  Note saved to Obsidian:
+  Products/[product]/Decisions/[title].md
+```
+
+#### write_pattern_note
+Called when: the same type of finding has appeared 3 or more times across
+review cycles.
+
+Arguments: title, instances (list with dates), root_cause, prevention.
+
+Action: check `$OBSIDIAN_PATTERNS/[title].md`. If it exists increment
+`times_seen` and append the new instance to the Evidence section. If not
+create from `Templates/Pattern.md` with `times_seen: 3` (threshold met).
+
+After writing display:
+```
+  Pattern note saved to Obsidian:
+  Patterns/[title].md
+  This pattern has now appeared [count] times.
+```
+
+#### write_competitor_note
+Called when: /compass or /copyai researches a competitor.
+
+Arguments: name, positioning, weaknesses (with evidence counts),
+migration_triggers, strengths, opportunity.
+
+Action: check `$OBSIDIAN_RESEARCH/Competitors/[name].md`. If it exists
+update `last_updated` and merge new findings with existing content.
+Never overwrite prior evidence — append new evidence alongside old.
+Update `signal_strength` if changed. If the file does not exist create
+from `Templates/Competitor.md`.
+
+#### write_insight_note
+Called when: a significant insight is produced by /compass, /copyai,
+/empathy or /design.
+
+Arguments: title, source (command name), confidence, evidence,
+implication, action.
+
+Action: always create a new note at
+`$OBSIDIAN_PRODUCT_DIR/Insights/[YYYY-MM-DD]-[title].md` from
+`Templates/Insight.md`. Insights are time-stamped events not updated
+records.
+
+#### write_feature_note
+Called when: /compass scores a feature, or /atlas-feature completes a
+feature build.
+
+Arguments: name, status (idea/planned/building/built/deprecated),
+prism_score, pv_classification, what_it_does, why_built, user_groups.
+
+Action: check `$OBSIDIAN_PRODUCT_DIR/Features/[name].md`. If it exists
+update `status` and append build notes. If not create from
+`Templates/Feature.md`.
+
+#### write_user_insight_note
+Called when: /empathy ghost-user test produces a significant finding, or
+/copyai finds a strong customer-language pattern.
+
+Arguments: title, source (platform + date), user_group, what_users_said
+(exact quotes), meaning, action.
+
+Action: always create a new note at
+`$OBSIDIAN_PRODUCT_DIR/Insights/UserInsight-[YYYY-MM-DD]-[title].md`
+from `Templates/UserInsight.md`.
+
+#### write_review_note
+Called when: /review-cycle completes.
+
+Arguments: feature, branch, date, quality_score, findings (by severity),
+merge_commit.
+
+Action: create `$OBSIDIAN_PRODUCT_DIR/Reviews/[YYYY-MM-DD]-[feature].md`
+with:
+
+```
+# Review: [feature]
+Date: [date]
+Branch: [branch]
+Quality: [score]/100
+Findings: Critical [n] High [n] Medium [n]
+Merged: [yes - commit hash / no]
+Notes: [any significant findings]
+```
+
+### Read functions
+
+#### read_product_context
+Called at the start of: /atlas, /atlas-quick, /atlas-feature.
+
+Action: list files in `$OBSIDIAN_PRODUCT_DIR/` modified in the past 30
+days. For each file extract the file name, the note type (from frontmatter
+`tags:`), the first meaningful paragraph, and any `[[wiki-links]]`.
+
+Build a summary of recent Obsidian activity for this product. If any
+files exist display:
+
+```
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  OBSIDIAN CONTEXT LOADED
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Notes found: [count]
+  Recent decisions: [count]
+  Recent insights: [count]
+  Active patterns: [count]
+
+  Your recent notes will inform this run.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If any notes are present in `$OBSIDIAN_INBOX/`:
+
+```
+  INBOX NOTES FOUND
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  You have [count] unprocessed notes in your Obsidian Inbox.
+
+  Reading them now to inform this run:
+  [list note titles]
+
+  These will be moved to the correct folder after this run.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Read the inbox notes, incorporate their content into command output,
+and after the command finishes move each inbox note to the appropriate
+product folder based on its frontmatter `tags:` (decision → Decisions/,
+insight → Insights/, feature → Features/, user-insight → Insights/,
+pattern → top-level Patterns/).
+
+#### read_competitor_context
+Called at the start of: /compass, /copyai, /copyai-research.
+
+Action: read all files in `$OBSIDIAN_RESEARCH/Competitors/`. Extract
+name, weaknesses, opportunities from each. Before researching a specific
+competitor check if a note already exists. If yes display:
+
+```
+  EXISTING COMPETITOR INTELLIGENCE
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [Competitor name]
+  Last researched: [date from note]
+
+  Known weaknesses:
+  [list from note]
+
+  Known opportunities:
+  [list from note]
+
+  Updating with new research.
+  Only researching what may have changed since [date].
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### read_customer_context
+Called at the start of: /copyai, /empathy.
+
+Action: read all UserInsight notes in
+`$OBSIDIAN_PRODUCT_DIR/Insights/`. Extract patterns in customer
+language. Record which of the six user groups have insights and which
+have none (gaps to fill). Incorporate existing insights into command
+output before doing new research.
+
+Display:
+
+```
+  EXISTING CUSTOMER INSIGHTS
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  User insights in Obsidian: [count]
+
+  Groups with insights:
+  [list groups]
+
+  Groups with no insights yet:
+  [list gaps]
+
+  These insights will inform the audit without re-researching
+  what we already know.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### read_pattern_context
+Called at the start of: /review-cycle, /test-deep, /atlas-feature.
+
+Action: read all files in `$OBSIDIAN_PATTERNS/`. For each extract name,
+`times_seen`, prevention. Before running checks display:
+
+```
+  KNOWN PATTERNS TO WATCH FOR
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  [count] recurring patterns documented.
+
+  Actively watching for:
+  [List pattern names]
+
+  If found these will be flagged as recurring not just new findings.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Command hooks
+
+Each affected command file contains a "KNOWLEDGE BRIDGE HOOKS" block
+immediately after its END OF RESOLVER line listing the exact functions
+to call and at which points. Summary:
+
+- `/compass` — read_competitor_context (start); write_competitor_note
+  (per competitor); write_insight_note (per insight); write_feature_note
+  (per feature scored).
+- `/copyai` and `/copyai-research` — read_competitor_context and
+  read_customer_context (start); write_insight_note (per strong
+  pattern); write_decision_note (copy direction, /copyai only).
+- `/empathy` — read_customer_context (start); write_user_insight_note
+  (per significant ghost-user friction); write_insight_note (emotional
+  arc).
+- `/atlas`, `/atlas-quick` — read_product_context (start);
+  write_decision_note (if user confirms a strategic decision).
+- `/atlas-feature` — read_pattern_context (start); write_feature_note
+  (status: built) after review; write_pattern_note if a new recurring
+  pattern detected.
+- `/review-cycle` — read_pattern_context (start); write_review_note
+  (on completion); write_pattern_note if recurring finding detected.
+- `/design` — write_decision_note for any design decisions confirmed
+  during the audit.
+
+Commands not listed still benefit from STEP R8 (vault detection) but do
+not call bridge functions by default.

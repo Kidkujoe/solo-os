@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.3.0 - Obsidian Second Brain Integration
+
+- Obsidian Knowledge Bridge added to RESOLVER.md
+- Six write functions create atomic notes in Obsidian for decisions,
+  patterns, insights, competitors, features, user insights and reviews
+- Four read functions load existing Obsidian knowledge before running
+  commands so the plugin learns from accumulated context
+- Inbox processing: notes written in Obsidian Inbox are read and
+  incorporated on next command run
+- Competitor notes updated not overwritten: new research merges with
+  existing intelligence
+- Pattern detection writes to Obsidian when threshold of 3 recurrences
+  met
+- /compass, /copyai, /empathy, /atlas, /atlas-feature, /review-cycle
+  and /design all updated to use the bridge
+- Vault path stored in STRATEGY.md per project
+- Product folder auto-created on first run if missing
+- Dashboard.md uses Dataview to show all features, patterns, insights
+  and decisions
+
 ## v2.2.0 — Completion and Robustness
 
 Closes all 10 gaps identified in the v2.1.0 gap analysis and fixes 3

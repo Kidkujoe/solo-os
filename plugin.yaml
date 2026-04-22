@@ -1,19 +1,21 @@
 name: visual-test-pro
-version: 2.2.0
+version: 2.3.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
   link support, restricted area access,
   smart fix handling with side effect
   warnings, token awareness with options
-  and recommendations, and plain English
-  HTML reports. Built for solo developers
-  and bootstrappers. Works on any project
-  globally with one command.
+  and recommendations, plain English
+  HTML reports, and an Obsidian Second
+  Brain knowledge bridge so findings
+  accumulate across runs. Built for solo
+  developers and bootstrappers. Works on
+  any project globally with one command.
 author: Kidkujoe
 github: https://github.com/Kidkujoe/Visual-Test-Pro
 license: MIT
-version_date: 2026-04-12
+version_date: 2026-04-22
 
 requires:
   claude_code: ">=2.0.0"

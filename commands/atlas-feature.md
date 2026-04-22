@@ -78,6 +78,26 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
+===========================================
+KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on (STEP R8):
+
+At the start — call read_pattern_context and read_product_context from
+RESOLVER.md § KNOWLEDGE_BRIDGE. Flag any known recurring pattern
+against this feature as a known risk, not a new finding.
+
+After review complete — call write_feature_note with status="built",
+filling in prism_score and pv_classification from the feature's
+COMPASS record if it exists.
+
+If a new recurring pattern is detected (same class of issue seen 3+
+times in this project's review history) call write_pattern_note.
+
+If a bridge call fails do not abort — log and continue.
+===========================================
+
 Run Atlas phase 6 only for: $ARGUMENTS
 
 Post-feature checklist for the named feature:

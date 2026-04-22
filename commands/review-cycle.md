@@ -79,6 +79,27 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
+===========================================
+KNOWLEDGE BRIDGE HOOKS (v2.3.0)
+===========================================
+
+If OBSIDIAN_BRIDGE=on (STEP R8):
+
+At the start — call read_pattern_context from RESOLVER.md §
+KNOWLEDGE_BRIDGE. Display the list of known patterns so CodeRabbit
+findings that match a known pattern are tagged as recurring.
+
+On completion — call write_review_note with feature, branch, date,
+quality_score, counts by severity, and the merge commit hash if
+merged.
+
+If the cycle detects a recurring finding (same issue class has
+appeared in ≥3 prior reviews in this project) call write_pattern_note
+with instances pulled from the Reviews/ history.
+
+If a bridge call fails do not abort — log and continue.
+===========================================
+
 Running full review cycle for: $ARGUMENTS
 
 The review cycle runs 11 stages. Each stage must complete before the

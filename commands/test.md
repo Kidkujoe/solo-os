@@ -169,7 +169,7 @@ If 3: Keep issue list, clear fix progress, release
 files, re-spawn all agents, start fix process over.
 
 If 4: Archive old state to
-~/.claude/context/agent-state-archive/[timestamp]-agent-state.json
+$PROJECT_CONTEXT/agent-state-archive/[timestamp]-agent-state.json
 Clear agent-state.json and run completely new test.
 
 If no incomplete session found, continue normally.
@@ -1165,7 +1165,7 @@ DISPLAY RESULTS:
 
 Icons: Strong/Clean/Fast = checkmark, Adequate/Partial = warning, Weak/Missing/Vulnerable = cross
 
-Save findings to ~/.claude/context/pillars-audit.json
+Save findings to $PROJECT_CONTEXT/pillars-audit.json
 
 For the HTML report add a PRODUCTION READINESS AUDIT section with:
 - Overall score and verdict prominently displayed
@@ -1180,7 +1180,7 @@ STEP 16 - WRITE SESSION DATA AND ARCHIVE AGENT STATE
 - Save structured data to test-data.json
 - Ensure all screenshots are in the screenshots folder
 - Mark agent-state.json as complete
-- Archive it to ~/.claude/context/agent-state-archive/
+- Archive it to $PROJECT_CONTEXT/agent-state-archive/
   [timestamp]-[project]-agent-state.json
 - Clear the active agent-state.json
 - Keep the last 5 archived states, delete older ones

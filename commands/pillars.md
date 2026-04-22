@@ -268,7 +268,7 @@ Weak/Missing/Vulnerable = cross
 
 STEP 7 - SAVE AND OFFER NEXT STEPS
 
-Save findings to ~/.claude/context/pillars-audit.json
+Save findings to $PROJECT_CONTEXT/pillars-audit.json
 
 Ask:
 Would you like me to fix the issues found?

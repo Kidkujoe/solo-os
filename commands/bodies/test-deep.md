@@ -789,7 +789,7 @@ Display full results with scores and ratings for each pillar.
 Overall Production Readiness score out of 10 with verdict:
 9-10: PRODUCTION READY / 7-8: NEARLY THERE / 5-6: NOT QUITE READY / Below 5: NEEDS WORK
 
-Save to ~/.claude/context/pillars-audit.json
+Save to $PROJECT_CONTEXT/pillars-audit.json
 
 For the HTML report: add PRODUCTION READINESS AUDIT section with four
 pillar cards, score bars, rating badges, and every finding in plain

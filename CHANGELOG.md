@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.3.1 - Fix pre-existing path isolation violations
+
+Moves five hardcoded `~/.claude/context/` paths in `pillars`, `test-deep`
+and `test` under `$PROJECT_CONTEXT/` so project data never leaks across
+projects. These violations predated v2.3.0 and were surfaced by the
+/vtpaudit run after the Knowledge Bridge build.
+
+- `pillars-audit.json` is now written to `$PROJECT_CONTEXT/pillars-audit.json`
+  in /pillars, /test-deep and /test
+- `agent-state-archive/` is now at `$PROJECT_CONTEXT/agent-state-archive/`
+  in /test
+- /vtpaudit now reports zero violations
+
 ## v2.3.0 - Obsidian Second Brain Integration
 
 - Obsidian Knowledge Bridge added to RESOLVER.md

@@ -21,9 +21,16 @@ if [ ! -f "$RESOLVER_FILE" ]; then
   exit 1
 fi
 
-# Extract just the resolver block from RESOLVER.md
-# (everything between the first triple-backtick block)
-RESOLVER_BLOCK=$(awk '/^```$/{flag=!flag; next} flag' "$RESOLVER_FILE")
+# Extract just the first fenced code block from RESOLVER.md — this is the
+# canonical resolver block. Stop at its closing fence; later fenced blocks
+# (e.g. inside the KNOWLEDGE_BRIDGE documentation section) must not bleed in.
+RESOLVER_BLOCK=$(awk '
+  /^```$/ {
+    if (!started) { started=1; next }
+    else { exit }
+  }
+  started { print }
+' "$RESOLVER_FILE")
 
 if [ -z "$RESOLVER_BLOCK" ]; then
   echo "ERROR: Could not extract resolver block from RESOLVER.md"

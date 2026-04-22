@@ -4,25 +4,28 @@ description: Master orchestrator and product brain. Knows your entire codebase, 
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
 
-
 ===========================================
 RESOLVER — RUN THIS BEFORE ANYTHING ELSE
 ===========================================
 
 STEP R1 - ESTABLISH PROJECT IDENTITY:
-Run `pwd` to get the absolute project path.
-Derive PROJECT_ID = [basename]-[6char hash of full path] using md5sum
-(fall back to shasum if unavailable).
-Set PROJECT_CONTEXT = ~/.claude/context/projects/[PROJECT_ID]/
+Run: pwd to get the absolute project path.
+Take the folder basename. Add a 6-character hash of the full path
+(try md5sum first, fall back to shasum). Format as:
+PROJECT_ID = [basename]-[6char-hash]
+PROJECT_CONTEXT = ~/.claude/context/projects/[PROJECT_ID]/
 
-If current directory is NOT a project directory (is home, is ~/.claude,
-no code files present), display PROJECT NOT DETECTED warning and stop.
-Ask user to cd into their project folder.
+If current directory is not a project directory (is home, is
+~/.claude, has no code files), display PROJECT NOT DETECTED
+warning and stop. Ask user to cd into their project folder.
 
-STEP R2 - CREATE PROJECT FOLDERS if missing:
-mkdir -p $PROJECT_CONTEXT/atlas $PROJECT_CONTEXT/screenshots $PROJECT_CONTEXT/reports
+STEP R2 - CREATE PROJECT FOLDERS:
+mkdir -p $PROJECT_CONTEXT
+mkdir -p $PROJECT_CONTEXT/atlas
+mkdir -p $PROJECT_CONTEXT/screenshots
+mkdir -p $PROJECT_CONTEXT/reports
 
-STEP R3 - ALL PATHS (use these variables, never hardcode):
+STEP R3 - ESTABLISH ALL FILE PATHS:
 SESSION_FILE      = $PROJECT_CONTEXT/test-session.md
 DATA_FILE         = $PROJECT_CONTEXT/test-data.json
 AGENT_STATE       = $PROJECT_CONTEXT/agent-state.json
@@ -32,10 +35,11 @@ COPYAI_FILE       = $PROJECT_CONTEXT/COPYAI.md
 COMPASS_FILE      = $PROJECT_CONTEXT/COMPASS.md
 EMPATHY_FILE      = $PROJECT_CONTEXT/EMPATHY.md
 SCREENSHOTS       = $PROJECT_CONTEXT/screenshots
-TEST_REPORT       = $PROJECT_CONTEXT/reports/test-report.html
-COPY_REPORT       = $PROJECT_CONTEXT/reports/copy-report.html
-COMPASS_REPORT    = $PROJECT_CONTEXT/reports/compass-report.html
-EMPATHY_REPORT    = $PROJECT_CONTEXT/reports/empathy-report.html
+REPORTS           = $PROJECT_CONTEXT/reports
+TEST_REPORT       = $REPORTS/test-report.html
+COPY_REPORT       = $REPORTS/copy-report.html
+COMPASS_REPORT    = $REPORTS/compass-report.html
+EMPATHY_REPORT    = $REPORTS/empathy-report.html
 ATLAS             = $PROJECT_CONTEXT/atlas
 PRODUCT_MD        = $ATLAS/PRODUCT.md
 DESIGN_MD         = $ATLAS/DESIGN.md
@@ -47,22 +51,25 @@ STRATEGY_MD       = $ATLAS/STRATEGY.md
 VOICE_MD          = $ATLAS/VOICE.md
 SEO_MD            = $ATLAS/SEO.md
 
-Approved global resources (shared across all projects):
-REPORT_TEMPLATE   = $REPORT_TEMPLATE
+Global resources (shared across all projects):
+REPORT_TEMPLATE   = ~/.claude/context/report-template.html
 GLOBAL_ACCOUNTS   = ~/.claude/context/test-accounts-global.md
 
 STEP R4 - VERIFY ISOLATION:
-Every path used must start with $PROJECT_CONTEXT or be one of the two
-approved globals. Any other ~/.claude/context/ path is a violation.
+Every file path used in this command must either start with
+$PROJECT_CONTEXT or be one of the two approved global resources.
+If any other ~/.claude/context/ path is referenced, stop and report.
 
-STEP R5 - DISPLAY CONFIRMATION (one line):
+STEP R5 - DISPLAY CONTEXT CONFIRMATION:
+Display a one-line confirmation so user can see which project:
   Project: [PROJECT_NAME] ([PROJECT_ID])
 
-STEP R6 - CONTAMINATION CHECK:
-If $SESSION_FILE exists, check its first line for `# Project: [id]`.
-If stamp does not match PROJECT_ID, display CONTAMINATION DETECTED
-warning with options: archive + start fresh / show contents / stop.
-Wait for user response.
+STEP R6 - CHECK FOR CONTAMINATION:
+If SESSION_FILE exists, check its first line for:
+  # Project: [project-id]
+If the stamp does not match PROJECT_ID, display CONTAMINATION DETECTED
+warning and ask user: 1) archive and start fresh, 2) show contents,
+3) stop. Wait for response.
 
 STEP R7 - STAMP NEW FILES:
 When creating any new context file, write as first line:
@@ -70,12 +77,32 @@ When creating any new context file, write as first line:
   # Path: [PROJECT_PATH]
   # Created: [timestamp]
 
-TEST-ACCOUNTS USAGE:
-When reading accounts, read $GLOBAL_ACCOUNTS and filter to the section
-matching PROJECT_ID. Never read another project's section.
-When writing accounts, update the $PROJECT_ID section only.
+STEP R8 - KNOWLEDGE BRIDGE INITIALIZATION (v2.3.0+):
+Read $STRATEGY_MD if it exists and extract the line:
+  Obsidian vault: [path]
+If found set OBSIDIAN_VAULT to that path.
+If not found default to: OBSIDIAN_VAULT="$HOME/Documents/SecondBrain"
 
-END OF RESOLVER — command-specific logic follows
+Derive these paths:
+  OBSIDIAN_PRODUCTS="$OBSIDIAN_VAULT/Products"
+  OBSIDIAN_RESEARCH="$OBSIDIAN_VAULT/Research"
+  OBSIDIAN_PATTERNS="$OBSIDIAN_VAULT/Patterns"
+  OBSIDIAN_INBOX="$OBSIDIAN_VAULT/Inbox"
+  OBSIDIAN_PRODUCT_DIR="$OBSIDIAN_PRODUCTS/$PROJECT_NAME"
+
+Check vault exists. If not found display:
+  Obsidian vault not found at $OBSIDIAN_VAULT
+  Knowledge Bridge disabled for this run.
+  Set up Obsidian to enable. Continuing without it.
+Then set OBSIDIAN_BRIDGE=off and skip all bridge calls.
+
+If vault exists but $OBSIDIAN_PRODUCT_DIR is missing, create:
+  mkdir -p "$OBSIDIAN_PRODUCT_DIR"/{Features,Decisions,Insights,Reviews}
+
+Set OBSIDIAN_BRIDGE=on. Commands should call read/write functions
+defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
+
+END OF RESOLVER — continue with command logic below
 ===========================================
 
 ===========================================
@@ -254,7 +281,6 @@ Framework, Language, Database, Auth, Hosting, Key services
 ## Environment variables required
 [All env vars referenced]
 
----
 
 WRITE $DESIGN_MD:
 # [Product Name] - Design System
@@ -280,7 +306,6 @@ Location, Props, Used by, Notes
 ## Animation standards
 ## Known inconsistencies
 
----
 
 WRITE $DECISIONS_MD:
 # [Product Name] - Architectural Decisions
@@ -292,7 +317,6 @@ Why: [inferred reason]
 Affects: [files/features]
 Date detected: [timestamp]
 
----
 
 WRITE $DEPENDENCIES_MD:
 # [Product Name] - Dependency Map
@@ -310,7 +334,6 @@ Used by, Risk if changed
 ### [filename or token]
 Used by, Risk if changed
 
----
 
 WRITE $HEALTH_MD:
 # [Product Name] - Health History
@@ -325,7 +348,6 @@ Last pillars audit: [timestamp and scores]
 Overall, Reliability, Security, Scalability, Observability,
 Design consistency, Test coverage — each X/10
 
----
 
 WRITE $REGRESSIONS_MD:
 # [Product Name] - Regression History

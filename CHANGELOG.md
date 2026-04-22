@@ -1,5 +1,73 @@
 # Changelog
 
+## v2.2.0 — Completion and Robustness
+
+Closes all 10 gaps identified in the v2.1.0 gap analysis and fixes 3
+fragility risks. Visual-Test-Pro is now feature-complete end-to-end.
+
+Six new commands:
+- `/performance` — Real Lighthouse audits (desktop + mobile), Core Web
+  Vitals (LCP, CLS, INP, FCP, TTFB), bundle size analysis, previous-run
+  comparison, specific recommendations per failing metric. Saves scores
+  to HEALTH.md so /seo and /pillars reference real measured numbers.
+- `/deploy` — Platform detection for Vercel, Netlify, Render, Fly.io,
+  DigitalOcean, Railway and custom/VPS. Pre-deploy checks (build,
+  migrations, env vars), deploy monitoring with streaming output,
+  post-deploy smoke test in browser, automatic rollback offer on failure.
+- `/ship` — Lightweight daily driver for small commits. Secrets scan,
+  30-second build check, 10-second visual spot check, conventional
+  commit message generator with 3 suggestions, push confirmation. For
+  typos, copy tweaks, minor fixes that don't need the full review cycle.
+- `/deps` — Proactive dependency health audit. Classifies updates as
+  patch (safe), minor (usually safe) or major (breaking). Fetches
+  changelog for major upgrades. Flags abandoned packages (>2y no update,
+  <1000 weekly downloads). Full security scan. `/deps fix` applies safe
+  updates. `/deps upgrade [pkg]` guided major upgrade with backup branch.
+- `/env-diff` — Environment parity check across .env files, code
+  references, and production secrets. Finds missing-in-production,
+  missing-locally, in-code-but-undefined-anywhere, dev-only vars in
+  production. Displays NAMES only, never values (critical rule).
+- `/migrate` — Safe database migration management. Detects Drizzle,
+  Prisma, Sequelize, TypeORM, Alembic, Rails, Flyway, custom SQL.
+  Classifies operations as SAFE / REVIEW / DANGEROUS. Requires
+  explicit "backed-up" confirmation for destructive operations.
+  Dry-run mode available.
+
+Three fragility fixes:
+- /test-deep now detects large projects (>50 files) and offers FULL /
+  CORE / AUDIT / CUSTOM modes. Graceful degradation skips lowest-priority
+  steps when context runs low rather than silently truncating. Priority
+  order documented: Visual, Security, CodeRabbit, Reliability always kept.
+- Multi-agent system now validates capability before spawning. Falls
+  back to sequential mode when context is low or files >20. File
+  locking via $AGENT_COORD with 30-second deadlock detection prevents
+  concurrent write conflicts. Agent state persistence enables /resume
+  from any point mid-fix.
+- CodeRabbit async completion now honestly documented. Detection
+  happens when /status or /reviews runs (not silent background polling).
+  When a previously-pending PR review has completed, /status surfaces it.
+
+Resolver architecture:
+- New `scripts/build-commands.sh` regenerates all command files from
+  RESOLVER.md + `commands/bodies/*.md`. Single source of truth. No more
+  32-file manual updates when the resolver changes.
+- /vtpaudit now checks resolver version against RESOLVER.md and flags
+  out-of-date commands. Suggests running build-commands.sh.
+
+Integration updates:
+- /atlas-feature prompts to /deploy after successful merge
+- /atlas daily recommendation includes:
+  - Security vulnerability alerts from /deps
+  - Performance audit age (run if >30 days)
+  - Pending database migrations
+  - Missing /env-diff before last deploy
+- /review-cycle flags dangerous migrations before commit (Stage 2B)
+- /status expanded with deployment status, dependency health,
+  environment parity and performance sections
+
+37 total commands now installed (25 original + 4 review + 2 safeguard +
+6 new this release).
+
 ## v2.1.0 — CodeRabbit Automation System
 
 New commands:

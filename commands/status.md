@@ -156,7 +156,44 @@ If any review is stale (>48h old):
   [branch-name] review is [X] hours old.
   Consider re-running /review-cycle.
 
-If async CodeRabbit review completed while user was working:
-  CodeRabbit review of [branch] completed while you were working.
-  [count] findings. [count] critical.
-  Run /reviews to see details.
+ASYNC CODERABBIT REVIEW POLLING:
+Async CodeRabbit review completion is only detected when /status or
+/reviews is run. It is NOT checked in the background between sessions.
+
+For each branch with an open PR:
+Fetch: GET /repos/[owner]/[repo]/pulls/[pr-number]/reviews
+Compare against last recorded state.
+
+If a CodeRabbit review completed since last check:
+
+  CODERABBIT REVIEW READY
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Branch: [name]
+  PR: [url]
+  Findings: [count] ([severity breakdown])
+  Completed: [timestamp]
+
+  Run /review-cycle [branch] to review findings and apply fixes.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DEPLOYMENT STATUS:
+Last deploy: [timestamp or NEVER]
+Platform: [detected or UNKNOWN]
+Production URL: [url or NOT SET]
+Post-deploy smoke test: [PASSED / FAILED / NOT RUN]
+
+DEPENDENCY HEALTH:
+Last /deps run: [date or NEVER]
+Outdated packages: [count or UNKNOWN]
+Security vulnerabilities: [count or UNKNOWN]
+If never run: "Run /deps for a health check"
+
+ENVIRONMENT:
+Last /env-diff run: [date or NEVER]
+Missing in production: [count or UNKNOWN]
+If never run: "Run /env-diff to verify"
+
+PERFORMANCE:
+Last /performance run: [date or NEVER]
+Performance score: [value or NEVER RUN]
+If not run in 30+ days: "Run /performance for up-to-date scores"

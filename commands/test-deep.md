@@ -83,6 +83,48 @@ Run a full deep test for: $ARGUMENTS
 This is the high token cost mode. Everything is included.
 Best run before a major release or launch.
 
+TOKEN BUDGET SYSTEM:
+Before starting estimate the run cost. Count files in the project.
+
+If project has >50 files this run may exceed the context window.
+Display:
+
+  LARGE PROJECT DETECTED
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Project has [count] files.
+  Full /test-deep may exceed context window.
+
+  Recommended modes:
+  1. FULL: All steps (may truncate if runs long)
+  2. CORE: Visual + CodeRabbit + Security + Reliability only
+  3. AUDIT: All audits, no visual test
+  4. CUSTOM: Choose steps
+
+  Type 1, 2, 3 or 4.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GRACEFUL DEGRADATION during the run:
+Monitor step completion. If approaching context limits, pause and display:
+
+  CONTEXT WINDOW NOTICE
+  Completed steps: [list]
+  Remaining steps: [list]
+  Skipping lower priority steps to preserve completed work.
+  Skipping: [steps]  Reason: Context budget
+  Run these separately: [commands for each skipped step]
+
+STEP PRIORITY (skip from lowest first):
+1. Keep: Visual test
+2. Keep: Security pillar
+3. Keep: CodeRabbit review
+4. Keep: Reliability pillar
+5. Skip if needed: Design check
+6. Skip if needed: SEO check
+7. Skip if needed: Copy check
+8. Skip if needed: Empathy check
+9. Skip if needed: Performance check
+10. Skip if needed: Edge cases
+
 STEP 1 - LOAD CONTEXT
 - Read $PRODUCT_MD silently if it exists
 - Read $SESSION_FILE

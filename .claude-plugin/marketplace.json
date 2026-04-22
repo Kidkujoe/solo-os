@@ -1,6 +1,6 @@
 {
   "name": "visual-test-pro",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Comprehensive visual browser testing with code review, auth handling, magic link support, restricted area access, smart fix handling with side effect warnings, token awareness with options and recommendations, and plain English HTML reports. Built for solo developers and bootstrappers.",
   "author": "Kidkujoe",
   "repository": "https://github.com/Kidkujoe/Visual-Test-Pro",
@@ -148,6 +148,36 @@
       "name": "compass-retro",
       "description": "Retrospective comparing COMPASS predictions against outcomes.",
       "file": "commands/compass-retro.md"
+    },
+    {
+      "name": "performance",
+      "description": "Real Core Web Vitals, Lighthouse scores, bundle analysis, trend tracking.",
+      "file": "commands/performance.md"
+    },
+    {
+      "name": "deploy",
+      "description": "Detect deployment platform, trigger deploy, verify and rollback on failure.",
+      "file": "commands/deploy.md"
+    },
+    {
+      "name": "ship",
+      "description": "Lightweight daily driver for small commits.",
+      "file": "commands/ship.md"
+    },
+    {
+      "name": "deps",
+      "description": "Dependency health. Outdated packages, abandoned, breaking changes, CVEs.",
+      "file": "commands/deps.md"
+    },
+    {
+      "name": "env-diff",
+      "description": "Compare env vars across local and production. Names only, never values.",
+      "file": "commands/env-diff.md"
+    },
+    {
+      "name": "migrate",
+      "description": "Safe database migration management with risk classification.",
+      "file": "commands/migrate.md"
     },
     {
       "name": "review-cycle",

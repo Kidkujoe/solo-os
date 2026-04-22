@@ -126,5 +126,27 @@ Never read or modify another project's section.
 
 ## ENFORCEMENT
 
-Run `/vtpaudit` to verify all commands pass isolation checks.
+Run `/vtpaudit` to verify all commands pass isolation checks AND the
+resolver block matches this file.
 Run `/projects` to see all projects with context data.
+
+## BUILD SYSTEM (v2.2.0+)
+
+As of v2.2.0, command files can be regenerated from a single source of
+truth via `scripts/build-commands.sh`. This script:
+1. Reads the resolver block from this file (the fenced code block above)
+2. Reads each command body from `commands/bodies/[name].md`
+3. Combines them into `commands/[name].md` and also copies to
+   `~/.claude/commands/[name].md`
+
+To update the resolver across all commands:
+1. Edit the resolver block above in RESOLVER.md
+2. Run `bash scripts/build-commands.sh`
+3. All 32+ commands regenerate with the new resolver
+4. Commit and push
+
+If `commands/bodies/` doesn't exist yet, commands still work the old way
+(resolver embedded manually). The build system is an optional upgrade.
+
+`/vtpaudit` checks whether installed commands have the current resolver
+and flags any that are out of date.

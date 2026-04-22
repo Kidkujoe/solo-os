@@ -154,6 +154,13 @@ Classify:
 
 Display gate summary: all clear / proceed with caution / blocked.
 
+STAGE 2B - MIGRATION CHECK (if schema changed):
+Before commit, if any schema or migration files changed:
+Run /migrate logic in preview mode silently.
+If dangerous operations detected (DROP, TRUNCATE, ALTER that could
+lose data): flag prominently before commit, ask user to review
+migration plan before proceeding.
+
 STAGE 3 - COMMIT CHANGES:
 If uncommitted changes exist: suggest commit message based on diff.
 Ask yes/edit/custom. After confirmation: `git add -A`, `git commit -m`.

@@ -1,8 +1,9 @@
 ---
-name: atlas-feature
-description: Run the post-feature checklist for a specific feature
+name: ship
+description: Lightweight daily driver for small commits that do not need the full review cycle. Quick check, generated commit message, commit with approval and push. For tweaks, copy changes, small fixes.
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+
 
 
 ===========================================
@@ -78,56 +79,57 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Run Atlas phase 6 only for: $ARGUMENTS
+$ARGUMENTS can describe what was changed. If empty detect from git diff.
 
-Post-feature checklist for the named feature:
+DECISION GUIDE:
+USE /ship WHEN: typo, copy change, small UI tweak, minor bug fix in
+non-critical area, docs update, config change, adding a test.
 
-Step 1: Regression check — dependency diff on changed files
-Step 2: Quick visual test on this feature
-Step 3: Edge case scan on changed files
-Step 4: Security + reliability check on changed files
-Step 5: Design consistency check against DESIGN.md
-Step 6: CodeRabbit review (if installed)
-Step 7: Update PRODUCT.md and DESIGN.md with changes
-Step 8: Terminology check against VOICE.md
-Step 9: Basic SEO check (title, meta, H1, indexing)
-Step 10: UX empathy check (Group 1 and Group 2 friction)
+USE /review-cycle INSTEAD WHEN: new feature, auth/payment/security changes,
+database schema changes, API endpoints added/modified, major refactor.
 
-Give verdict: READY / NEARLY READY / NOT READY
+STEP 1 - CHECK WHAT CHANGED:
+Run `git status --porcelain` and `git diff --stat HEAD`.
+If no changes: "Nothing to ship. No uncommitted changes." Stop.
 
-STEP 11 - AUTOMATED REVIEW PIPELINE:
-After the post-feature checklist passes, offer to trigger the full
-review cycle automatically.
+STEP 2 - QUICK SECRETS SCAN:
+Scan changed files only for patterns: sk_live_, pk_live_, ghp_, gho_,
+ghu_, AKIA, AIza, Bearer [long-string], password=, secret=, api_key=,
+*_SECRET, *_KEY in non-example files.
+If found: STOP immediately. Same rules as /review-cycle GATE 1.
 
-Display:
+STEP 3 - BUILD CHECK (FAST):
+Run build with 30 second timeout. If fails ask fix-or-skip.
 
-  POST-FEATURE CHECKLIST COMPLETE
-  Starting automated review pipeline
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4 - QUICK BROWSER CHECK:
+If Chrome connected do 10 second visual spot check on primary changed area.
+Not a full test. Just confirm nothing is obviously broken.
 
-  This will run:
-  1. Pre-review gates (secrets, deps, build, tests, lint, impact)
-  2. CodeRabbit code review
-  3. Visual browser test
-  4. Fix approval flow
-  5. Documentation check
-  6. Merge readiness assessment
+STEP 5 - GENERATE COMMIT MESSAGE:
+Read git diff. Generate conventional commits format:
+type(scope): description
 
-  Estimated time: 10-30 minutes depending on code size and
-  CodeRabbit speed.
+Types: feat, fix, docs, style, refactor, test, chore, perf.
 
-  Start now?  Type yes / later
+Examples:
+- fix(auth): correct session timeout handling
+- feat(dashboard): add export button
+- docs(readme): update installation steps
+- style(landing): fix button alignment
 
-If yes: run /review-cycle with the feature name as argument.
+Offer 3 message options from the diff. Ask: 1/2/3 or custom.
 
-STEP 12 - DEPLOY PROMPT:
-After /review-cycle completes and branch is merged:
+STEP 6 - COMMIT AND PUSH:
+Display READY TO SHIP panel: count files, chosen message, current branch,
+push target platform + remote. Wait for explicit yes.
 
-  Feature merged successfully.
+Execute:
+  git add -A
+  git commit -m "[message]"
+  git push origin [CURRENT_BRANCH]
 
-  Deploy to production?
-  Type yes to run /deploy
-  Type later to deploy manually
-  Type no to skip
+Show SHIPPED panel: commit hash, message, branch, URL to commit on platform.
 
-If yes: run /deploy with the feature name as argument.
+STEP 7 - ATLAS QUICK UPDATE:
+Silently update $HEALTH_MD with ship timestamp. Note as minor change,
+not a full feature.

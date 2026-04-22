@@ -1,8 +1,9 @@
 ---
-name: atlas-feature
-description: Run the post-feature checklist for a specific feature
-allowed-tools: Bash, mcp__chrome-devtools__*
+name: migrate
+description: Safe database migration management. Detects migration tool, reviews pending migrations for safety risks, warns about destructive operations.
+allowed-tools: Bash
 ---
+
 
 
 ===========================================
@@ -78,56 +79,77 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Run Atlas phase 6 only for: $ARGUMENTS
+PHASE 1 - DETECT MIGRATION TOOL:
+- DRIZZLE: drizzle.config.ts or .js, drizzle-orm in package.json
+  Command: `npx drizzle-kit generate` and `npx drizzle-kit migrate`
+- PRISMA: prisma/schema.prisma, @prisma/client in package.json
+  Command: `npx prisma migrate dev`
+- SEQUELIZE: migrations/ with sequelize pattern
+  Command: `npx sequelize-cli db:migrate`
+- TYPEORM: src/migrations/, typeorm in package.json
+  Command: `npx typeorm migration:run`
+- ALEMBIC (Python): alembic.ini
+  Command: `alembic upgrade head`
+- RAILS: db/migrate/
+  Command: `rails db:migrate`
+- FLYWAY: flyway.conf
+  Command: `flyway migrate`
+- CUSTOM SQL: *.sql files in migrations/
 
-Post-feature checklist for the named feature:
+If none found check for any folder named migrations/ and infer from contents.
 
-Step 1: Regression check — dependency diff on changed files
-Step 2: Quick visual test on this feature
-Step 3: Edge case scan on changed files
-Step 4: Security + reliability check on changed files
-Step 5: Design consistency check against DESIGN.md
-Step 6: CodeRabbit review (if installed)
-Step 7: Update PRODUCT.md and DESIGN.md with changes
-Step 8: Terminology check against VOICE.md
-Step 9: Basic SEO check (title, meta, H1, indexing)
-Step 10: UX empathy check (Group 1 and Group 2 friction)
+Display tool detected, config path, migration folder path.
 
-Give verdict: READY / NEARLY READY / NOT READY
+PHASE 2 - PENDING MIGRATIONS:
+Get list using detected tool. For each pending migration read the file
+and classify each operation:
 
-STEP 11 - AUTOMATED REVIEW PIPELINE:
-After the post-feature checklist passes, offer to trigger the full
-review cycle automatically.
+SAFE OPERATIONS:
+- CREATE TABLE
+- ADD COLUMN with default value
+- CREATE INDEX
+- ADD CONSTRAINT with default
 
-Display:
+REVIEW REQUIRED:
+- DROP COLUMN (data loss)
+- DROP TABLE (data loss)
+- ALTER COLUMN type (potential data loss)
+- RENAME COLUMN (application code must update)
+- RENAME TABLE (application code must update)
+- ADD COLUMN NOT NULL without default (may fail if rows exist)
+- REMOVE INDEX (performance impact)
+- REMOVE CONSTRAINT (integrity impact)
 
-  POST-FEATURE CHECKLIST COMPLETE
-  Starting automated review pipeline
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DANGEROUS OPERATIONS:
+- DELETE FROM (data deletion)
+- TRUNCATE (data deletion)
+- DROP DATABASE (catastrophic)
+- Anything modifying auth/users tables
 
-  This will run:
-  1. Pre-review gates (secrets, deps, build, tests, lint, impact)
-  2. CodeRabbit code review
-  3. Visual browser test
-  4. Fix approval flow
-  5. Documentation check
-  6. Merge readiness assessment
+For each migration display:
+  MIGRATION: [filename]
+  Operations: [count]  Risk level: SAFE / REVIEW / DANGEROUS
+  Operations found: [list with classification]
+  WARNINGS: [data loss or breaking risks]
+  Application code to update: [if rename: list files referencing old name]
 
-  Estimated time: 10-30 minutes depending on code size and
-  CodeRabbit speed.
+PHASE 3 - MIGRATION APPROVAL:
+If any DANGEROUS operations:
+  DANGEROUS MIGRATION DETECTED
+  This migration may cause data loss.
+  [List dangerous operations]
+  Have you backed up the database?
+  Type "backed-up" to confirm and continue.
+  Type "no" to stop.
 
-  Start now?  Type yes / later
+If safe or reviewed:
+  MIGRATION SUMMARY
+  Pending: [count]  Risk: [SAFE / REVIEW / DANGEROUS-confirmed]
+  Run migrations now? yes / dry-run / no
 
-If yes: run /review-cycle with the feature name as argument.
+If dry-run: show what would happen without changes.
 
-STEP 12 - DEPLOY PROMPT:
-After /review-cycle completes and branch is merged:
-
-  Feature merged successfully.
-
-  Deploy to production?
-  Type yes to run /deploy
-  Type later to deploy manually
-  Type no to skip
-
-If yes: run /deploy with the feature name as argument.
+After running display result:
+  MIGRATIONS COMPLETE
+  Ran: [count]  Status: SUCCESS / FAILED
+  If failed: error, rolled back status.

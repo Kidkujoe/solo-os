@@ -876,6 +876,51 @@ When pausing for any reason (user request, waiting for input,
 session ending), write the pause reason explicitly so resume
 knows exactly what to do.
 
+AGENT SYSTEM VALIDATION (run before spawning):
+Check capability before spawning 6+ parallel agents:
+- Is there enough context remaining for multiple parallel agents?
+- Are the files to be fixed under 20 total?
+
+If context is too low OR files >20:
+
+  SEQUENTIAL MODE ACTIVATED
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Too many findings or files to safely run parallel agents.
+  Switching to sequential mode: agents run one at a time.
+  Slower but more reliable.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FILE LOCKING via $AGENT_COORD:
+Before any agent writes to a file:
+1. Read $AGENT_COORD.
+2. Check if file is locked by another agent.
+3. If locked: wait 10 seconds, check again.
+4. If still locked after 30 seconds: report deadlock, skip.
+
+Lock format:
+{
+  "locks": {
+    "[filename]": {
+      "agent": "[agent name]",
+      "locked_at": "[timestamp]",
+      "operation": "[what it is doing]"
+    }
+  }
+}
+
+After agent finishes with a file: remove its lock.
+This prevents two agents writing to the same file simultaneously.
+
+AGENT STATE PERSISTENCE:
+After every fix save to $AGENT_STATE:
+- Which fixes applied
+- Which in progress
+- Which pending
+- Which failed and why
+
+If session interrupted /resume reads $AGENT_STATE and continues from
+the last saved point.
+
 SPAWN PATTERN:
 Use the Agent tool to spawn each agent in parallel.
 Each agent prompt must include:

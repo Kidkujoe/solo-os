@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 2.1.0
+version: 2.2.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -198,6 +198,42 @@ commands:
       Retrospective comparing COMPASS
       predictions against actual outcomes.
     file: commands/compass-retro.md
+
+  - name: performance
+    description: >
+      Real Core Web Vitals, Lighthouse scores,
+      bundle analysis, trend tracking.
+    file: commands/performance.md
+
+  - name: deploy
+    description: >
+      Detect deployment platform, trigger
+      deploy, verify and rollback on failure.
+    file: commands/deploy.md
+
+  - name: ship
+    description: >
+      Lightweight daily driver for small
+      commits. Quick check, commit and push.
+    file: commands/ship.md
+
+  - name: deps
+    description: >
+      Dependency health. Outdated packages,
+      abandoned, breaking changes, CVEs.
+    file: commands/deps.md
+
+  - name: env-diff
+    description: >
+      Compare env vars across local and
+      production. Names only, never values.
+    file: commands/env-diff.md
+
+  - name: migrate
+    description: >
+      Safe database migration management.
+      Classifies operations by risk level.
+    file: commands/migrate.md
 
   - name: review-cycle
     description: >

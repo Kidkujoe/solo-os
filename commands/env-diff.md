@@ -1,8 +1,9 @@
 ---
-name: atlas-feature
-description: Run the post-feature checklist for a specific feature
-allowed-tools: Bash, mcp__chrome-devtools__*
+name: env-diff
+description: Compares environment variables across local and production environments. Flags missing variables, dev-only flags in production, required variables not defined anywhere. Never exposes values - names only.
+allowed-tools: Bash
 ---
+
 
 
 ===========================================
@@ -78,56 +79,69 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Run Atlas phase 6 only for: $ARGUMENTS
+CRITICAL RULE: Display variable NAMES only. Never display, log or output
+any variable VALUES. If a value is accidentally visible in output
+immediately warn the user and redact.
 
-Post-feature checklist for the named feature:
+PHASE 1 - READ ENV FILES:
+Find all env files in project root:
+.env, .env.local, .env.development, .env.production, .env.staging,
+.env.example, .env.template.
 
-Step 1: Regression check — dependency diff on changed files
-Step 2: Quick visual test on this feature
-Step 3: Edge case scan on changed files
-Step 4: Security + reliability check on changed files
-Step 5: Design consistency check against DESIGN.md
-Step 6: CodeRabbit review (if installed)
-Step 7: Update PRODUCT.md and DESIGN.md with changes
-Step 8: Terminology check against VOICE.md
-Step 9: Basic SEO check (title, meta, H1, indexing)
-Step 10: UX empathy check (Group 1 and Group 2 friction)
+Extract variable NAMES only from each. Never read or display values.
 
-Give verdict: READY / NEARLY READY / NOT READY
+.env.example and .env.template define REQUIRED variables.
 
-STEP 11 - AUTOMATED REVIEW PIPELINE:
-After the post-feature checklist passes, offer to trigger the full
-review cycle automatically.
+PHASE 2 - READ CODE REFERENCES:
+Scan codebase for env var references:
+- process.env.[NAME]        (JavaScript/TypeScript)
+- os.environ[[NAME]]        (Python)
+- ENV[[NAME]]               (Ruby)
+- getenv([NAME])            (PHP/C)
+- os.Getenv([NAME])         (Go)
 
-Display:
+Build complete list of every env var the code expects.
 
-  POST-FEATURE CHECKLIST COMPLETE
-  Starting automated review pipeline
+PHASE 3 - DETECT PRODUCTION ENV:
+If deployment platform is configured try to fetch production vars
+(names only, never values):
+- Vercel: `vercel env ls`
+- Netlify: `netlify env:list --plain`
+- Fly.io: `flyctl secrets list`
+- Others: note that production env cannot be read automatically; ask
+  user to paste list of production variable names.
+
+PHASE 4 - COMPARISON AND DISPLAY:
+
+  ENVIRONMENT VARIABLE AUDIT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Variables in code: [count]
+  Defined locally: [count]
+  Defined in production: [count or UNKNOWN]
+
+  MISSING IN PRODUCTION ([count]):
+  [VAR_NAME] - required by [file]
+  This will cause [feature] to fail in production.
+
+  MISSING LOCALLY ([count]):
+  [VAR_NAME] - defined in production
+  May cause issues in development.
+
+  IN CODE BUT NOT DEFINED ANYWHERE ([count]):
+  [VAR_NAME] - referenced in [file]
+  Neither local nor production has this.
+  Will cause runtime error.
+
+  DEV-ONLY VARIABLES IN PRODUCTION ([count]):
+  [VAR_NAME] - name suggests dev usage
+  Patterns flagged: DEBUG_, DEV_, LOCAL_, TEST_
+  Verify these should be in production.
+
+  ALL PRESENT AND CORRECT: [count] variables.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  This will run:
-  1. Pre-review gates (secrets, deps, build, tests, lint, impact)
-  2. CodeRabbit code review
-  3. Visual browser test
-  4. Fix approval flow
-  5. Documentation check
-  6. Merge readiness assessment
+For each missing-in-production variable also show:
+- Which code file(s) reference it
+- What feature will break without it
 
-  Estimated time: 10-30 minutes depending on code size and
-  CodeRabbit speed.
-
-  Start now?  Type yes / later
-
-If yes: run /review-cycle with the feature name as argument.
-
-STEP 12 - DEPLOY PROMPT:
-After /review-cycle completes and branch is merged:
-
-  Feature merged successfully.
-
-  Deploy to production?
-  Type yes to run /deploy
-  Type later to deploy manually
-  Type no to skip
-
-If yes: run /deploy with the feature name as argument.
+Never show values. Only names.

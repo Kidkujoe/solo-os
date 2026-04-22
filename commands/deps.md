@@ -1,8 +1,9 @@
 ---
-name: atlas-feature
-description: Run the post-feature checklist for a specific feature
-allowed-tools: Bash, mcp__chrome-devtools__*
+name: deps
+description: Proactive dependency health audit. Outdated packages, abandoned packages, breaking changes in major upgrades, security vulnerabilities, safe vs risky upgrade classification.
+allowed-tools: Bash
 ---
+
 
 
 ===========================================
@@ -78,56 +79,82 @@ When writing accounts, update the $PROJECT_ID section only.
 END OF RESOLVER — command-specific logic follows
 ===========================================
 
-Run Atlas phase 6 only for: $ARGUMENTS
+PHASE 1 - DETECT PACKAGE MANAGER:
+- package.json + package-lock.json -> npm
+- package.json + yarn.lock -> yarn
+- package.json + pnpm-lock.yaml -> pnpm
+- requirements.txt or pyproject.toml -> pip
+- Gemfile -> bundler
+- go.mod -> go modules
+- Cargo.toml -> cargo
 
-Post-feature checklist for the named feature:
+If multiple found: audit each.
 
-Step 1: Regression check — dependency diff on changed files
-Step 2: Quick visual test on this feature
-Step 3: Edge case scan on changed files
-Step 4: Security + reliability check on changed files
-Step 5: Design consistency check against DESIGN.md
-Step 6: CodeRabbit review (if installed)
-Step 7: Update PRODUCT.md and DESIGN.md with changes
-Step 8: Terminology check against VOICE.md
-Step 9: Basic SEO check (title, meta, H1, indexing)
-Step 10: UX empathy check (Group 1 and Group 2 friction)
+PHASE 2 - OUTDATED PACKAGES:
+For npm/yarn/pnpm: `npm outdated --json`. Parse each outdated package.
+For pip: `pip list --outdated --format=json`.
 
-Give verdict: READY / NEARLY READY / NOT READY
+Classify each:
+- PATCH (1.2.3 -> 1.2.4): very low risk, bug fix only
+- MINOR (1.2.3 -> 1.4.0): usually safe, new features, backward compatible
+- MAJOR (1.2.3 -> 2.0.0): breaking changes likely, review required
 
-STEP 11 - AUTOMATED REVIEW PIPELINE:
-After the post-feature checklist passes, offer to trigger the full
-review cycle automatically.
+For each MAJOR update, search for breaking change notes in the package's
+changelog. Summarise what breaks.
 
-Display:
+PHASE 3 - ABANDONED PACKAGES:
+For each dependency check npm registry or equivalent:
+- Last publish date
+- Weekly download count
+- GitHub repo status
 
-  POST-FEATURE CHECKLIST COMPLETE
-  Starting automated review pipeline
+Flag ABANDONED: not updated in 2+ years AND fewer than 1000 weekly downloads.
+Flag AT RISK: not updated in 1+ year OR downloads declining significantly.
+
+PHASE 4 - SECURITY CHECK:
+`npm audit --json` across all dependencies. Parse all severities
+(critical, high, moderate, low).
+
+PHASE 5 - DISPLAY AND RECOMMEND:
+
+  DEPENDENCY HEALTH REPORT
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Total dependencies: [count]
+  Up to date: [count]
+  Outdated: [count]
+
+  SAFE TO UPGRADE NOW ([count]):
+  [package] [current] -> [latest] (patch)
+  Command: npm update [package]
+
+  REVIEW BEFORE UPGRADING ([count]):
+  [package] [current] -> [latest] (minor)
+  No breaking changes found.
+  Command: npm install [package]@[latest]
+
+  BREAKING CHANGES - PLAN CAREFULLY ([count]):
+  [package] [current] -> [latest] (major)
+  Breaking: [summary]
+  Guide: [link to migration guide]
+
+  ABANDONED PACKAGES ([count]):
+  [package] - last updated [date]
+  Alternatives: [suggestions from search]
+
+  SECURITY VULNERABILITIES ([count]):
+  Critical: [count]  High: [count]
+
+  Run /deps fix to apply safe updates.
+  Run /deps upgrade [package] for guided major upgrade.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  This will run:
-  1. Pre-review gates (secrets, deps, build, tests, lint, impact)
-  2. CodeRabbit code review
-  3. Visual browser test
-  4. Fix approval flow
-  5. Documentation check
-  6. Merge readiness assessment
+If $ARGUMENTS is "fix":
+Apply all patch and safe minor updates.
+Run build to verify nothing broke.
+Run test suite. Show results.
 
-  Estimated time: 10-30 minutes depending on code size and
-  CodeRabbit speed.
-
-  Start now?  Type yes / later
-
-If yes: run /review-cycle with the feature name as argument.
-
-STEP 12 - DEPLOY PROMPT:
-After /review-cycle completes and branch is merged:
-
-  Feature merged successfully.
-
-  Deploy to production?
-  Type yes to run /deploy
-  Type later to deploy manually
-  Type no to skip
-
-If yes: run /deploy with the feature name as argument.
+If $ARGUMENTS is "upgrade [package]":
+Show breaking change summary.
+Offer to create a backup branch first.
+Run the upgrade. Build. Test. Show results.
+If anything breaks offer to rollback.

@@ -504,6 +504,21 @@ Display:
   Run /empathy to see the full friction map and prioritised fixes.
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+OPERATIONAL HEALTH AWARENESS:
+Check these operational signals and surface in the daily recommendation:
+
+If any packages have critical security vulnerabilities in $HEALTH_MD:
+  SECURITY ALERT: Run /deps to fix [count] vulnerabilities.
+
+If /performance has not been run in over 30 days (check HEALTH.md):
+  Run /performance to update Core Web Vitals scores.
+
+If pending database migrations detected in migration folder:
+  [count] pending migrations detected. Run /migrate when ready.
+
+If /env-diff has not been run before the last deploy:
+  Run /env-diff to verify production env vars are complete.
+
 COPY AND SEO AWARENESS:
 If VOICE.md does not exist yet: recommend running /copy first
 If copy score in HEALTH.md is below 7: flag copy consistency

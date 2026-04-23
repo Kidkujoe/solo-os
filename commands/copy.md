@@ -112,6 +112,12 @@ Wiki-layer paths (v2.5.0+):
   OBSIDIAN_PROGRAM="$OBSIDIAN_VAULT/program"
   OBSIDIAN_PROGRAM_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME.md"
 
+Feedback-loop paths (v3.1.0+):
+  OBSIDIAN_LESSONS_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME-lessons.md"
+  SKIP_TRACKER="$PROJECT_CONTEXT/skip-tracker.json"
+  DECISIONS_FILE="$PROJECT_CONTEXT/DECISIONS.md"
+  Full feedback-loop protocol: ~/solo-os/docs/FEEDBACK_LOOP.md
+
 Check vault exists. If not found display:
   Obsidian vault not found at $OBSIDIAN_VAULT
   Knowledge Bridge disabled for this run.
@@ -335,3 +341,24 @@ Display:
 Save findings to VOICE.md (update terminology map)
 and to test-session.md.
 Update HEALTH.md with copy score.
+
+===========================================
+SKIP DETECTION (v3.1.0+)
+===========================================
+
+Every finding this command surfaces is subject to skip tracking in
+$SKIP_TRACKER. For each rule read confidence_for_projects.[PROJECT_NAME]
+from the wiki page frontmatter and apply the per-level enforcement:
+  HIGH            → VIOLATION.
+  MEDIUM          → SUGGESTION (non-blocking).
+  LOW             → shown only in full-audit mode.
+  DISPUTED        → silent unless explicitly requested.
+  NOT_APPLICABLE  → silent.
+
+Track skips per rule_id (first/second skip silent, third triggers
+status=pending_question). The 5-option question, resolutions A-E,
+and wiki confidence updates are defined in
+~/solo-os/docs/FEEDBACK_LOOP.md. Follow it exactly.
+
+Skip entries must include: rule_id, rule_name, source (wiki page),
+skip_count, last_skipped (ISO timestamp), status, resolution.

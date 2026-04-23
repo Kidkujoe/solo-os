@@ -112,6 +112,12 @@ Wiki-layer paths (v2.5.0+):
   OBSIDIAN_PROGRAM="$OBSIDIAN_VAULT/program"
   OBSIDIAN_PROGRAM_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME.md"
 
+Feedback-loop paths (v3.1.0+):
+  OBSIDIAN_LESSONS_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME-lessons.md"
+  SKIP_TRACKER="$PROJECT_CONTEXT/skip-tracker.json"
+  DECISIONS_FILE="$PROJECT_CONTEXT/DECISIONS.md"
+  Full feedback-loop protocol: ~/solo-os/docs/FEEDBACK_LOOP.md
+
 Check vault exists. If not found display:
   Obsidian vault not found at $OBSIDIAN_VAULT
   Knowledge Bridge disabled for this run.
@@ -237,3 +243,20 @@ Write to:
   This step:    ~[estimate]
   This session: ~[running total]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+===========================================
+SKIP DETECTION (v3.1.0+)
+===========================================
+
+Every friction point surfaced by EMPATHY is subject to skip tracking
+in $SKIP_TRACKER. For each friction point, read the linked wiki
+Rule page's confidence_for_projects.[PROJECT_NAME]:
+  HIGH            → flag as friction.
+  MEDIUM          → show with "lower priority for [PROJECT]" note.
+  LOW             → show only in full audits.
+  DISPUTED        → silent unless explicitly requested.
+  NOT_APPLICABLE  → silent.
+
+Track skips per rule_id. On the third skip of the same rule, set
+status=pending_question. BRIEF will surface the 5-option skip
+question per ~/solo-os/docs/FEEDBACK_LOOP.md.

@@ -1,5 +1,39 @@
 # Changelog
 
+## v3.1.0 - Feedback loop and learning system
+
+The gap this closes: the wiki accumulated knowledge, but the plugin had no way of knowing whether that knowledge was useful or accurate for your specific product. Rules applied generically. False positives accumulated. No memory of what worked and what did not.
+
+What is added:
+
+**SKIP DETECTION**
+Every finding is tracked silently. After 3 skips of the same finding, one question is asked. Five possible answers, each producing a different behaviour next session. No answer is wrong. Every answer makes the system more accurate for your product.
+
+**PROJECT-SPECIFIC CONFIDENCE**
+Wiki page confidence is now per-project, not global. A Krug rule can be HIGH confidence for HeroDocs and MEDIUM for RSVPie. Each product calibrates rules independently from real usage via the `confidence_for_projects` frontmatter field.
+
+**OUTCOME FOLLOW-UPS IN BRIEF**
+14 days after EVOLVE keeps an experiment: BRIEF asks if it actually worked. 8 weeks after MARKET recommends a priority-1 feature: BRIEF asks what happened when built. One question. One keystroke. Answer flows back to wiki confidence, lessons file, and program file.
+
+**LESSONS LEARNED FILE**
+One file per project at `~/Documents/SecondBrain/program/[PROJECT]-lessons.md`. Every skip resolution recorded. Every outcome follow-up recorded. Every confidence change recorded. BRIEF surfaces relevant lessons daily. RESEARCH reads lessons before ingesting similar source types. EVOLVE reads lessons before looping and excludes DISPUTED / LOW rules from autonomous improvement.
+
+**HOW IT LEARNS**
+Not by retraining. Not by magic. By remembering your judgements and applying them consistently. One keystroke at the right moment; the system compounds those keystrokes across every future session.
+
+**Paths added in RESOLVER.md**
+- `$OBSIDIAN_LESSONS_FILE` → `$OBSIDIAN_PROGRAM/$PROJECT_NAME-lessons.md`
+- `$SKIP_TRACKER` → `$PROJECT_CONTEXT/skip-tracker.json`
+- `$DECISIONS_FILE` → `$PROJECT_CONTEXT/DECISIONS.md`
+
+**Canonical protocol**
+`docs/FEEDBACK_LOOP.md` — single source of truth for skip question, five resolutions, confidence enforcement levels, and outcome follow-up triggers.
+
+**Files created on install / first run**
+- `~/Documents/SecondBrain/program/[PROJECT]-lessons.md` per product
+- `~/Documents/SecondBrain/schema/HOW_THE_SYSTEM_LEARNS.md`
+- `$PROJECT_CONTEXT/skip-tracker.json` auto-created by workflows
+
 ## v3.0.0 - Renamed to Solo OS
 
 Plugin renamed from Visual-Test-Pro to Solo OS.

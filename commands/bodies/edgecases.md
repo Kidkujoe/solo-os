@@ -171,3 +171,24 @@ Display:
   Would you like to run these edge cases now?
   Type yes to start /test with edge cases
   Type save to keep for later
+
+===========================================
+SKIP DETECTION (v3.1.0+)
+===========================================
+
+Every finding this command surfaces is subject to skip tracking in
+$SKIP_TRACKER. For each rule read confidence_for_projects.[PROJECT_NAME]
+from the wiki page frontmatter and apply the per-level enforcement:
+  HIGH            → VIOLATION.
+  MEDIUM          → SUGGESTION (non-blocking).
+  LOW             → shown only in full-audit mode.
+  DISPUTED        → silent unless explicitly requested.
+  NOT_APPLICABLE  → silent.
+
+Track skips per rule_id (first/second skip silent, third triggers
+status=pending_question). The 5-option question, resolutions A-E,
+and wiki confidence updates are defined in
+~/solo-os/docs/FEEDBACK_LOOP.md. Follow it exactly.
+
+Skip entries must include: rule_id, rule_name, source (wiki page),
+skip_count, last_skipped (ISO timestamp), status, resolution.

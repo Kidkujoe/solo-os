@@ -62,6 +62,55 @@ Estimated: ~500 tokens
 Read $OBSIDIAN_PROGRAM_FILE.
 Read the wiki Rules pages listed in the program file.
 
+Lessons-awareness pre-loop (v3.1.0+):
+  Read $OBSIDIAN_LESSONS_FILE (last 30 days).
+  For each wiki Rules page, check frontmatter field
+  confidence_for_projects.[PROJECT_NAME].
+  Classify each rule: HIGH / MEDIUM / LOW / DISPUTED / NOT_APPLICABLE.
+  From the lessons file, extract any metrics flagged as unreliable
+  under "## Program file changes" or "## Outcome follow-ups".
+
+  Rules with LOW or DISPUTED confidence for this project are
+  EXCLUDED from autonomous improvement. Rules marked NOT_APPLICABLE
+  are completely silent. MEDIUM rules are available as suggestions
+  only, not blocking.
+
+  Prepend this block to the EVOLVE display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EVOLVE - [PROJECT_NAME]
+    Reading lessons from [count] sessions.
+
+    Rules excluded from autonomous improvement
+    (disputed or low confidence):
+    [list]
+
+    Metrics with reliability warnings:
+    [list]
+
+    Program file last updated: [date]
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  If the lowest-scoring target area ONLY yields a rule with LOW or
+  DISPUTED confidence, pause the loop and ask:
+
+    The lowest scoring area involves a rule with LOW confidence
+    for [PROJECT_NAME]:
+
+    [rule name]
+
+    This rule has been disputed [count] times.
+
+    Apply anyway?
+    A  Yes - try it and measure
+    B  No - skip this rule
+    C  Remove from EVOLVE scope entirely
+
+  A: proceed. B: pick next lowest-scoring rule. C: update the wiki
+  page's confidence_for_projects.[PROJECT_NAME] to NOT_APPLICABLE
+  and append "## [date] - Rule removed from EVOLVE scope" to the
+  lessons file.
+
 Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -70,7 +119,7 @@ Display:
   Primary metric: [from program file]
   Can change:     [file types listed]
   Cannot touch:   [protected files]
-  Wiki rules:     [count] loaded
+  Wiki rules:     [count] loaded ([excluded] excluded by lessons)
 
   Current scores:
     Performance:    [value]
@@ -133,7 +182,12 @@ LOOP FOREVER until the user stops or no improvements remain:
 
   6. Log to $OBSIDIAN_PROGRAM_FILE experiment log:
        timestamp | what tried | before | after | verdict
-       | simplicity impact | commit hash
+       | simplicity impact | commit hash | followup_due_date
+
+     For KEEP verdicts, set followup_due_date = timestamp + 14 days.
+     BRIEF uses this field to surface EVOLVE outcome follow-ups
+     (see ~/solo-os/docs/FEEDBACK_LOOP.md). DISCARD verdicts have
+     followup_due_date = n/a.
 
   7. If improvement cannot be measured in-session:
        Log as a HYPOTHESIS, not an experiment.

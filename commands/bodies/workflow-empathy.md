@@ -113,3 +113,20 @@ Write to:
   This step:    ~[estimate]
   This session: ~[running total]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+===========================================
+SKIP DETECTION (v3.1.0+)
+===========================================
+
+Every friction point surfaced by EMPATHY is subject to skip tracking
+in $SKIP_TRACKER. For each friction point, read the linked wiki
+Rule page's confidence_for_projects.[PROJECT_NAME]:
+  HIGH            → flag as friction.
+  MEDIUM          → show with "lower priority for [PROJECT]" note.
+  LOW             → show only in full audits.
+  DISPUTED        → silent unless explicitly requested.
+  NOT_APPLICABLE  → silent.
+
+Track skips per rule_id. On the third skip of the same rule, set
+status=pending_question. BRIEF will surface the 5-option skip
+question per ~/solo-os/docs/FEEDBACK_LOOP.md.

@@ -1,9 +1,13 @@
 name: Solo OS
-version: 3.0.0
+version: 3.1.0
 description: >
   The operating system for solo builders.
   Seven workflows covering the complete
-  product development lifecycle.
+  product development lifecycle. v3.1.0
+  adds the feedback loop and learning
+  system: skip detection, outcome
+  follow-ups, and project-specific
+  confidence.
 author: Kidkujoe
 github: https://github.com/Kidkujoe/solo-os
 license: MIT

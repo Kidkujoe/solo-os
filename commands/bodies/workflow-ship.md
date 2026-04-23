@@ -85,6 +85,14 @@ SCOPED VISUAL CHECK
   Does this feature look right?
   Does it match the design system?
   Read relevant wiki Rules pages (Rules-*.md).
+  For each rule read frontmatter
+  confidence_for_projects.[PROJECT_NAME]. Enforce per level:
+    HIGH            → VIOLATION (blocking).
+    MEDIUM          → SUGGESTION (non-blocking, noted in report).
+    LOW             → shown only in Mode 3 full audit, prefixed
+                      "Low priority for [PROJECT_NAME]:".
+    DISPUTED        → silent unless explicitly requested.
+    NOT_APPLICABLE  → silent.
   Flag violations of YOUR rules — not generic best practice.
 
 SMART SECURITY
@@ -337,3 +345,25 @@ After approval:
   This step:    ~[estimate]
   This session: ~[running total]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+===========================================
+SKIP DETECTION (v3.1.0+)
+===========================================
+
+Every finding surfaced by SHIP (gate check, full audit, CodeRabbit
+result, etc.) is subject to skip tracking. Track in $SKIP_TRACKER.
+
+When a finding appears:
+  - If the user fixes it, remove any matching skip entry.
+  - If the user moves past without fixing, increment skip_count on
+    the matching rule_id (create entry if none exists).
+  - On the third consecutive skip, set status=pending_question.
+    BRIEF will surface the 5-option question on the next run, OR
+    SHIP may ask inline if the user is still in-session.
+
+Protocol, resolutions (A-E), and wiki confidence adjustments are
+defined in ~/solo-os/docs/FEEDBACK_LOOP.md. Follow it exactly.
+
+When writing skip-tracker entries, always include:
+  rule_id, rule_name, source (wiki page), skip_count,
+  last_skipped (ISO timestamp), status, resolution.

@@ -112,6 +112,12 @@ Wiki-layer paths (v2.5.0+):
   OBSIDIAN_PROGRAM="$OBSIDIAN_VAULT/program"
   OBSIDIAN_PROGRAM_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME.md"
 
+Feedback-loop paths (v3.1.0+):
+  OBSIDIAN_LESSONS_FILE="$OBSIDIAN_PROGRAM/$PROJECT_NAME-lessons.md"
+  SKIP_TRACKER="$PROJECT_CONTEXT/skip-tracker.json"
+  DECISIONS_FILE="$PROJECT_CONTEXT/DECISIONS.md"
+  Full feedback-loop protocol: ~/solo-os/docs/FEEDBACK_LOOP.md
+
 Check vault exists. If not found display:
   Obsidian vault not found at $OBSIDIAN_VAULT
   Knowledge Bridge disabled for this run.
@@ -227,6 +233,29 @@ OTHERWISE:
 STEP 2 OF 2 — UPDATE AND SURFACE
 ===========================================
 Estimated: ~1,000 tokens
+
+Lessons-awareness pre-write (v3.1.0+):
+  Read $OBSIDIAN_LESSONS_FILE if it exists.
+  Look for prior entries under "## Confidence updates applied" or
+  "## Skip patterns" that relate to this source type, rule domain,
+  or wiki page the current ingest will touch.
+
+  If relevant entries exist, display BEFORE writing to the wiki:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    LESSONS FROM PREVIOUS INGESTS
+    You have ingested [source type] before. Here is what was
+    learned:
+
+    [one-line summary per relevant prior lesson]
+
+    Consider these when reviewing takeaways for this new source.
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Carry these lessons forward: if a rule type was previously marked
+  NOT_APPLICABLE or DISPUTED for the current project, seed the new
+  wiki page's frontmatter with the same confidence_for_projects
+  entry so the learning is not lost on a fresh ingest.
 
 Write the confirmed takeaways to the wiki:
   Every claim cited to its raw source.

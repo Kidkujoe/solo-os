@@ -1,17 +1,20 @@
 # Changelog
 
-## v2.6.0 - Streamlined workflow
+## v2.6.0 - /explore entry point
 
-Goal: reduce cognitive load from 48 commands to one entry point
-without losing any capability.
+The cognitive load problem: 48 commands is too many to remember. The
+solution is not fewer commands. It is one memorable entry point that
+routes to the right command.
 
 Added:
-- `/vtp` — single entry point command. Asks what you want to do in
+- `/explore` — single entry point command. Asks what you want to do in
   plain English and routes to the right command or sequence.
   Context-aware: silently checks for uncommitted changes, branches
   ready to merge, stale Atlas context (>7 days) and unprocessed wiki
   sources before showing the menu. Plain English input supported —
-  type what you want, not a command name.
+  type what you want, not a command name. Name chosen because the
+  whole system is about exploration: exploring your market, your
+  users, your product health and your knowledge.
 - `/stack` — thin router for all stack intelligence commands via
   flags: `--profile`, `--recommend`, `--audit`, `--compare`, `--update`.
 - `WORKFLOW.md` — plain English reference card showing the mental

@@ -12,7 +12,7 @@ description: >
   accumulate across runs. Built for solo
   developers and bootstrappers. Works on
   any project globally with one command.
-  v2.6.0 adds /vtp — one entry point that
+  v2.6.0 adds /explore — one entry point that
   routes plain-English requests to the right
   command — plus flag shortcuts on /atlas,
   /test, /compass, /copyai, /new-project
@@ -33,7 +33,7 @@ optional_dependencies:
   mailpit: Alternative email catcher
 
 commands:
-  - name: vtp
+  - name: explore
     description: >
       Main entry point. Ask in plain English
       what you want to do; routes to the right
@@ -42,7 +42,7 @@ commands:
       branches, stale Atlas, unprocessed wiki
       sources before showing the menu. The one
       command to remember.
-    file: commands/vtp.md
+    file: commands/explore.md
 
   - name: stack
     description: >

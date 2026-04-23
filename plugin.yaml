@@ -1,5 +1,5 @@
 name: visual-test-pro
-version: 2.5.1
+version: 2.6.0
 description: >
   Comprehensive visual browser testing
   with code review, auth handling, magic
@@ -12,10 +12,15 @@ description: >
   accumulate across runs. Built for solo
   developers and bootstrappers. Works on
   any project globally with one command.
+  v2.6.0 adds /vtp — one entry point that
+  routes plain-English requests to the right
+  command — plus flag shortcuts on /atlas,
+  /test, /compass, /copyai, /new-project
+  and a new /stack router.
 author: Kidkujoe
 github: https://github.com/Kidkujoe/Visual-Test-Pro
 license: MIT
-version_date: 2026-04-22
+version_date: 2026-04-23
 
 requires:
   claude_code: ">=2.0.0"
@@ -28,6 +33,25 @@ optional_dependencies:
   mailpit: Alternative email catcher
 
 commands:
+  - name: vtp
+    description: >
+      Main entry point. Ask in plain English
+      what you want to do; routes to the right
+      command or sequence. Context-aware:
+      surfaces uncommitted changes, ready
+      branches, stale Atlas, unprocessed wiki
+      sources before showing the menu. The one
+      command to remember.
+    file: commands/vtp.md
+
+  - name: stack
+    description: >
+      Stack intelligence router. Flags
+      --profile, --recommend, --audit,
+      --compare, --update delegate to the
+      matching /stack-* command.
+    file: commands/stack.md
+
   - name: test
     description: >
       Smart visual browser test with

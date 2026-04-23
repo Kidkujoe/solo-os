@@ -127,6 +127,28 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
+
+===========================================
+FLAG ROUTER (v2.6.0) — CHECK BEFORE ANYTHING ELSE
+===========================================
+
+Inspect $ARGUMENTS for a flag. Validation-only mode runs Phase 1 only
+then stops at the BUILD verdict — it does not proceed to strategy,
+stack or scaffolding.
+
+If $ARGUMENTS contains "--validate-only":
+  Display: Validation only mode. I will run Phase 1 (idea validation)
+  and stop at the BUILD / VALIDATE / DECLINE verdict. Strategy, stack
+  and scaffolding will NOT run.
+  Set VALIDATE_ONLY = true.
+  Strip "--validate-only" from $ARGUMENTS so the rest of the command
+  sees only the project idea.
+  Continue with the existing logic below, but at the end of Phase 1
+  (after the BUILD verdict is displayed) STOP. Do not enter Phase 2.
+
+If "--validate-only" is not present, set VALIDATE_ONLY = false and
+proceed normally through all phases.
+
 Read ~/.claude/context/DEVELOPER_PROFILE.md.
 
 $ARGUMENTS is the project idea in plain English.

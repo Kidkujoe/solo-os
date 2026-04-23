@@ -3,6 +3,40 @@ name: atlas
 description: Master orchestrator and product brain. Knows your entire codebase, coordinates all commands, catches regressions, guards consistency and tells you what to do next.
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+
+===========================================
+FLAG ROUTER (v2.6.0) — CHECK BEFORE ANYTHING ELSE
+===========================================
+
+Inspect $ARGUMENTS for a flag and delegate to a sister command's
+logic if matched. The standalone commands still exist; flags are
+shortcuts.
+
+If $ARGUMENTS contains "--rebuild" OR "--map":
+  Display: Running full rebuild mode (equivalent to /atlas-map).
+  Read ~/.claude/commands/atlas-map.md and follow its body
+  (everything after the END OF RESOLVER line). Stop after that
+  completes — do not fall through to the rest of this file.
+
+If $ARGUMENTS contains "--check":
+  Display: Running regression and consistency check only
+  (equivalent to /atlas-check).
+  Read ~/.claude/commands/atlas-check.md and follow its body.
+  Stop after that completes.
+
+If $ARGUMENTS contains "--quick":
+  Display: Running quick refresh (equivalent to /atlas-quick).
+  Read ~/.claude/commands/atlas-quick.md and follow its body.
+  Stop after that completes.
+
+If $ARGUMENTS contains "--feature":
+  Extract the feature name (everything after --feature in $ARGUMENTS).
+  Display: Running post-feature checklist (equivalent to /atlas-feature).
+  Read ~/.claude/commands/atlas-feature.md and follow its body,
+  passing the feature name as its $ARGUMENTS. Stop after that completes.
+
+If no flag matched, fall through to the existing logic below.
+
 ===========================================
 KNOWLEDGE BRIDGE HOOKS (v2.3.2)
 ===========================================

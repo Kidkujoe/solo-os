@@ -3,6 +3,27 @@ name: test
 description: Smart visual browser test with project scan, token options menu, fix decision flow and plain English reporting
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+
+===========================================
+FLAG ROUTER (v2.6.0) — CHECK BEFORE ANYTHING ELSE
+===========================================
+
+Inspect $ARGUMENTS for a flag and delegate to a sister command's
+logic if matched. Standalone commands still exist; flags are shortcuts.
+
+If $ARGUMENTS contains "--quick":
+  Display: Running quick check mode (equivalent to /test-quick).
+  Read ~/.claude/commands/test-quick.md and follow its body
+  (everything after the END OF RESOLVER line). Stop after that
+  completes — do not fall through to the rest of this file.
+
+If $ARGUMENTS contains "--deep":
+  Display: Running deep review mode (equivalent to /test-deep).
+  Read ~/.claude/commands/test-deep.md and follow its body.
+  Stop after that completes.
+
+If no flag matched, fall through to the existing logic below.
+
 Run a smart visual browser test for: $ARGUMENTS
 
 STEP 1 - LOAD CONTEXT AND CHECK AGENT STATE

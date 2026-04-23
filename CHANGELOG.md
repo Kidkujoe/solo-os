@@ -1,5 +1,51 @@
 # Changelog
 
+## v2.6.0 - Streamlined workflow
+
+Goal: reduce cognitive load from 48 commands to one entry point
+without losing any capability.
+
+Added:
+- `/vtp` — single entry point command. Asks what you want to do in
+  plain English and routes to the right command or sequence.
+  Context-aware: silently checks for uncommitted changes, branches
+  ready to merge, stale Atlas context (>7 days) and unprocessed wiki
+  sources before showing the menu. Plain English input supported —
+  type what you want, not a command name.
+- `/stack` — thin router for all stack intelligence commands via
+  flags: `--profile`, `--recommend`, `--audit`, `--compare`, `--update`.
+- `WORKFLOW.md` — plain English reference card showing the mental
+  model and daily workflow without listing every command.
+- Visual-Test-Pro section appended to the Obsidian `Dashboard.md`
+  for at-a-glance reference inside the Second Brain vault.
+
+Flag support added (the standalone commands still exist; flags are
+additive shortcuts):
+- `/atlas --rebuild` (was `/atlas-map`)
+- `/atlas --check` (was `/atlas-check`)
+- `/atlas --quick` (was `/atlas-quick`)
+- `/atlas --feature [name]` (was `/atlas-feature [name]`)
+- `/test --quick` (was `/test-quick`)
+- `/test --deep` (was `/test-deep`)
+- `/compass --feature [name]` (was `/compass-feature [name]`)
+- `/compass --project` (was `/compass-project`)
+- `/compass --retro [name]` (was `/compass-retro [name]`)
+- `/copyai --research-only` (was `/copyai-research`)
+- `/new-project [idea] --validate-only` (runs Phase 1 only, stops
+  at the BUILD verdict — no strategy, stack or scaffolding)
+
+Removed:
+- `/wiki-schema` — was a thin wrapper around editing
+  `WIKI_SCHEMA.md`. Users open the file directly in Obsidian.
+  (No body or installed file existed; nothing to delete on disk.)
+
+Unchanged:
+- All previous commands still exist and work exactly as before.
+  Flags are additive. Nothing was broken or reduced. Cognitive load
+  was reduced by giving users one entry point and a clear mental
+  model. Power users who know the commands can still use them
+  directly.
+
 ## v2.5.1 - Path isolation fixes
 
 - `~/.claude/context/DEVELOPER_PROFILE.md` added to the approved

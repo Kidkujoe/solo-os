@@ -3,6 +3,24 @@ name: copyai
 description: Intelligent copy strategy and rewriting skill. Analyses your product, researches competitors, sources real customer language and pain points from Reddit, review sites and social platforms, then produces a data-driven copy strategy and full rewrites with evidence for every change.
 allowed-tools: Bash, mcp__chrome-devtools__*
 ---
+
+===========================================
+FLAG ROUTER (v2.6.0) — CHECK BEFORE ANYTHING ELSE
+===========================================
+
+Inspect $ARGUMENTS for a flag and delegate to a sister command's
+logic if matched. The standalone /copyai-research command still
+exists; the flag is a shortcut.
+
+If $ARGUMENTS contains "--research-only":
+  Display: Research and strategy only. No rewrites will be made.
+  (Equivalent to /copyai-research.)
+  Read ~/.claude/commands/copyai-research.md and follow its body
+  (everything after the END OF RESOLVER line). Stop after that
+  completes — do not fall through to the rest of this file.
+
+If no flag matched, fall through to the existing logic below.
+
 ===========================================
 WIKI INTEGRATION (v2.5.0)
 ===========================================

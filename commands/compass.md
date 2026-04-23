@@ -127,6 +127,35 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
+
+===========================================
+FLAG ROUTER (v2.6.0) — CHECK BEFORE ANYTHING ELSE
+===========================================
+
+Inspect $ARGUMENTS for a flag and delegate to a sister command's
+logic if matched. Standalone commands still exist; flags are shortcuts.
+
+If $ARGUMENTS contains "--feature":
+  Extract the feature name (everything after --feature in $ARGUMENTS).
+  Display: Routing to /compass-feature for [name].
+  Read ~/.claude/commands/compass-feature.md and follow its body
+  (everything after the END OF RESOLVER line), passing the feature
+  name as its $ARGUMENTS. Stop after that completes — do not fall
+  through to the rest of this file.
+
+If $ARGUMENTS contains "--project":
+  Display: Routing to /compass-project.
+  Read ~/.claude/commands/compass-project.md and follow its body.
+  Pass through any remaining arguments. Stop after that completes.
+
+If $ARGUMENTS contains "--retro":
+  Extract the feature name (everything after --retro in $ARGUMENTS).
+  Display: Routing to /compass-retro for [name].
+  Read ~/.claude/commands/compass-retro.md and follow its body,
+  passing the feature name as its $ARGUMENTS. Stop after that completes.
+
+If no flag matched, fall through to the existing logic below.
+
 ===========================================
 WIKI INTEGRATION (v2.5.0)
 ===========================================

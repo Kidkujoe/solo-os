@@ -1,10 +1,10 @@
-# visual-test-pro
+# solo-os
 
 A complete visual browser testing system for Claude Code that tests your app, finds issues, fixes what it can, and gives you a plain English HTML report.
 
 ## What this does
 
-visual-test-pro turns Claude Code into a full testing assistant. It opens your app in Chrome, clicks through every page, fills in forms, checks responsive layouts, reviews your code for security issues, and writes everything up in a report anyone can read. If it finds something broken, it tells you what is wrong in plain English and asks before fixing anything. It remembers your test accounts and can pick up where it left off if a session gets interrupted.
+solo-os turns Claude Code into a full testing assistant. It opens your app in Chrome, clicks through every page, fills in forms, checks responsive layouts, reviews your code for security issues, and writes everything up in a report anyone can read. If it finds something broken, it tells you what is wrong in plain English and asks before fixing anything. It remembers your test accounts and can pick up where it left off if a session gets interrupted.
 
 ## Why I built this
 
@@ -35,19 +35,19 @@ If you are a solo developer or bootstrapper shipping an app on your own, you pro
 ### One command install (coming soon)
 
 ```
-/plugin install @Kidkujoe/visual-test-pro
+/plugin install @Kidkujoe/solo-os
 ```
 
 ### Manual install
 
 1. Download or clone this repository:
    ```
-   git clone https://github.com/Kidkujoe/Visual-Test-Pro.git
+   git clone https://github.com/Kidkujoe/solo-os.git
    ```
 2. Open your terminal
 3. Go to the folder:
    ```
-   cd Visual-Test-Pro
+   cd solo-os
    ```
 4. Run the installer:
    ```

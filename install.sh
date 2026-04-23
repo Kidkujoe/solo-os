@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# visual-test-pro installer
-# https://github.com/Kidkujoe/Visual-Test-Pro
+# solo-os installer
+# https://github.com/Kidkujoe/solo-os
 
 set -e
 
 echo ""
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  visual-test-pro installer"
+echo "  solo-os installer"
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
@@ -172,7 +172,7 @@ fi
 
 echo ""
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅ visual-test-pro installed successfully"
+echo "  ✅ solo-os installed successfully"
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "  HOW IT WORKS:"
@@ -205,6 +205,6 @@ echo "  and Atlas builds the product brain."
 echo ""
 echo "  NEED HELP?"
 echo "  Read the docs at:"
-echo "  ~/visual-test-pro/docs/"
+echo "  ~/solo-os/docs/"
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""

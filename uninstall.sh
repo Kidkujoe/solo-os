@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# visual-test-pro uninstaller
-# https://github.com/Kidkujoe/Visual-Test-Pro
+# solo-os uninstaller
+# https://github.com/Kidkujoe/solo-os
 
 echo ""
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  visual-test-pro uninstaller"
+echo "  solo-os uninstaller"
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  This will remove all visual-test-pro"
+echo "  This will remove all solo-os"
 echo "  commands from Claude Code."
 echo ""
 echo "  Are you sure? Type yes to continue"
@@ -77,6 +77,6 @@ fi
 # ─── DONE ────────────────────────────────────
 
 echo ""
-echo "  ✅ visual-test-pro has been uninstalled."
+echo "  ✅ solo-os has been uninstalled."
 echo "  To reinstall run: sh install.sh"
 echo ""

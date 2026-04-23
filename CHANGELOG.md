@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.0.0 - Renamed to Solo OS
+
+Plugin renamed from Visual-Test-Pro to Solo OS.
+
+Reason: the plugin outgrew its original purpose. It started as a visual testing tool. It is now a complete product development operating system for solo builders covering strategy, research, shipping, user research, knowledge management and autonomous improvement.
+
+The name Visual-Test-Pro no longer described what the plugin does. Solo OS does.
+
+Repository: github.com/Kidkujoe/solo-os
+
 ## v3.0.0 - Workflow-first architecture
 
 The fundamental shift: from a toolbox of 48 commands to seven
@@ -124,7 +134,7 @@ Added:
   flags: `--profile`, `--recommend`, `--audit`, `--compare`, `--update`.
 - `WORKFLOW.md` — plain English reference card showing the mental
   model and daily workflow without listing every command.
-- Visual-Test-Pro section appended to the Obsidian `Dashboard.md`
+- Solo OS section appended to the Obsidian `Dashboard.md`
   for at-a-glance reference inside the Second Brain vault.
 
 Flag support added (the standalone commands still exist; flags are
@@ -347,7 +357,7 @@ projects. These violations predated v2.3.0 and were surfaced by the
 ## v2.2.0 — Completion and Robustness
 
 Closes all 10 gaps identified in the v2.1.0 gap analysis and fixes 3
-fragility risks. Visual-Test-Pro is now feature-complete end-to-end.
+fragility risks. Solo OS is now feature-complete end-to-end.
 
 Six new commands:
 - `/performance` — Real Lighthouse audits (desktop + mobile), Core Web
@@ -513,7 +523,7 @@ detects and reports any future violations before they cause contamination.
 
 ## v2.0.0 — Empathy System complete
 
-This version marks Visual-Test-Pro reaching its complete vision.
+This version marks Solo OS reaching its complete vision.
 Every dimension of product quality is now covered: technical, visual,
 content, market and human.
 

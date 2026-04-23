@@ -1,25 +1,17 @@
-# Visual-Test-Pro 3.0 Workflow
+# Solo OS
+The operating system for solo builders.
 
 ## Start here
-
-```
 /explore
-```
-
-`/explore` reads your project state and shows you what needs
-attention. Then it routes you to one of seven workflows.
 
 ## Seven workflows
-
-| # | Workflow | What it does |
-|---|---|---|
-| 1 | **SHIP** | finished a feature or full product audit |
-| 2 | **BRIEF** | start of day focus |
-| 3 | **MARKET** | understand what to build |
-| 4 | **BUILD** | new project from scratch |
-| 5 | **EMPATHY** | see it as your users do |
-| 6 | **RESEARCH** | add knowledge to the wiki |
-| 7 | **EVOLVE** | improve autonomously |
+SHIP      audit and ship a feature
+BRIEF     start of day focus
+MARKET    understand what to build
+BUILD     new project from scratch
+EMPATHY   see it as your users do
+RESEARCH  add knowledge
+EVOLVE    improve autonomously
 
 ## The mental model
 

@@ -1,4 +1,4 @@
-# How visual-test-pro Works
+# How solo-os Works
 
 A plain English walkthrough of the full system for someone using it for the first time.
 

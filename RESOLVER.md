@@ -1,4 +1,4 @@
-# RESOLVER — Canonical Path Resolution for Visual-Test-Pro
+# RESOLVER — Canonical Path Resolution for Solo OS
 
 Every command in this plugin MUST include the resolver block below
 at the very start, before any other logic runs. This ensures all
@@ -216,7 +216,7 @@ and flags any that are out of date.
 
 ## KNOWLEDGE_BRIDGE (v2.3.0+)
 
-The Knowledge Bridge connects Visual-Test-Pro commands to an Obsidian
+The Knowledge Bridge connects Solo OS commands to an Obsidian
 Second Brain vault so findings accumulate over time and past knowledge
 informs new runs.
 

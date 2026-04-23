@@ -39,7 +39,7 @@ If violations are found, recommend the user run the migration
 by reinstalling the plugin.
 
 RESOLVER VERSION CHECK (v2.2.0+):
-Read the canonical resolver block from ~/visual-test-pro/RESOLVER.md.
+Read the canonical resolver block from ~/solo-os/RESOLVER.md.
 For each installed command in ~/.claude/commands/ extract its resolver
 section (lines between "RESOLVER — RUN THIS BEFORE ANYTHING ELSE" and
 "END OF RESOLVER").
@@ -59,5 +59,5 @@ Display:
   [list each out-of-date command]
 
   To update run:
-  bash ~/visual-test-pro/scripts/build-commands.sh
+  bash ~/solo-os/scripts/build-commands.sh
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

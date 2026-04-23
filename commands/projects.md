@@ -1,6 +1,6 @@
 ---
 name: projects
-description: List all projects that have Visual-Test-Pro context data.
+description: List all projects that have Solo OS context data.
 allowed-tools: Bash
 ---
 

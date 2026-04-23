@@ -125,7 +125,7 @@ Then restart your terminal.
 **How to fix it:**
 1. Check that CodeRabbit supports your project type
 2. Try running `cr review` directly to see if it produces output
-3. If it works directly but not through visual-test-pro, report the issue
+3. If it works directly but not through solo-os, report the issue
 
 ---
 
@@ -374,7 +374,7 @@ sh install.sh
 
 ### Claude Code version too old
 
-**What causes it:** visual-test-pro requires Claude Code 2.0.0 or higher.
+**What causes it:** solo-os requires Claude Code 2.0.0 or higher.
 
 **How to fix it:**
 ```

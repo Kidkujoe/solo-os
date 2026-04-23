@@ -1,26 +1,11 @@
-name: visual-test-pro
+name: Solo OS
 version: 3.0.0
 description: >
-  Workflow-first product OS for solo
-  developers and bootstrappers. v3.0.0
-  reorganises the plugin around seven
-  named end-to-end workflows launched
-  from a single entry point: /explore.
-  SHIP audits and ships features (or runs
-  a full product audit). BRIEF gives a
-  start-of-day focus. MARKET researches
-  what to build next. BUILD turns an idea
-  into a running codebase. EMPATHY tests
-  the product through six user lenses.
-  RESEARCH ingests sources into the wiki.
-  EVOLVE runs autonomous improvement
-  loops with measured keep/discard.
-  Token cost is shown before every
-  workflow and after every step. All 22
-  underlying commands still work directly
-  for power users.
+  The operating system for solo builders.
+  Seven workflows covering the complete
+  product development lifecycle.
 author: Kidkujoe
-github: https://github.com/Kidkujoe/Visual-Test-Pro
+github: https://github.com/Kidkujoe/solo-os
 license: MIT
 version_date: 2026-04-23
 
@@ -37,7 +22,7 @@ optional_dependencies:
 commands:
   - name: explore
     description: >
-      The Visual-Test-Pro entry point.
+      The Solo OS entry point.
       Launches seven named workflows: SHIP,
       BRIEF, MARKET, BUILD, EMPATHY, RESEARCH,
       EVOLVE. Context-aware: reads project
@@ -296,7 +281,7 @@ commands:
   - name: projects
     description: >
       List all projects that have
-      Visual-Test-Pro context data.
+      Solo OS context data.
       Shows last active, size, and
       atlas status per project.
     file: commands/projects.md

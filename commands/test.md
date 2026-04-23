@@ -672,7 +672,7 @@ Inject this JavaScript on the page:
     padding: 8px 20px; text-align: center;
     backdrop-filter: blur(8px);
   `;
-  bar.textContent = 'visual-test-pro — Starting visual test...';
+  bar.textContent = 'solo-os — Starting visual test...';
 
   document.body.append(dot, ring, label, bar);
 
@@ -718,7 +718,7 @@ Inject this JavaScript on the page:
 
   // Update status bar text
   window.__vtpStatus = (text) => {
-    bar.textContent = 'visual-test-pro — ' + text;
+    bar.textContent = 'solo-os — ' + text;
   };
 
   // Remove all cursor elements (call before screenshots)

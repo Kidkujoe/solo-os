@@ -1,6 +1,6 @@
 # Token Usage Guide
 
-A plain English guide to understanding and managing how many tokens visual-test-pro uses.
+A plain English guide to understanding and managing how many tokens solo-os uses.
 
 ## What are tokens
 

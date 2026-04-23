@@ -1,6 +1,6 @@
 # Authentication Guide
 
-A complete plain English guide to how visual-test-pro handles logins and restricted areas.
+A complete plain English guide to how solo-os handles logins and restricted areas.
 
 ## What are restricted areas
 
@@ -10,7 +10,7 @@ Most apps have at least some restricted areas. Testing them is important because
 
 ## The test account system
 
-visual-test-pro uses a simple file on your machine to store test account details. When you save a test account with `/addaccount`, the details are written to `~/.claude/context/test-accounts.md`. This file stays on your machine and is never uploaded anywhere.
+solo-os uses a simple file on your machine to store test account details. When you save a test account with `/addaccount`, the details are written to `~/.claude/context/test-accounts.md`. This file stays on your machine and is never uploaded anywhere.
 
 The account file stores:
 - Which project the account is for

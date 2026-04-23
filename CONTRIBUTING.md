@@ -1,10 +1,10 @@
-# Contributing to visual-test-pro
+# Contributing to solo-os
 
-Thanks for wanting to help improve visual-test-pro. Whether you are fixing a typo, reporting a bug, or adding a new feature, your contribution is welcome.
+Thanks for wanting to help improve solo-os. Whether you are fixing a typo, reporting a bug, or adding a new feature, your contribution is welcome.
 
 ## How to suggest an improvement
 
-1. Go to the [Issues page](https://github.com/Kidkujoe/Visual-Test-Pro/issues)
+1. Go to the [Issues page](https://github.com/Kidkujoe/solo-os/issues)
 2. Click "New issue"
 3. Give it a clear title like "Add support for Playwright" or "Improve mobile test coverage"
 4. Describe what you would like to see and why it would help
@@ -12,7 +12,7 @@ Thanks for wanting to help improve visual-test-pro. Whether you are fixing a typ
 
 ## How to report a bug
 
-1. Go to the [Issues page](https://github.com/Kidkujoe/Visual-Test-Pro/issues)
+1. Go to the [Issues page](https://github.com/Kidkujoe/solo-os/issues)
 2. Click "New issue"
 3. Include:
    - What you were doing when the bug happened
@@ -29,7 +29,7 @@ Thanks for wanting to help improve visual-test-pro. Whether you are fixing a typ
 1. Fork this repository on GitHub
 2. Clone your fork to your machine:
    ```
-   git clone https://github.com/your-username/Visual-Test-Pro.git
+   git clone https://github.com/your-username/solo-os.git
    ```
 3. Create a new branch for your change:
    ```

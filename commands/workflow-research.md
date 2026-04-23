@@ -20,6 +20,56 @@ If current directory is not a project directory (is home, is
 warning and stop. Ask user to cd into their project folder.
 
 STEP R2 - CREATE PROJECT FOLDERS:
+
+Orphan check FIRST (v3.2.0+). Run only when $PROJECT_CONTEXT does
+not yet exist — i.e., this is the first time a command runs for
+this project path:
+
+  1. List all existing folders under ~/.claude/context/projects/.
+  2. For each folder, read atlas/PRODUCT.md if present and extract
+     the product name (first H1 or explicit "name:" field).
+  3. Compare against the current project's package.json "name"
+     field (if present) or the current directory basename.
+  4. If one or more matches are found, display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EXISTING CONTEXT FOUND
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    It looks like this project may have been renamed or moved.
+
+    Found existing context for:
+    [product name]
+    Last active: [date from atlas/HEALTH.md]
+    Contains:
+      Atlas memory:      [yes/no]
+      Review history:    [count records from REVIEWS.md]
+      Skip resolutions:  [count from skip-tracker.json]
+      Experiment log:    [count from $OBSIDIAN_PROGRAM_FILE]
+      Lessons entries:   [count H3 blocks in lessons file]
+
+    Is this the same project?
+
+    A  Yes - migrate everything to new path
+    B  No - this is a different project
+    C  Not sure - show me the files first
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  A (migrate): cp -R the old context contents into the new
+     $PROJECT_CONTEXT. Rewrite any absolute path strings inside
+     the copied files that reference the old PROJECT_ID. Delete
+     the old folder only after the copy verifies (same file count,
+     matching sizes). Display:
+       Migration complete. [count] files moved.
+       Old context removed.
+
+  B (new project): proceed with fresh context creation. Leave the
+     old folder in place; /projects will later list it as inactive.
+
+  C (not sure): list files in the old context folder with sizes
+     and modification dates, then ask the A/B question again.
+
+After the orphan check resolves (or if no match found):
+
 mkdir -p $PROJECT_CONTEXT
 mkdir -p $PROJECT_CONTEXT/atlas
 mkdir -p $PROJECT_CONTEXT/screenshots
@@ -262,7 +312,19 @@ Write the confirmed takeaways to the wiki:
   Every page given a confidence level.
   Never overwrite a page marked MANUALLY CORRECTED.
   Update $OBSIDIAN_VAULT/wiki/index.md.
-  Append to $OBSIDIAN_VAULT/wiki/log.md.
+  Append to $OBSIDIAN_VAULT/wiki/log.md using the v3.2.0 extended
+  entry format so wiki-lint and BRIEF can detect stale sources:
+
+    ## [YYYY-MM-DD] [HH:MM] | ingest | [filename]
+    Source path: [full raw/ path]
+    File size: [bytes]
+    Last modified: [ISO timestamp from stat / git log at ingest time]
+    Wiki pages created: [list]
+    Wiki pages updated: [list]
+
+  The Last modified timestamp is the reference point for
+  stale-source detection. Use `stat -c %y` (GNU) or `stat -f %Sm`
+  (BSD) or git log on the file, whichever is available.
 
 Show what was written:
 

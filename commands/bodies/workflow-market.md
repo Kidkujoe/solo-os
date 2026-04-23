@@ -109,6 +109,52 @@ STEP 3 OF 3 — ROADMAP
 ===========================================
 Estimated: ~1,000 tokens
 
+Constraint check FIRST (v3.2.0+):
+  Read $DEVELOPER_PROFILE (~/.claude/context/DEVELOPER_PROFILE.md)
+  if it exists. Extract:
+    - Never Again tier technologies
+    - Hard constraints (budget, infra, time, stack bans)
+
+  For each candidate feature in the ranked list, estimate the
+  technology or infrastructure it most likely requires.
+
+  If a required technology appears in the Never Again tier,
+  display BEFORE the final roadmap:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    PROFILE CONFLICT DETECTED
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    Feature: [feature name]
+    PRISM-PV score: [score]
+
+    This feature typically requires: [technology]
+
+    Your developer profile:
+    This technology is in your Never Again tier.
+    Reason recorded: [reason from profile]
+
+    Options:
+    A  Keep in roadmap - I will find an alternative implementation
+    B  Remove from roadmap
+    C  Flag for discussion only (no decision now)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  If the feature requires infrastructure beyond a hard budget
+  constraint, display:
+
+    CONSTRAINT CONFLICT:
+    Feature: [name]
+    Requires: [infrastructure]
+    Estimated cost: [amount/month]
+    Your constraint: under [limit]/month
+
+    Keep in roadmap with this note?
+    Type yes / no
+
+  Never silently omit a feature. Always surface the conflict and
+  let the developer decide. If $DEVELOPER_PROFILE is missing, skip
+  the constraint check and continue.
+
 Present the ranked opportunities:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

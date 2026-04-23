@@ -40,6 +40,16 @@ Read silently:
     MARKET recommendations — priority-1 entries aged >=8 weeks with
                              no follow-up recorded
 
+  Stale-source state (v3.2.0+, if OBSIDIAN_BRIDGE=on):
+    $OBSIDIAN_VAULT/wiki/log.md — for every ingest entry with a
+    "Last modified" timestamp, compare against the current mtime of
+    the raw/ source file. Any file modified since last ingest is
+    STALE and the wiki may not reflect the current truth.
+
+  Old-decisions state (v3.2.0+):
+    $SKIP_TRACKER entries with status NOT_APPLICABLE / DISPUTED
+    whose recorded date is >180 days ago — worth reviewing.
+
 From these, determine:
   - Which outcome follow-ups are due today (EVOLVE 14d, MARKET 8w).
   - Which deferred items hit their monthly reminder this week.
@@ -97,6 +107,21 @@ Synthesise into one focused output. Display:
   RECENT LESSONS:
   [most relevant lesson in one line]
   [link: $OBSIDIAN_LESSONS_FILE]
+
+  [v3.2.0+: Show STALE SOURCES block ABOVE FOCUS TODAY so it is
+   not missed. This is a truthfulness signal, not a to-do.]
+  [If any raw/ source modified since its last ingest]
+  STALE SOURCES:
+  [count] source(s) modified since last ingest:
+    [filenames]
+  The wiki may not reflect the latest version.
+  Run RESEARCH (or /wiki-lint) to update.
+
+  [v3.2.0+: surface decisions over 6 months old]
+  [If any NOT_APPLICABLE or DISPUTED decision is >180 days old]
+  [count] decision(s) over 6 months old.
+  Worth reviewing if the product has changed significantly.
+  Type /decisions to review.
 
   FOCUS TODAY:
   [Single clear recommendation based on everything read above.

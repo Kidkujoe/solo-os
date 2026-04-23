@@ -31,8 +31,22 @@ On first run, establish a baseline for every measurable metric.
 Run these measurements:
 
 **PERFORMANCE**
-`lighthouse [app-url] --output=json`
-Extract: performance score, LCP, CLS, INP.
+Triple-run median (v3.2.0+) — Lighthouse scores vary 3-8 points
+on identical code due to CPU/network noise. A single run can
+cause noise-based keep/discard. Run the measurement three times
+in sequence, extract performance score from each JSON, take the
+median of the three. Display:
+
+  Measuring performance (3 runs)...
+  Run 1: [score]
+  Run 2: [score]
+  Run 3: [score]
+  Median: [score] <- authoritative
+
+Command per run:
+`lighthouse [app-url] --output=json --quiet`
+Extract: performance score, LCP, CLS, INP. Use median score for
+all keep/discard decisions. Never the first run alone.
 
 **TEST SUITE**
 Run the test command from `package.json`.
@@ -47,7 +61,7 @@ Extract: design score out of 10.
 Extract: security score.
 
 **ACCESSIBILITY**
-Lighthouse accessibility audit.
+Lighthouse accessibility audit (triple-run, median violation count).
 Extract: violation count.
 
 Save baseline to `$OBSIDIAN_VAULT/program/$PROJECT_NAME-experiments.md`:

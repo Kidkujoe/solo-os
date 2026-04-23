@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.2.0 - Edge case protection
+
+Five edge cases identified and fixed. These were the highest-priority issues from a systematic audit of data integrity, conflict handling, scale, human behaviour and external dependency failure modes.
+
+**FIX 1 — LIGHTHOUSE VARIANCE**
+EVOLVE and /performance now run Lighthouse three times and use the median score. Prevents keep/discard decisions based on measurement noise, which can vary 3–8 points on identical code. Affects `commands/bodies/autoloop.md`, `performance.md`, and `workflow-evolve.md` (the metric-measurement reference).
+
+**FIX 2 — PROJECT RENAME ORPHAN**
+RESOLVER.md STEP R2 now detects when a new context is being created for a project that matches an existing orphaned context by product name. Offers migration of all history — Atlas memory, reviews, skip resolutions, experiment logs, and lessons. Nothing is silently lost when a project is renamed or moved. `/projects` now flags folders inactive over 90 days with archive/delete options.
+
+**FIX 3 — STALE RAW SOURCE DETECTION**
+RESEARCH now records file modification timestamps in `wiki/log.md` at ingest time using the v3.2.0 extended log format. `/wiki-lint` detects when source files have been modified since last ingest and flags affected wiki pages. BRIEF surfaces stale sources above `FOCUS TODAY` so they are not missed. The wiki no longer silently drifts from its sources.
+
+**FIX 4 — MARKET VS DEVELOPER PROFILE**
+MARKET and `/compass` now cross-check every roadmap recommendation against `DEVELOPER_PROFILE.md` — the Never Again tier and hard constraints — before displaying the final roadmap. Conflicts are surfaced with three options: keep with alternative implementation, remove from roadmap, or flag for discussion. Never silently omits a feature.
+
+**FIX 5 — SKIP RESOLUTION REVIEW**
+New `/decisions` command. Lists every recorded decision for the current project across four groups: NOT APPLICABLE rules, intentional design choices, deferred items, and disputed rules with their confidence levels. Any decision can be reviewed and changed (A–E answer set). Bulk review mode available. All changes propagate to `skip-tracker.json`, wiki confidence levels, `DECISIONS.md`, and the lessons file. Accessible from `/explore` via plain English ("review my decisions", "undo a skip", "check my rules"). BRIEF surfaces decisions older than 180 days.
+
+No new paths added to RESOLVER.md — all fixes use existing approved paths.
+
 ## v3.1.1 - Build system fix
 
 Fixed: `build-commands.sh` was skipping meta commands (`vtpaudit`, `projects`) because they have no body file in `commands/bodies/`.

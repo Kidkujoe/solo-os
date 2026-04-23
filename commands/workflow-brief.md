@@ -20,6 +20,56 @@ If current directory is not a project directory (is home, is
 warning and stop. Ask user to cd into their project folder.
 
 STEP R2 - CREATE PROJECT FOLDERS:
+
+Orphan check FIRST (v3.2.0+). Run only when $PROJECT_CONTEXT does
+not yet exist — i.e., this is the first time a command runs for
+this project path:
+
+  1. List all existing folders under ~/.claude/context/projects/.
+  2. For each folder, read atlas/PRODUCT.md if present and extract
+     the product name (first H1 or explicit "name:" field).
+  3. Compare against the current project's package.json "name"
+     field (if present) or the current directory basename.
+  4. If one or more matches are found, display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EXISTING CONTEXT FOUND
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    It looks like this project may have been renamed or moved.
+
+    Found existing context for:
+    [product name]
+    Last active: [date from atlas/HEALTH.md]
+    Contains:
+      Atlas memory:      [yes/no]
+      Review history:    [count records from REVIEWS.md]
+      Skip resolutions:  [count from skip-tracker.json]
+      Experiment log:    [count from $OBSIDIAN_PROGRAM_FILE]
+      Lessons entries:   [count H3 blocks in lessons file]
+
+    Is this the same project?
+
+    A  Yes - migrate everything to new path
+    B  No - this is a different project
+    C  Not sure - show me the files first
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  A (migrate): cp -R the old context contents into the new
+     $PROJECT_CONTEXT. Rewrite any absolute path strings inside
+     the copied files that reference the old PROJECT_ID. Delete
+     the old folder only after the copy verifies (same file count,
+     matching sizes). Display:
+       Migration complete. [count] files moved.
+       Old context removed.
+
+  B (new project): proceed with fresh context creation. Leave the
+     old folder in place; /projects will later list it as inactive.
+
+  C (not sure): list files in the old context folder with sizes
+     and modification dates, then ask the A/B question again.
+
+After the orphan check resolves (or if no match found):
+
 mkdir -p $PROJECT_CONTEXT
 mkdir -p $PROJECT_CONTEXT/atlas
 mkdir -p $PROJECT_CONTEXT/screenshots
@@ -170,6 +220,16 @@ Read silently:
     MARKET recommendations — priority-1 entries aged >=8 weeks with
                              no follow-up recorded
 
+  Stale-source state (v3.2.0+, if OBSIDIAN_BRIDGE=on):
+    $OBSIDIAN_VAULT/wiki/log.md — for every ingest entry with a
+    "Last modified" timestamp, compare against the current mtime of
+    the raw/ source file. Any file modified since last ingest is
+    STALE and the wiki may not reflect the current truth.
+
+  Old-decisions state (v3.2.0+):
+    $SKIP_TRACKER entries with status NOT_APPLICABLE / DISPUTED
+    whose recorded date is >180 days ago — worth reviewing.
+
 From these, determine:
   - Which outcome follow-ups are due today (EVOLVE 14d, MARKET 8w).
   - Which deferred items hit their monthly reminder this week.
@@ -227,6 +287,21 @@ Synthesise into one focused output. Display:
   RECENT LESSONS:
   [most relevant lesson in one line]
   [link: $OBSIDIAN_LESSONS_FILE]
+
+  [v3.2.0+: Show STALE SOURCES block ABOVE FOCUS TODAY so it is
+   not missed. This is a truthfulness signal, not a to-do.]
+  [If any raw/ source modified since its last ingest]
+  STALE SOURCES:
+  [count] source(s) modified since last ingest:
+    [filenames]
+  The wiki may not reflect the latest version.
+  Run RESEARCH (or /wiki-lint) to update.
+
+  [v3.2.0+: surface decisions over 6 months old]
+  [If any NOT_APPLICABLE or DISPUTED decision is >180 days old]
+  [count] decision(s) over 6 months old.
+  Worth reviewing if the product has changed significantly.
+  Type /decisions to review.
 
   FOCUS TODAY:
   [Single clear recommendation based on everything read above.

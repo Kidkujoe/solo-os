@@ -173,6 +173,12 @@ LOOP FOREVER until the user stops or no improvements remain:
   4. Apply and measure:
        Run: git commit (automatic).
        Measure metric BEFORE and AFTER.
+       If the metric is Lighthouse-based, use the triple-run
+       median pattern (v3.2.0+): three runs, median score. Never
+       keep/discard on a single-run delta — Lighthouse varies
+       3-8 points on identical code. /performance and /autoloop
+       already implement this; invoke them rather than calling
+       lighthouse directly.
 
   5. Keep or discard:
        KEEP    if metric improved.

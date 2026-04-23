@@ -144,6 +144,10 @@ If the input is not a number, route by intent:
   "not sure" / "what do I do"
     → BRIEF. Let the recommendation guide.
 
+  "review my decisions" / "undo a skip" / "check my rules" /
+  "what have I decided" / "change a decision" (v3.2.0+)
+    → /decisions
+
 For anything unclear:
 
   Not sure which workflow fits.

@@ -17,15 +17,39 @@ Ask if none responds.
 Display setup panel: Lighthouse status, Chrome status, app URL, build
 output location, previous scores found.
 
-PHASE 2 - LIGHTHOUSE AUDIT:
-Run DESKTOP:
-  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-desktop.json --form-factor=desktop --chrome-flags="--headless"
-Run MOBILE:
-  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-mobile.json --form-factor=mobile --chrome-flags="--headless"
+PHASE 2 - LIGHTHOUSE AUDIT (triple-run median, v3.2.0+):
 
-Stream progress per mode: URL, elapsed time, audit steps as they run.
+Lighthouse scores vary 3-8 points on identical code due to CPU
+and network noise. Run each form-factor THREE times and use the
+median score as the authoritative value.
 
-Extract Core Web Vitals:
+Run DESKTOP 3x (write runs 1/2/3 to separate files):
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-desktop-1.json --form-factor=desktop --chrome-flags="--headless" --quiet
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-desktop-2.json --form-factor=desktop --chrome-flags="--headless" --quiet
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-desktop-3.json --form-factor=desktop --chrome-flags="--headless" --quiet
+
+Run MOBILE 3x:
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-mobile-1.json --form-factor=mobile --chrome-flags="--headless" --quiet
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-mobile-2.json --form-factor=mobile --chrome-flags="--headless" --quiet
+  lighthouse [URL] --output=json --output-path=$PROJECT_CONTEXT/reports/lighthouse-mobile-3.json --form-factor=mobile --chrome-flags="--headless" --quiet
+
+After each form-factor's three runs, display:
+
+  Measuring [desktop|mobile] performance (3 runs)...
+  Run 1: [score]
+  Run 2: [score]
+  Run 3: [score]
+  Median: [score] <- used for comparison, HEALTH.md, EVOLVE
+
+Keep the median run's JSON as the canonical report at
+lighthouse-desktop.json / lighthouse-mobile.json (copy or symlink
+from the median run); delete or archive the other two. Use the
+median score for every keep/discard and regression decision.
+
+Stream progress per mode and per run: URL, elapsed time, audit
+steps as they run.
+
+Extract Core Web Vitals (from the median run):
 - LCP: GOOD <2500ms / NEEDS IMPROVEMENT 2500-4000 / POOR >4000
 - CLS: GOOD <0.1 / NEEDS IMPROVEMENT 0.1-0.25 / POOR >0.25
 - INP: GOOD <200ms / NEEDS IMPROVEMENT 200-500 / POOR >500

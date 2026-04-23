@@ -34,6 +34,35 @@ both with their sources. Ask for resolution. Log to
 `VERIFY — source over 12 months old`. Suggest a newer source to
 confirm or update.
 
+**STALE SOURCES** (v3.2.0+) — for every log.md entry that records
+a `Last modified` timestamp, compare against the current file's
+modification time. If the file has been modified since the ingest,
+the wiki may not reflect the current source.
+
+For each stale source display:
+
+  STALE SOURCE DETECTED
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Source file modified since last ingest:
+
+  File: [raw/ path]
+  Last ingested: [date from log.md]
+  File modified: [current mtime]
+  Days since modification: [count]
+
+  Wiki pages built from this source:
+  [list from log.md entry]
+
+  The wiki may not reflect the current version of this source.
+
+  Re-ingest to update?
+  Type yes / skip
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+On yes, hand off to /wiki-ingest on that source. On skip, record
+the skip decision in the lessons file so BRIEF does not badger
+the user about it again within 30 days.
+
 **CONFIDENCE DRIFT** — synthesis pages claiming higher confidence
 than the pages they are based on. Confidence cannot increase through
 abstraction. Flag and correct.

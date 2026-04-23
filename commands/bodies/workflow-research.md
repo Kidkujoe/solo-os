@@ -132,7 +132,19 @@ Write the confirmed takeaways to the wiki:
   Every page given a confidence level.
   Never overwrite a page marked MANUALLY CORRECTED.
   Update $OBSIDIAN_VAULT/wiki/index.md.
-  Append to $OBSIDIAN_VAULT/wiki/log.md.
+  Append to $OBSIDIAN_VAULT/wiki/log.md using the v3.2.0 extended
+  entry format so wiki-lint and BRIEF can detect stale sources:
+
+    ## [YYYY-MM-DD] [HH:MM] | ingest | [filename]
+    Source path: [full raw/ path]
+    File size: [bytes]
+    Last modified: [ISO timestamp from stat / git log at ingest time]
+    Wiki pages created: [list]
+    Wiki pages updated: [list]
+
+  The Last modified timestamp is the reference point for
+  stale-source detection. Use `stat -c %y` (GNU) or `stat -f %Sm`
+  (BSD) or git log on the file, whichever is available.
 
 Show what was written:
 

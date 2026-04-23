@@ -14,6 +14,8 @@ For each project folder show:
 - Atlas exists (PRODUCT.md present?)
 - Last test date (from HEALTH.md or test-session.md if exists)
 - Last audit date (from HEALTH.md if exists)
+- Status (v3.2.0+): if last-active date is more than 90 days ago,
+  mark as INACTIVE; otherwise ACTIVE.
 
 Display:
 
@@ -39,3 +41,11 @@ Show what will be deleted and ask for confirmation before removing.
 
 If $ARGUMENTS is "detail [project-name]":
 Show full file listing with sizes for that specific project.
+
+If any project is marked INACTIVE (v3.2.0+), after the listing offer:
+  [count] project(s) inactive over 90 days.
+  Archive or delete?
+  A  Archive - move to ~/.claude/context/projects/_archived/
+  B  Delete - remove permanently (confirmation required)
+  C  Leave as-is
+Never delete without explicit confirmation.

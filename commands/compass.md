@@ -20,6 +20,56 @@ If current directory is not a project directory (is home, is
 warning and stop. Ask user to cd into their project folder.
 
 STEP R2 - CREATE PROJECT FOLDERS:
+
+Orphan check FIRST (v3.2.0+). Run only when $PROJECT_CONTEXT does
+not yet exist — i.e., this is the first time a command runs for
+this project path:
+
+  1. List all existing folders under ~/.claude/context/projects/.
+  2. For each folder, read atlas/PRODUCT.md if present and extract
+     the product name (first H1 or explicit "name:" field).
+  3. Compare against the current project's package.json "name"
+     field (if present) or the current directory basename.
+  4. If one or more matches are found, display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EXISTING CONTEXT FOUND
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    It looks like this project may have been renamed or moved.
+
+    Found existing context for:
+    [product name]
+    Last active: [date from atlas/HEALTH.md]
+    Contains:
+      Atlas memory:      [yes/no]
+      Review history:    [count records from REVIEWS.md]
+      Skip resolutions:  [count from skip-tracker.json]
+      Experiment log:    [count from $OBSIDIAN_PROGRAM_FILE]
+      Lessons entries:   [count H3 blocks in lessons file]
+
+    Is this the same project?
+
+    A  Yes - migrate everything to new path
+    B  No - this is a different project
+    C  Not sure - show me the files first
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  A (migrate): cp -R the old context contents into the new
+     $PROJECT_CONTEXT. Rewrite any absolute path strings inside
+     the copied files that reference the old PROJECT_ID. Delete
+     the old folder only after the copy verifies (same file count,
+     matching sizes). Display:
+       Migration complete. [count] files moved.
+       Old context removed.
+
+  B (new project): proceed with fresh context creation. Leave the
+     old folder in place; /projects will later list it as inactive.
+
+  C (not sure): list files in the old context folder with sizes
+     and modification dates, then ask the A/B question again.
+
+After the orphan check resolves (or if no match found):
+
 mkdir -p $PROJECT_CONTEXT
 mkdir -p $PROJECT_CONTEXT/atlas
 mkdir -p $PROJECT_CONTEXT/screenshots
@@ -414,6 +464,15 @@ D. Wait for more signal (set threshold, revisit in 30 days)
 ===========================================
 PHASE 8 - THE ROADMAP (four views)
 ===========================================
+
+Constraint check FIRST (v3.2.0+): before presenting any of the four
+views, read $DEVELOPER_PROFILE if present and extract the Never
+Again tier and hard constraints. For each feature on the roadmap,
+estimate required technology/infrastructure and flag conflicts per
+the protocol in workflow-market.md § STEP 3 "Constraint check".
+Never silently omit a feature — surface conflicts with the three
+options (keep / remove / flag for discussion) and let the developer
+decide. If $DEVELOPER_PROFILE is missing, skip this check.
 
 VIEW 1 - RANKED BY SCORE: Each feature with full PRISM-PV breakdown,
 PV status, urgency, gap type, evidence count, trend, key quote,

@@ -20,6 +20,56 @@ If current directory is not a project directory (is home, is
 warning and stop. Ask user to cd into their project folder.
 
 STEP R2 - CREATE PROJECT FOLDERS:
+
+Orphan check FIRST (v3.2.0+). Run only when $PROJECT_CONTEXT does
+not yet exist — i.e., this is the first time a command runs for
+this project path:
+
+  1. List all existing folders under ~/.claude/context/projects/.
+  2. For each folder, read atlas/PRODUCT.md if present and extract
+     the product name (first H1 or explicit "name:" field).
+  3. Compare against the current project's package.json "name"
+     field (if present) or the current directory basename.
+  4. If one or more matches are found, display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EXISTING CONTEXT FOUND
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    It looks like this project may have been renamed or moved.
+
+    Found existing context for:
+    [product name]
+    Last active: [date from atlas/HEALTH.md]
+    Contains:
+      Atlas memory:      [yes/no]
+      Review history:    [count records from REVIEWS.md]
+      Skip resolutions:  [count from skip-tracker.json]
+      Experiment log:    [count from $OBSIDIAN_PROGRAM_FILE]
+      Lessons entries:   [count H3 blocks in lessons file]
+
+    Is this the same project?
+
+    A  Yes - migrate everything to new path
+    B  No - this is a different project
+    C  Not sure - show me the files first
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  A (migrate): cp -R the old context contents into the new
+     $PROJECT_CONTEXT. Rewrite any absolute path strings inside
+     the copied files that reference the old PROJECT_ID. Delete
+     the old folder only after the copy verifies (same file count,
+     matching sizes). Display:
+       Migration complete. [count] files moved.
+       Old context removed.
+
+  B (new project): proceed with fresh context creation. Leave the
+     old folder in place; /projects will later list it as inactive.
+
+  C (not sure): list files in the old context folder with sizes
+     and modification dates, then ask the A/B question again.
+
+After the orphan check resolves (or if no match found):
+
 mkdir -p $PROJECT_CONTEXT
 mkdir -p $PROJECT_CONTEXT/atlas
 mkdir -p $PROJECT_CONTEXT/screenshots
@@ -238,6 +288,52 @@ Show progress as it runs:
 STEP 3 OF 3 — ROADMAP
 ===========================================
 Estimated: ~1,000 tokens
+
+Constraint check FIRST (v3.2.0+):
+  Read $DEVELOPER_PROFILE (~/.claude/context/DEVELOPER_PROFILE.md)
+  if it exists. Extract:
+    - Never Again tier technologies
+    - Hard constraints (budget, infra, time, stack bans)
+
+  For each candidate feature in the ranked list, estimate the
+  technology or infrastructure it most likely requires.
+
+  If a required technology appears in the Never Again tier,
+  display BEFORE the final roadmap:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    PROFILE CONFLICT DETECTED
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    Feature: [feature name]
+    PRISM-PV score: [score]
+
+    This feature typically requires: [technology]
+
+    Your developer profile:
+    This technology is in your Never Again tier.
+    Reason recorded: [reason from profile]
+
+    Options:
+    A  Keep in roadmap - I will find an alternative implementation
+    B  Remove from roadmap
+    C  Flag for discussion only (no decision now)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  If the feature requires infrastructure beyond a hard budget
+  constraint, display:
+
+    CONSTRAINT CONFLICT:
+    Feature: [name]
+    Requires: [infrastructure]
+    Estimated cost: [amount/month]
+    Your constraint: under [limit]/month
+
+    Keep in roadmap with this note?
+    Type yes / no
+
+  Never silently omit a feature. Always surface the conflict and
+  let the developer decide. If $DEVELOPER_PROFILE is missing, skip
+  the constraint check and continue.
 
 Present the ranked opportunities:
 

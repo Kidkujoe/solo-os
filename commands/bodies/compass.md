@@ -285,6 +285,15 @@ D. Wait for more signal (set threshold, revisit in 30 days)
 PHASE 8 - THE ROADMAP (four views)
 ===========================================
 
+Constraint check FIRST (v3.2.0+): before presenting any of the four
+views, read $DEVELOPER_PROFILE if present and extract the Never
+Again tier and hard constraints. For each feature on the roadmap,
+estimate required technology/infrastructure and flag conflicts per
+the protocol in workflow-market.md § STEP 3 "Constraint check".
+Never silently omit a feature — surface conflicts with the three
+options (keep / remove / flag for discussion) and let the developer
+decide. If $DEVELOPER_PROFILE is missing, skip this check.
+
 VIEW 1 - RANKED BY SCORE: Each feature with full PRISM-PV breakdown,
 PV status, urgency, gap type, evidence count, trend, key quote,
 build vs buy, moat, North Star link, conflicts.

@@ -81,3 +81,28 @@ muscle memory works, but the new way is `/explore`.
 | Weekly | `/explore` → MARKET |
 | New knowledge | `/explore` → RESEARCH |
 | Autonomous overnight | `/explore` → EVOLVE |
+| Review past decisions | `/decisions` |
+
+## Edge case protections (v3.2.0)
+
+**LIGHTHOUSE VARIANCE** — EVOLVE and /performance run three
+Lighthouse measurements and use the median score. Prevents
+keep/discard decisions based on measurement noise.
+
+**PROJECT RENAME PROTECTION** — moving or renaming a project
+folder triggers orphan detection in RESOLVER STEP R2. Existing
+memory is offered for migration. Nothing is silently lost.
+
+**STALE SOURCE DETECTION** — /wiki-lint and BRIEF check whether
+raw/ source files have been modified since last ingest. The wiki
+never silently drifts from its sources.
+
+**MARKET PROFILE ALIGNMENT** — MARKET and /compass cross-check
+every roadmap recommendation against the developer profile's
+Never Again tier and hard constraints. Never recommends building
+something that requires technology you refuse to use.
+
+**DECISION REVIEW** — /decisions lists every recorded skip
+resolution, intentional choice, deferred item and disputed rule.
+Any decision can be reviewed and changed. No decision is ever
+permanently wrong.

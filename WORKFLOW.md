@@ -1,65 +1,91 @@
-# Visual-Test-Pro Workflow
+# Visual-Test-Pro 3.0 Workflow
 
-## The one command to remember
+## Start here
 
 ```
 /explore
 ```
 
-Type `/explore` and answer the questions. You never need to remember
-anything else. The entry point is context-aware — it checks for
-uncommitted changes, branches ready to merge, stale Atlas context and
-unprocessed wiki sources before showing the menu, and surfaces the
-obvious next step.
+`/explore` reads your project state and shows you what needs
+attention. Then it routes you to one of seven workflows.
+
+## Seven workflows
+
+| # | Workflow | What it does |
+|---|---|---|
+| 1 | **SHIP** | finished a feature or full product audit |
+| 2 | **BRIEF** | start of day focus |
+| 3 | **MARKET** | understand what to build |
+| 4 | **BUILD** | new project from scratch |
+| 5 | **EMPATHY** | see it as your users do |
+| 6 | **RESEARCH** | add knowledge to the wiki |
+| 7 | **EVOLVE** | improve autonomously |
 
 ## The mental model
 
-| Layer | Role | What it knows |
-|---|---|---|
-| **Atlas** | the brain | your product |
-| **Compass** | the strategy | your market |
-| **Empathy** | the users | your users |
-| **Wiki** | the knowledge | everything you have read |
-| **Autoloop** | the improver | fixes things while you work on other things |
+`/explore` opens the door.
 
-## If you prefer direct commands
+- **SHIP** keeps your product healthy feature by feature.
+- **BRIEF** keeps you focused every day.
+- **MARKET** keeps you building the right things.
+- **BUILD** gets new ideas off the ground with validation and a
+  running codebase.
+- **EMPATHY** keeps you honest about what users actually experience.
+- **RESEARCH** makes the system smarter every time you add a source.
+- **EVOLVE** improves the product autonomously while you work on
+  other things.
 
-| Moment | Command |
+## Token costs at a glance
+
+| Workflow | Estimated cost |
 |---|---|
-| Every morning | `/atlas-quick` |
-| Finished a feature | `/atlas-feature [feature name]` |
-| Small change | `/ship` |
-| Shipping a feature | `/review-cycle [feature name]` |
-| Adding knowledge | drop file into `raw/` then `/wiki-ingest` |
-| Understanding the market | `/compass` |
-| Starting a new project | `/new-project [idea]` |
-| Not sure what to do | `/explore` |
+| BRIEF | ~500 - 1,000 |
+| SHIP feature (Mode 1) | ~3,000 - 5,000 |
+| SHIP drift (Mode 2) | ~1,000 - 2,000 |
+| EVOLVE per loop | ~3,000 |
+| RESEARCH per source | ~2,000 - 4,000 |
+| EMPATHY | ~8,000 - 12,000 |
+| MARKET | ~10,000 - 15,000 |
+| BUILD | ~12,000 - 18,000 |
+| SHIP full product audit (Mode 3) | ~30,000 - 50,000 |
 
-### Before any launch
+These are estimates. Claude Code does not expose exact token
+counts via API. The plugin shows cost upfront and tracks a running
+session estimate.
 
-```
-/test --deep
-/pillars --full
-/empathy
-/seo
-/performance
-```
+## Underlying commands still work
 
-## Flag shortcuts (v2.6.0)
+All 22 core commands work directly. Workflows call them in sequence.
 
-The standalone commands still exist. Flags are additive shortcuts:
+Type `/explore` for guided workflows. Type commands directly if
+you know exactly what you want.
 
-| Flag | Equivalent |
+## Retired as aliases (v3.0.0)
+
+These commands now redirect to a workflow. They still exist so
+muscle memory works, but the new way is `/explore`.
+
+| Retired | Now part of |
 |---|---|
-| `/atlas --rebuild` | `/atlas-map` |
-| `/atlas --check` | `/atlas-check` |
-| `/atlas --quick` | `/atlas-quick` |
-| `/atlas --feature [name]` | `/atlas-feature [name]` |
-| `/test --quick` | `/test-quick` |
-| `/test --deep` | `/test-deep` |
-| `/compass --feature [name]` | `/compass-feature [name]` |
-| `/compass --project` | `/compass-project` |
-| `/compass --retro [name]` | `/compass-retro [name]` |
-| `/copyai --research-only` | `/copyai-research` |
-| `/new-project [idea] --validate-only` | validation-only mode |
-| `/stack --profile / --recommend / --audit / --compare / --update` | `/stack-*` |
+| `/atlas-map` | SHIP (Full product audit) |
+| `/atlas-check` | SHIP (Gate check) |
+| `/test-quick` | SHIP (Drift mode) |
+| `/test-deep` | SHIP (Full audit, FULL depth) |
+| `/compass-feature` | MARKET |
+| `/compass-project` | BUILD (Step 1) |
+| `/compass-retro` | MARKET |
+| `/copyai-research` | RESEARCH (or `/copyai --research-only`) |
+| `/reviews` | SHIP (entry context) |
+| `/status` | BRIEF |
+| `/screenshots` | `/report --screenshots` |
+| `/autoloop-setup` | EVOLVE (inline auto-setup) |
+
+## Daily rhythm
+
+| When | Run |
+|---|---|
+| Morning | `/explore` → BRIEF |
+| After a feature | `/explore` → SHIP |
+| Weekly | `/explore` → MARKET |
+| New knowledge | `/explore` → RESEARCH |
+| Autonomous overnight | `/explore` → EVOLVE |

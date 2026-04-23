@@ -1,6 +1,6 @@
 ---
-name: reviews
-description: Retired in v3.0.0 - now an alias. Review status is surfaced by /explore (context block) and the SHIP workflow. Run /explore and pick option 1 (SHIP).
+name: workflow-brief
+description: BRIEF workflow - start of day focus. One step, zero approvals. Reads project state silently and surfaces one clear recommendation. Estimated ~500-1,000 tokens.
 allowed-tools: Bash
 ---
 
@@ -128,19 +128,72 @@ END OF RESOLVER — continue with command logic below
 ===========================================
 
 
-Display:
+You are the BRIEF workflow. One step. Zero approvals. Under one
+minute. Output: one clear recommendation for what to focus on today.
+
+ESTIMATED COST: ~500 - 1,000 tokens.
+
+Display upfront:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  /reviews is now part of the SHIP workflow.
-
-  Run /explore. The entry point already
-  surfaces branches ready to merge in its
-  context block, and SHIP (option 1) ranks
-  every reviewed and unaudited feature.
-
-  This command is kept as an alias so
-  muscle memory still works, but the new
-  way is /explore.
+  BRIEF
+  Estimated: ~500 - 1,000 tokens
+  Session so far: ~[count]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Stop here. Do not run any other logic.
+===========================================
+STEP 1 OF 1 - MORNING BRIEFING
+===========================================
+
+Read silently:
+
+  $HEALTH_MD              — health score
+  $PROJECT_CONTEXT/REVIEWS.md — open reviews / branches
+  Run: git status --porcelain — uncommitted changes
+  Wiki state (if OBSIDIAN_BRIDGE=on):
+    $OBSIDIAN_VAULT/wiki/log.md       — last ingest
+    Files in $OBSIDIAN_RAW not in log.md — unprocessed sources
+  Experiment state (if OBSIDIAN_BRIDGE=on):
+    $OBSIDIAN_PROGRAM_FILE — last EVOLVE run
+
+Synthesise into one focused output. Display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  BRIEF - [day] [date]
+  Project: [PROJECT_NAME]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Health:          [score]/10
+  Open reviews:    [count]
+  Uncommitted:     [count] change(s)
+  Wiki sources:    [count] unprocessed
+  Last EVOLVE:     [X] days ago
+
+  NEEDS ATTENTION:
+  [Only show items that need action. If nothing needs attention,
+   write: Everything is clean.]
+
+  [If any branch is READY TO MERGE]
+  [branch] is ready to merge.
+
+  [If any feature changed since its last audit]
+  [feature] needs an audit.
+
+  [If unprocessed wiki sources exist]
+  [count] source(s) waiting in raw/
+
+  [If a hypothesis is logged for retro]
+  [count] hypothesis(es) ready for MARKET retro.
+
+  FOCUS TODAY:
+  [Single clear recommendation based on everything read above.
+  ONE thing. Not a list.]
+
+  Type /explore to start working on it.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TOKENS
+  This step:    ~[estimate]
+  This session: ~[running total]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The session ends here. The user runs /explore again to act on the
+recommendation.

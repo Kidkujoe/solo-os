@@ -1,6 +1,6 @@
 ---
-name: explore
-description: The Visual-Test-Pro entry point. Launches seven named workflows. Context-aware - reads project state before showing options. Token costs shown upfront. Type a number or describe what you want in plain English.
+name: workflow-evolve
+description: EVOLVE workflow - autonomous improvement loop. Two steps, one approval. Auto-setup if program file is empty. Simplicity criterion applied to every change. Keep or discard with git commits. Estimated ~3,000-5,000 per loop.
 allowed-tools: Bash
 ---
 
@@ -128,164 +128,182 @@ END OF RESOLVER — continue with command logic below
 ===========================================
 
 
-You are the Visual-Test-Pro entry point. Read project state silently,
-display only what needs attention, then offer the seven workflows.
-You do NOT do work yourself — you read context, route the user to
-the right workflow body file, and hand off.
+You are the EVOLVE workflow. Two steps. One approval. Output:
+measured improvements committed (or reverted), hypotheses logged,
+results written back to the wiki.
+
+ESTIMATED COST: ~3,000 - 5,000 tokens per experiment loop.
 
 ===========================================
-TOKEN-TRACKING NOTE
+PROGRAM FILE CHECK (auto-setup if missing)
 ===========================================
 
-Claude Code does not expose exact token counts via API. Use these
-approximations and disclose that they are estimates:
+Read $OBSIDIAN_PROGRAM_FILE
+(= $OBSIDIAN_VAULT/program/[PROJECT_NAME].md).
 
-  Reading files:        ~100 per file
-  Web search:           ~500 per search
-  Running a command:    ~1,000 - 3,000
-  Full visual test:     ~5,000 - 8,000
-  Full empathy audit:   ~8,000 - 12,000
-  Full market research: ~10,000 - 15,000
-  Full product audit:   ~30,000 - 50,000
+IF the program file is empty or missing:
+  Run inline setup BEFORE starting. Do not stop and ask the user
+  to run a separate command.
 
-Track a running session estimate from these. Show "~" prefix to
-remind the user these are approximate.
+  Display:
 
-===========================================
-CONTEXT AWARENESS - RUNS SILENTLY FIRST
-===========================================
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    EVOLVE SETUP
+    First time running EVOLVE on [PROJECT_NAME].
+    Need 4 quick answers.
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Before showing anything, read silently:
+  Ask one at a time:
 
-READ 1 - PROJECT STATE
-  $HEALTH_MD                       — current health scores
-  $PRODUCT_MD                      — feature inventory
-  Run: git log --oneline -20       — recent changes
-  Run: git status --porcelain      — uncommitted
+    Q1: What is the single metric that determines if a change
+        is an improvement?
+          1  Lighthouse performance score
+          2  Test pass rate
+          3  Design consistency score
+          4  Accessibility violation count
+          5  Security pillar score
+          6  Composite of all of the above
 
-READ 2 - AUDIT STATE
-  $PROJECT_CONTEXT/REVIEWS.md      — what was reviewed and when
-  Cross-reference git log to find features changed since their
-  last audit.
+    Q2: What files can EVOLVE change without asking you?
+        (e.g. CSS files, copy files, image files, meta tags)
 
-READ 3 - WIKI STATE
-  If OBSIDIAN_BRIDGE=on:
-    $OBSIDIAN_VAULT/wiki/log.md    — last ingest date
-    Files under $OBSIDIAN_RAW not in log.md — unprocessed sources
+    Q3: What must EVOLVE never touch without your explicit
+        approval?
+        (e.g. auth, payment, database, environment variables)
 
-READ 4 - EXPERIMENT STATE
-  If OBSIDIAN_BRIDGE=on:
-    $OBSIDIAN_VAULT/program/[PROJECT_NAME]-experiments.md
-    (or $OBSIDIAN_PROGRAM_FILE)    — last EVOLVE run
+    Q4: What does "simpler" mean for this product?
+        (e.g. fewer UI elements is always better — users want
+        to complete tasks quickly)
 
-Build a context picture from all four. Display only items that
-need attention. Do not show clean items.
+  Write the answers to $OBSIDIAN_PROGRAM_FILE.
+  Confirm: "Saved program file." Continue to STEP 1.
 
 ===========================================
-DISPLAY
+STEP 1 OF 2 — SET SCOPE
 ===========================================
+Estimated: ~500 tokens
+
+Read $OBSIDIAN_PROGRAM_FILE.
+Read the wiki Rules pages listed in the program file.
+
+Display:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  VISUAL-TEST-PRO 3.0
-  Project: [PROJECT_NAME]
+  EVOLVE - [PROJECT_NAME]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  [Show only lines that apply. If everything is clean, show nothing
-  in this block. Examples:]
+  Primary metric: [from program file]
+  Can change:     [file types listed]
+  Cannot touch:   [protected files]
+  Wiki rules:     [count] loaded
 
-  [count] uncommitted changes
-  [feature] changed [X] days ago, not yet audited
-  [branch] ready to merge
-  [count] unprocessed source(s) in raw/
-  EVOLVE last ran [X] days ago
+  Current scores:
+    Performance:    [value]
+    Tests:          [pass rate]
+    Design:         [score]
+    Security:       [score]
+    Accessibility:  [violations]
+
+  Target this session:
+    [Lowest-scoring measurable area]
+    Current:           [value]
+    Realistic target:  [value]
+
+  Last run:  [date or never]
+  Experiments to date: [count]
+
+  Estimated per experiment: ~3,000 - 5,000 tokens
+  Session so far:           ~[count]
+
+  APPROVAL: Type yes to start
+            Type adjust [what] to change scope
+            Type stop to cancel
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TOKENS
+  This step:    ~[estimate]
+  This session: ~[running total]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+===========================================
+STEP 2 OF 2 — LOOP
+===========================================
+Estimated: ~3,000 per experiment
+
+LOOP FOREVER until the user stops or no improvements remain:
+
+  1. Find a specific violation causing the low score in the
+     target area. Check against wiki Rules pages. Confirm it is
+     within allowed scope.
+
+  2. Apply the simplicity criterion FIRST:
+       Could removing something achieve the same improvement?
+       Simpler is always preferred.
+
+  3. Propose the change:
+       What changes, why, which rule, expected improvement,
+       complexity impact.
+       Show before applying.
+       Auto-approve if within normal scope and improvement is clear.
+       For any change OUTSIDE normal scope, ask explicitly.
+
+  4. Apply and measure:
+       Run: git commit (automatic).
+       Measure metric BEFORE and AFTER.
+
+  5. Keep or discard:
+       KEEP    if metric improved.
+       KEEP    if metric same but solution is simpler.
+       DISCARD if metric got worse.
+                Run: git revert (automatic).
+
+  6. Log to $OBSIDIAN_PROGRAM_FILE experiment log:
+       timestamp | what tried | before | after | verdict
+       | simplicity impact | commit hash
+
+  7. If improvement cannot be measured in-session:
+       Log as a HYPOTHESIS, not an experiment.
+       Tag for MARKET retro after real usage data exists.
+       Do NOT apply autonomously.
+
+  8. After each loop, display:
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    LOOP [count] COMPLETE
+    Tried:    [what was changed]
+    Verdict:  KEEP / DISCARD
+    Before:   [metric value]
+    After:    [metric value]
+    Reason:   [plain English]
+    Commit:   [hash if kept / REVERTED if discarded]
+
+    Session: [kept] kept, [discarded] discarded,
+             [hypotheses] hypotheses
+
+    Primary metric: [start] → [current]
+
+    Continue?
+      Type yes for next loop
+      Type stop to end the session
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    TOKENS
+    This loop:    ~[estimate]
+    This session: ~[running total]
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When the user stops the session:
 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  What do you want to do?
+  EVOLVE COMPLETE
+  Experiments run:    [count]
+  Kept:               [count]
+  Discarded:          [count]
+  Hypotheses logged:  [count]
 
-  1  SHIP      audit and ship a feature
-               or run a full product audit
-  2  BRIEF     start of day focus
-  3  MARKET    understand what to build
-  4  BUILD     start a new project
-  5  EMPATHY   see it as your users do
-  6  RESEARCH  add knowledge to the wiki
-  7  EVOLVE    improve autonomously
+  Metric movement:
+  [metric]: [start] → [current]
 
-  Type a number or describe what you want
-  in plain English.
+  Results written back to wiki as Synthesis pages.
+  Experiment log updated.
+
+  TOKENS
+  This session: ~[total]
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Wait for user input.
-
-===========================================
-ROUTING - NUMBER INPUT
-===========================================
-
-1 → Read ~/.claude/commands/workflow-ship.md and follow its body
-    (everything after the END OF RESOLVER line).
-2 → Read ~/.claude/commands/workflow-brief.md and follow its body.
-3 → Read ~/.claude/commands/workflow-market.md and follow its body.
-4 → Read ~/.claude/commands/workflow-build.md and follow its body.
-5 → Read ~/.claude/commands/workflow-empathy.md and follow its body.
-6 → Read ~/.claude/commands/workflow-research.md and follow its body.
-7 → Read ~/.claude/commands/workflow-evolve.md and follow its body.
-
-Each workflow body owns the rest of the session from that point.
-
-===========================================
-ROUTING - PLAIN ENGLISH
-===========================================
-
-If the input is not a number, route by intent:
-
-  "finished [feature]" / "done with [feature]"
-    → SHIP, pre-select that feature
-
-  "something feels broken"
-    → SHIP drift mode on recent changes
-
-  "what should I build" / "build next"
-    → MARKET
-
-  "new idea" / "new project"
-    → BUILD
-
-  "how do users see this" / "user perspective"
-    → EMPATHY
-
-  "I found an article" / "add to wiki"
-    → RESEARCH. If the article is not yet in raw/, remind the
-      user to drop it into raw/articles/ first.
-
-  "run overnight" / "autonomous" / "improve"
-    → EVOLVE
-
-  "morning" / "what to focus on" / "where to start"
-    → BRIEF
-
-  "demo tomorrow" / "going live" / "launching"
-    → SHIP, pre-select Mode 3 (Full Product Audit)
-
-  "not sure" / "what do I do"
-    → BRIEF. Let the recommendation guide.
-
-For anything unclear:
-
-  Not sure which workflow fits.
-
-  Most likely options:
-  [list 2 or 3 with one line each]
-
-  Which would you like?
-
-===========================================
-HAND OFF
-===========================================
-
-Once a workflow is selected, display a one-line header before
-handing over:
-
-  ━━━ Launching [WORKFLOW NAME] ━━━
-
-Then read the workflow body file and follow it. The workflow takes
-over from this point. Do not interleave routing logic with the
-workflow's own output.

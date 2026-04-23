@@ -1,14 +1,21 @@
 ---
 name: atlas-check
-description: Check for regressions and design consistency only
-allowed-tools: Bash, mcp__chrome-devtools__*
+description: Retired in v3.0.0 - now an alias. Regression and consistency checks are part of the SHIP workflow's gate check. Run /explore and pick option 1 (SHIP).
+allowed-tools: Bash
 ---
-Run Atlas phases 4 and 5 only.
-Check for regressions and design consistency. No recommendations.
-Good to run after any set of changes.
 
-Build dependency snapshot of recently changed files.
-Compare against what DEPENDENCIES.md recorded.
-Flag any broken dependencies or missing exports.
-Run design consistency check against DESIGN.md.
-Show results and update REGRESSIONS.md.
+Display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /atlas-check is now part of the SHIP workflow.
+
+  Run /explore and pick option 1 (SHIP).
+  The gate check covers regression and
+  consistency for any feature you select.
+
+  This command is kept as an alias so
+  muscle memory still works, but the new
+  way is /explore.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Stop here. Do not run any other logic.

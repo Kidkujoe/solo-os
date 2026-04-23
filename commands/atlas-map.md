@@ -1,7 +1,7 @@
 ---
 name: atlas-map
-description: Full Atlas codebase scan — rebuild the complete product brain map
-allowed-tools: Bash, mcp__chrome-devtools__*
+description: Retired in v3.0.0 - now an alias. The full-rebuild scan is part of the SHIP workflow's full product audit. Run /explore and pick option 1 (SHIP).
+allowed-tools: Bash
 ---
 
 ===========================================
@@ -127,11 +127,19 @@ defined in RESOLVER.md § KNOWLEDGE_BRIDGE at their specified hooks.
 END OF RESOLVER — continue with command logic below
 ===========================================
 
-Run Atlas phases 1 and 2 only.
-Rebuild the full product brain map from scratch.
-Use after major refactors or when context feels stale.
 
-Read the entire codebase deeply.
-Rewrite all Atlas context files:
-PRODUCT.md, DESIGN.md, DECISIONS.md, DEPENDENCIES.md, HEALTH.md.
-Show what changed from the previous map.
+Display:
+
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  /atlas-map is now part of the SHIP workflow.
+
+  Run /explore and pick option 1 (SHIP),
+  then choose C (Full product audit) for
+  the full rebuild scan.
+
+  This command is kept as an alias so
+  muscle memory still works, but the new
+  way is /explore.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Stop here. Do not run any other logic.

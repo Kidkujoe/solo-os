@@ -1,22 +1,24 @@
 name: visual-test-pro
-version: 2.6.0
+version: 3.0.0
 description: >
-  Comprehensive visual browser testing
-  with code review, auth handling, magic
-  link support, restricted area access,
-  smart fix handling with side effect
-  warnings, token awareness with options
-  and recommendations, plain English
-  HTML reports, and an Obsidian Second
-  Brain knowledge bridge so findings
-  accumulate across runs. Built for solo
-  developers and bootstrappers. Works on
-  any project globally with one command.
-  v2.6.0 adds /explore — one entry point that
-  routes plain-English requests to the right
-  command — plus flag shortcuts on /atlas,
-  /test, /compass, /copyai, /new-project
-  and a new /stack router.
+  Workflow-first product OS for solo
+  developers and bootstrappers. v3.0.0
+  reorganises the plugin around seven
+  named end-to-end workflows launched
+  from a single entry point: /explore.
+  SHIP audits and ships features (or runs
+  a full product audit). BRIEF gives a
+  start-of-day focus. MARKET researches
+  what to build next. BUILD turns an idea
+  into a running codebase. EMPATHY tests
+  the product through six user lenses.
+  RESEARCH ingests sources into the wiki.
+  EVOLVE runs autonomous improvement
+  loops with measured keep/discard.
+  Token cost is shown before every
+  workflow and after every step. All 22
+  underlying commands still work directly
+  for power users.
 author: Kidkujoe
 github: https://github.com/Kidkujoe/Visual-Test-Pro
 license: MIT
@@ -35,13 +37,15 @@ optional_dependencies:
 commands:
   - name: explore
     description: >
-      Main entry point. Ask in plain English
-      what you want to do; routes to the right
-      command or sequence. Context-aware:
-      surfaces uncommitted changes, ready
-      branches, stale Atlas, unprocessed wiki
-      sources before showing the menu. The one
-      command to remember.
+      The Visual-Test-Pro entry point.
+      Launches seven named workflows: SHIP,
+      BRIEF, MARKET, BUILD, EMPATHY, RESEARCH,
+      EVOLVE. Context-aware: reads project
+      state and surfaces only what needs
+      attention before showing the menu.
+      Token costs shown upfront. Type a
+      number or describe what you want
+      in plain English.
     file: commands/explore.md
 
   - name: stack

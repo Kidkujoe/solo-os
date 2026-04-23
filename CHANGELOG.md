@@ -1,5 +1,110 @@
 # Changelog
 
+## v3.0.0 - Workflow-first architecture
+
+The fundamental shift: from a toolbox of 48 commands to seven
+named end-to-end workflows launched from one entry point.
+
+The problem this solves: a toolbox of commands creates cognitive
+overhead. You have to know which tool to pick for which situation,
+remember the right sequence, and orchestrate the steps yourself.
+
+The solution: seven named end-to-end workflows that run the right
+sequence automatically based on what you want to achieve. One
+entry point. Plain English input. Token costs shown before and
+after every step.
+
+### Entry point: `/explore`
+
+Context-aware. Reads project state before showing options:
+uncommitted changes, unaudited features, branches ready to merge,
+unprocessed wiki sources, last EVOLVE run. Shows only what needs
+attention. Plain-English routing for any input.
+
+### Seven workflows
+
+**SHIP** — context-aware audit and ship. Reads project state to
+present options ranked by urgency. Three modes:
+- Mode 1: feature unaudited (3 steps, ~3,000-5,000 tokens)
+- Mode 2: feature drift only (2 steps, ~1,000-2,000 tokens)
+- Mode 3: full product audit (3 steps, ~30,000-50,000 tokens,
+  with QUICK or FULL depth)
+Smart security only runs when sensitive files were changed.
+One approval to merge and deploy.
+
+**BRIEF** — start-of-day focus. One step, zero approvals. Reads
+health, reviews, wiki state, experiment log, uncommitted changes.
+Surfaces one clear recommendation.
+
+**MARKET** — what to build next. Three steps, two approvals. Reads
+existing wiki intelligence first. Mines Reddit, G2, Capterra,
+forums. PRISM-PV scoring on every opportunity. Ranked roadmap with
+evidence and an anti-roadmap.
+
+**BUILD** — new project from scratch. Four steps, two approvals.
+Validates the idea with market research. Five strategy questions
+inline. Stack recommendation from developer profile. Full scaffold
+with framework CLI. Plants the Critical Painkiller as the first
+feature with Obsidian product folder.
+
+**EMPATHY** — see it as your users do. Two steps, zero approvals.
+Six user groups (First-time Visitor, New User, Returning User,
+Struggling User, Power User, Evaluator) with Ghost User narratives.
+All findings linked to Krug rules from the wiki. Customer language
+extracted for `/copyai`.
+
+**RESEARCH** — add knowledge to the wiki. Two steps, two approvals.
+Discussion step mandatory before writing (JSON rules files get
+special handling and skip discussion). Every claim cited to its
+raw source. Knowledge gaps surfaced after every ingest. New
+knowledge flows to relevant commands. Loops for multiple sources.
+
+**EVOLVE** — improve autonomously. Two steps, one approval.
+Auto-setup runs inline if the program file is empty (4 questions:
+metric, allowed scope, protected files, simplicity definition).
+Simplicity criterion applied to every proposed change. Keep or
+discard with git commit/revert. Hypothesis logging for changes
+that need real usage data.
+
+### Token transparency throughout
+
+- Estimated cost shown before each workflow.
+- Actual cost shown after each step.
+- Session running total visible throughout.
+- Approximations disclosed honestly: Claude Code does not expose
+  exact token counts via API.
+
+### Retired as aliases (logic absorbed into workflows)
+
+These 12 commands now redirect to a workflow. They still exist
+so muscle memory works:
+
+- `/atlas-map` → SHIP (Full product audit)
+- `/atlas-check` → SHIP (Gate check)
+- `/test-quick` → SHIP (Drift mode)
+- `/test-deep` → SHIP (Full audit, FULL depth)
+- `/compass-feature` → MARKET
+- `/compass-project` → BUILD (Step 1)
+- `/compass-retro` → MARKET
+- `/copyai-research` → RESEARCH (or `/copyai --research-only`)
+- `/reviews` → SHIP (entry context)
+- `/status` → BRIEF
+- `/screenshots` → `/report --screenshots`
+- `/autoloop-setup` → EVOLVE (inline auto-setup)
+
+### What is unchanged
+
+All 22 core commands still work directly. Workflows call them in
+sequence. Power users can type any command directly at any time.
+Nothing is removed. Everything is reachable.
+
+The v2.6.0 flag routers (`/atlas --rebuild|--check`,
+`/test --quick|--deep`, `/compass --feature|--project|--retro`,
+`/copyai --research-only`, `/new-project --validate-only`) remain
+in place. Flags pointing at retired commands now degrade
+gracefully — they read the alias body and the user gets a redirect
+to the appropriate workflow.
+
 ## v2.6.0 - /explore entry point
 
 The cognitive load problem: 48 commands is too many to remember. The

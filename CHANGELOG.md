@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.1 - Build system fix
+
+Fixed: `build-commands.sh` was skipping meta commands (`vtpaudit`, `projects`) because they have no body file in `commands/bodies/`.
+
+These commands were previously only synced by hand. Any edit to them in the repo would not propagate to `~/.claude/commands/` on the next build run. This caused the v3.0.0 rename to leave the installed `vtpaudit` pointing at `~/visual-test-pro/` even though the repo was correct.
+
+Fix: extended the build script to copy meta commands as-is after the main build loop. Both are now synced on every build run automatically.
+
 ## v3.1.0 - Feedback loop and learning system
 
 The gap this closes: the wiki accumulated knowledge, but the plugin had no way of knowing whether that knowledge was useful or accurate for your specific product. Rules applied generically. False positives accumulated. No memory of what worked and what did not.

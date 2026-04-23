@@ -89,7 +89,21 @@ for body_file in "$BODIES_DIR"/*.md; do
   count=$((count + 1))
 done
 
+# Copy meta commands that have no body file in commands/bodies/
+# These are intentionally resolver-less (vtpaudit audits; projects
+# lists across projects globally) so the main loop skips them.
+# Copy them verbatim so repo edits always reach ~/.claude/commands/.
+META_COMMANDS="vtpaudit projects"
+meta_count=0
+for cmd in $META_COMMANDS; do
+  if [ -f "$COMMANDS_DIR/$cmd.md" ]; then
+    cp "$COMMANDS_DIR/$cmd.md" "$LOCAL_COMMANDS_DIR/$cmd.md"
+    echo "Synced meta: $cmd"
+    meta_count=$((meta_count + 1))
+  fi
+done
+
 echo ""
-echo "Done. $count commands built."
+echo "Done. $count commands built, $meta_count meta commands synced."
 echo "Repo: $COMMANDS_DIR"
 echo "Local: $LOCAL_COMMANDS_DIR"
